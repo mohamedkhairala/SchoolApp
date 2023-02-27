@@ -28,17 +28,19 @@ Partial Class Add_Student
             'lblRes.Visible = False
             'UserId = PublicFunctions.GetUserId(Page)
             'Client_Id = PublicFunctions.GetClientId
-            'If Page.IsPostBack = False Then
-            '    clsLogs.AddSystemLogs("Access")
-            '    LoadBundles(Me)
-            '    'Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, User_Id)
-            '    FillDDL()
-            '    Enabler(False)
-            'Else
-            '    ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "AddScripts", "AddScripts();", True)
-            '    ScriptManager.RegisterStartupScript(Me.Page, Me.GetType, "load", "ViewlblMSG();", True)
-            '    ScriptManager.RegisterStartupScript(Me, Me.GetType(), "PreventAnimation", "PreventAnimation();", True)
-            'End If
+            If Page.IsPostBack = False Then
+
+                'clsLogs.AddSystemLogs("Access")
+                'LoadBundles(Me)
+                ''Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, User_Id)
+                'FillDDL()
+                'Enabler(False)
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "AddScripts", "AddScripts();", True)
+                ScriptManager.RegisterStartupScript(Me.Page, Me.GetType, "load", "ViewlblMSG();", True)
+                ScriptManager.RegisterStartupScript(Me, Me.GetType(), "PreventAnimation", "PreventAnimation();", True)
+            End If
+            FillIcon()
         Catch ex As Exception
             'ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -148,7 +150,7 @@ Partial Class Add_Student
             dt.Email = txtEmail.Text
             dt.DateOfBirth = CDate(txtDateOfBirth.Text)
             dt.Gender = ddlGender.SelectedValue
-            'dt.Photo = imgProfile.Src
+            dt.Photo = HiddenIcon.Text
             dt.Remarks = txtBio.Text
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
@@ -181,7 +183,8 @@ Partial Class Add_Student
                 txtEmail.Text = dt.Rows(0).Item("Email").ToString
                 ddlGender.SelectedValue = dt.Rows(0).Item("Gender").ToString
                 txtBio.Text = dt.Rows(0).Item("Remarks").ToString
-                'imgProfile.Src = dt.Rows(0).Item("Photo").ToString
+                imgIcon.ImageUrl = dt.Rows(0).Item("Photo").ToString
+                HiddenIcon.Text = dt.Rows(0).Item("Photo").ToString
             End If
 
         Catch ex As Exception
