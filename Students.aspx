@@ -84,7 +84,10 @@
                     <ItemTemplate>
 
                         <tr>
-                            <td>#<%# Eval("Code")%></td>
+                            <td>#<%# Eval("Code")%>
+                                <asp:Label ID="lblStudentId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
+                                <asp:Label ID="lblParentId"  runat="server" Visible ="false" Text ='<%# Eval("ParentId")%>'></asp:Label>
+                            </td>
                             <td class="text-center">
                                 <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="student"></td>
                             <td>
@@ -105,10 +108,10 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
 
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" href='<%# "Add_Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Add_Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item">
+                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick ="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 
