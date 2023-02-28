@@ -1669,11 +1669,15 @@ h6 {
     margin-bottom: 12px;
 }
 
-    .heading-layout1 .item-title h3 {
-        color: #111111;
-        font-weight: 500;
-        margin-bottom: 0;
+    .heading-layout1 .item-title {
+        flex: 1;
     }
+
+        .heading-layout1 .item-title h3 {
+            color: #111111;
+            font-weight: 500;
+            margin-bottom: 0;
+        }
 
     .heading-layout1 .dropdown .dropdown-toggle {
         color: #bcbcbc;
@@ -2970,7 +2974,8 @@ ul {
     }
 
     .new-added-form .form-group label {
-        margin-bottom: 12px;
+        /*margin-bottom: 12px;*/
+        margin-bottom: 5px;
         display: block;
     }
 
@@ -2981,7 +2986,7 @@ ul {
 
     .new-added-form .form-group i {
         position: absolute;
-        top: 56px;
+        top: 50px;
         right: 34px;
         font-size: 15px;
         color: #000;
@@ -5667,7 +5672,8 @@ ul {
 }
 
 .alert {
-    padding: 12px 25px;
+    display: block;
+    /*padding: 12px 25px;*/
 }
 
 /*=============== 8.6 Padding ==================*/
@@ -6189,4 +6195,15 @@ ul {
 
 .text-orange-red {
     color: #ff0000;
+}
+
+.select2-container {
+    display: block;
+}
+
+.valid-inp {
+    position: absolute;
+    color: red;
+    font-size: 1.2rem;
+    font-weight: 500;
 }
