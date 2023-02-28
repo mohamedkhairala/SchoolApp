@@ -5,7 +5,7 @@ Imports AjaxControlToolkit
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
 #End Region
-Partial Class Students
+Partial Class Parents
     Inherits System.Web.UI.Page
 #Region "Global Variable"
     Dim SchoolId As String = "1"
@@ -36,7 +36,7 @@ Partial Class Students
     ''' </summary>
     Sub FillGrid(sender As Object, e As EventArgs)
         Try
-            Dim dtTable As DataTable = DBContext.Getdatatable("select * from vw_Students where " + CollectConditions() + "")
+            Dim dtTable As DataTable = DBContext.Getdatatable("select * from vw_Parents where " + CollectConditions() + "")
             If dtTable.Rows.Count > 0 Then
                 ' Initialize the sorting expression.
                 If SortExpression.Value = String.Empty Then
@@ -66,7 +66,7 @@ Partial Class Students
     Public Function CollectConditions() As String
         Dim result As String = "1=1"
         Try
-            Dim Search As String = IIf(txtSearch.Text = "", "1=1", " (Code Like '%" + txtSearch.Text + "%' or Name Like '%" + txtSearch.Text + "%' or GroupName Like '%" + txtSearch.Text + "%')")
+            Dim Search As String = IIf(txtSearch.Text = "", "1=1", " (Code Like '%" + txtSearch.Text + "%' or Name Like '%" + txtSearch.Text + "%')")
             Return Search
         Catch ex As Exception
             Throw ex
