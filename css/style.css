@@ -6207,3 +6207,11 @@ ul {
     font-size: 1.2rem;
     font-weight: 500;
 }
+
+.icon-search {
+    color: #ffae01;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translate(0, -50%);
+}
