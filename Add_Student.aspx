@@ -52,55 +52,43 @@
                     <div class="col-xl-3 col-lg-6">
                         <div class="row">
                             <div class="col-xl-12 col-lg-12 col-12 form-group mg-t-30">
-                                <%--<label class="text-dark-medium">Upload Student Photo (150px X 150px)</label>--%>
-                                <%--<input id="mediaFile" type="file" class="form-control-file">--%>
-                                <asp:AsyncFileUpload ID="fuIcon" runat="server" CssClass="form-control-file"
-                                    OnUploadedComplete="IconUploaded"
-                                    OnClientUploadComplete="UploadIconCompleted" OnClientUploadError="UploadIconError"
-                                    OnClientUploadStarted="UploadIconStarted" FailedValidation="False" />
-                                <asp:TextBox ID="HiddenIcon" runat="server" ClientIDMode="Static" Style="display: none"></asp:TextBox>
+                                <div class="upload-profile">
+                                    <asp:AsyncFileUpload ID="fuIcon" runat="server" CssClass="form-control-file"
+                                        OnUploadedComplete="IconUploaded"
+                                        OnClientUploadComplete="UploadIconCompleted" OnClientUploadError="UploadIconError"
+                                        OnClientUploadStarted="UploadIconStarted" FailedValidation="False" />
+                                    <asp:TextBox ID="HiddenIcon" runat="server" ClientIDMode="Static" Style="display: none"></asp:TextBox>
 
-                                <div id="profile">
                                     <div class="dashes">
-                                        <%--<img id="imgProfile" runat="server" src="img/figure/Photo.jpg" />--%>
-                                        <asp:Image ID="imgIcon" CssClass="userPhoto" ClientIDMode="Static"
-                                            runat="server" ImageUrl="img/figure/Photo.jpg" Width="100%" />
-
+                                        <asp:Image ID="imgIcon" runat="server" CssClass="userPhoto" ClientIDMode="Static" ImageUrl="img/figure/Photo.jpg" />
                                     </div>
                                     <asp:Image ID="imgIconLoader" runat="server" CssClass="img-loader-upload" ClientIDMode="Static" ImageUrl="img/preloader.gif" Style="display: none; width: 50px" />
-
-                                    <label class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white">Upload Photo</label>
+                                    <label class="btn-upload btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white">Upload Photo</label>
                                 </div>
-
-                                
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-9 col-lg-6">
-                        <div class="d-flex">
-                            <asp:ValidationSummary ID="ValidationSummary" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vUsers" EnableClientScript="true" runat="server" CssClass="ValidationSummary" />
-                        </div>
+                        <asp:ValidationSummary ID="ValidationSummary" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vUsers" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
+
                         <div class="row">
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Code</label>
+                                <label>Code *</label>
                                 <asp:TextBox ID="txtCode" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vUsers"
-                                    ControlToValidate="txtCode"
-                                    ErrorMessage=" Required Code " Display="Dynamic" Text=" *"></asp:RequiredFieldValidator>
+                                    ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label>First Name *</label>
                                 <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqFnAME" runat="server" ValidationGroup="vUsers"
-                                    ControlToValidate="txtFirstName"
-                                    ErrorMessage=" Required First Name " Display="Dynamic" Text=" *"></asp:RequiredFieldValidator>
+                                    ControlToValidate="txtFirstName" Display="Dynamic" Text="Required First Name"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label>Last Name *</label>
                                 <asp:TextBox ID="txtLastName" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator1" runat="server" ValidationGroup="vUsers"
-                                    ControlToValidate="txtLastName"
-                                    ErrorMessage=" Required Last Name " Display="Dynamic" Text=" *"></asp:RequiredFieldValidator>
+                                    ControlToValidate="txtLastName" Display="Dynamic" Text="Required Last Name"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
                                 <label>Gender *</label>
@@ -110,21 +98,18 @@
                                     <asp:ListItem Value="F">Female</asp:ListItem>
                                 </asp:DropDownList>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator2" runat="server" ValidationGroup="vUsers"
-                                    ControlToValidate="ddlGender" InitialValue=""
-                                    ErrorMessage=" Required Gender " Display="Dynamic" Text=" *"></asp:RequiredFieldValidator>
+                                    ControlToValidate="ddlGender" InitialValue="" Display="Dynamic" Text="Required Gender"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Date Of Birth *</label>
+                                <label>Date Of Birth</label>
                                 <asp:TextBox ID="txtDateOfBirth" runat="server" placeholder="dd/mm/yyyy" CssClass="form-control air-datepicker"
                                     data-position='bottom right'></asp:TextBox>
                                 <i class="far fa-calendar-alt"></i>
-
-
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Groups *</label>
+                                <label>Groups</label>
                                 <asp:DropDownList ID="ddlGroups" runat="server" CssClass="select2">
-                                    <asp:ListItem Value="">Please Select Section *</asp:ListItem>
+                                    <asp:ListItem Value="">Please Select Section</asp:ListItem>
                                     <asp:ListItem Value="A">A</asp:ListItem>
                                     <asp:ListItem Value="B">B</asp:ListItem>
                                     <asp:ListItem Value="C">C</asp:ListItem>
@@ -133,26 +118,22 @@
                                 </asp:DropDownList>
                             </div>
                             <div class="col-xl-8 col-lg-6 col-12 form-group">
-                                <label>E-Mail</label>
+                                <label>E-Mail *</label>
                                 <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator3" runat="server" ValidationGroup="vUsers"
-                                    ControlToValidate="txtEmail"
-                                    ErrorMessage=" Required Email" Display="Dynamic" Text=" *"></asp:RequiredFieldValidator>
+                                    ControlToValidate="txtEmail" Display="Dynamic" Text="Required Email"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="revEmail" ValidationGroup="vUsers" CssClass="valid-inp" runat="server" ControlToValidate="txtEmail"
                                     ErrorMessage="InValidEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">*</asp:RegularExpressionValidator>
                             </div>
                             <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Phone</label>
+                                <label>Phone *</label>
                                 <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator4" runat="server" ValidationGroup="vUsers"
-                                    ControlToValidate="txtPhone"
-                                    ErrorMessage=" Required Phone" Display="Dynamic" Text=" *"></asp:RequiredFieldValidator>
+                                    ControlToValidate="txtPhone" Display="Dynamic" Text="Required Phone"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-lg-12 col-12 form-group">
                                 <label>Short BIO</label>
-                                <asp:TextBox ID="txtBio" runat="server" TextMode="MultiLine"
-                                    CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>
-
+                                <asp:TextBox ID="txtBio" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>
                             </div>
                             <div class="col-12 form-group mg-t-8">
                                 <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vUsers" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white" OnClick="Save">Save</asp:LinkButton>
@@ -172,7 +153,5 @@
     <!-- Date Picker Js -->
     <script src="js/datepicker.min.js"></script>
     <!-- Upload Photo Js -->
-    <script src="js/upload-photo.js"></script>
     <script src="js/UploadPhoto.js"></script>
-
 </asp:Content>
