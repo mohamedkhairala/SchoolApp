@@ -73,4 +73,26 @@ Partial Class Students
         End Try
     End Function
 #End Region
+
+#Region "Delete"
+    ''' <summary>
+    ''' Handle Click Delete 
+    ''' </summary>
+    Protected Sub Delete(sender As Object, e As EventArgs)
+        Try
+            Dim StudentId = Val(CType(sender.parent.FindControl("lblStudentId"), Label).Text)
+            Dim ParentId = Val(CType(sender.parent.FindControl("lblParentId"), Label).Text)
+            Dim str As String = "Update TblStudents Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & StudentId & ";"
+            str += "update TblParents set IsDeleted = 1, DeletedBy = '" & UserID & "', DeletedDate = GetDate() where  ID = " & ParentId & ";"
+            If DBContext.ExcuteQuery(str) < 1 Then
+                ShowErrorMessgage(lblRes, "حدث خطأ", Me)
+                Exit Sub
+            End If
+            ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
+            FillGrid(sender, e)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
 End Class
