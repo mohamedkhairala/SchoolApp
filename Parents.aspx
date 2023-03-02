@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | All Students" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Students.aspx.vb" Inherits="Students" %>
+<%@ Page Title="Up Skills | All Parents" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Parents.aspx.vb" Inherits="Parents" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -10,21 +10,21 @@
     <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>All Students</h3>
+        <h3>All Parents</h3>
         <ul>
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
-            <li>All Students</li>
+            <li>All Parents</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
-    <!-- Student Table Area Start Here -->
+    <!-- Parent Table Area Start Here -->
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>All Students Data</h3>
+                    <h3>All Parents Data</h3>
                 </div>
                 <!--<div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -66,8 +66,6 @@
                                     <th>Photo</th>
                                     <th>Name</th>
                                     <th>Gender</th>
-                                    <th>Group</th>
-                                    <th>Parents</th>
                                     <th>Address</th>
                                     <th>Date Of Birth</th>
                                     <th>Phone</th>
@@ -85,20 +83,16 @@
 
                         <tr>
                             <td>#<%# Eval("Code")%>
-                                <asp:Label ID="lblStudentId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
-                                <asp:Label ID="lblParentId"  runat="server" Visible ="false" Text ='<%# Eval("ParentId")%>'></asp:Label>
+                                <asp:Label ID="lblParentId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
                             </td>
                             <td class="text-center">
-                                <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="student"></td>
+                                <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="Parent"></td>
                             <td>
-                                <a href='<%# "Add_Student.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank">Mark Willy</a>
+                                <a href='<%# "Add_Parent.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank">Mark Willy</a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
-
-                            <td><%# Eval("GroupName")%></td>
-                            <td><%# Eval("ParentName")%> </td>
                             <td><%# Eval("Address")%></td>
-                            <td><%# Eval("DateOfBirth")%></td>
+                            <td><%# Eval("DOB")%></td>
                             <td><%# Eval("Mobile")%></td>
                             <td><%# Eval("Email")%></td>
                             <td>
@@ -108,7 +102,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
 
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Add_Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Add_Parent.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
                                         <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick ="Delete">
@@ -152,9 +146,9 @@
                         <tr>
                             <td>#0021</td>
                             <td class="text-center">
-                                <img src="img/figure/student2.png" alt="student"></td>
+                                <img src="img/figure/Parent2.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -186,9 +180,9 @@
                         <tr>
                             <td>#0022</td>
                             <td class="text-center">
-                                <img src="img/figure/student3.png" alt="student"></td>
+                                <img src="img/figure/Parent3.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Jessia Rose</a>
+                                <a href="Parent_Details.aspx" target="_blank">Jessia Rose</a>
                             </td>
                             <td>Female</td>
 
@@ -220,9 +214,9 @@
                         <tr>
                             <td>#0023</td>
                             <td class="text-center">
-                                <img src="img/figure/student4.png" alt="student"></td>
+                                <img src="img/figure/Parent4.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -254,9 +248,9 @@
                         <tr>
                             <td>#0024</td>
                             <td class="text-center">
-                                <img src="img/figure/student5.png" alt="student"></td>
+                                <img src="img/figure/Parent5.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Jessia Rose</a>
+                                <a href="Parent_Details.aspx" target="_blank">Jessia Rose</a>
                             </td>
                             <td>Female</td>
 
@@ -288,9 +282,9 @@
                         <tr>
                             <td>#0025</td>
                             <td class="text-center">
-                                <img src="img/figure/student6.png" alt="student"></td>
+                                <img src="img/figure/Parent6.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -322,9 +316,9 @@
                         <tr>
                             <td>#0026</td>
                             <td class="text-center">
-                                <img src="img/figure/student7.png" alt="student"></td>
+                                <img src="img/figure/Parent7.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Jessia Rose</a>
+                                <a href="Parent_Details.aspx" target="_blank">Jessia Rose</a>
                             </td>
                             <td>Female</td>
 
@@ -356,9 +350,9 @@
                         <tr>
                             <td>#0027</td>
                             <td class="text-center">
-                                <img src="img/figure/student8.png" alt="student"></td>
+                                <img src="img/figure/Parent8.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -390,9 +384,9 @@
                         <tr>
                             <td>#0028</td>
                             <td class="text-center">
-                                <img src="img/figure/student9.png" alt="student"></td>
+                                <img src="img/figure/Parent9.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Jessia Rose</a>
+                                <a href="Parent_Details.aspx" target="_blank">Jessia Rose</a>
                             </td>
                             <td>Female</td>
 
@@ -424,9 +418,9 @@
                         <tr>
                             <td>#0029</td>
                             <td class="text-center">
-                                <img src="img/figure/student10.png" alt="student"></td>
+                                <img src="img/figure/Parent10.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -458,9 +452,9 @@
                         <tr>
                             <td>#0030</td>
                             <td class="text-center">
-                                <img src="img/figure/student6.png" alt="student"></td>
+                                <img src="img/figure/Parent6.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Jessia Rose</a>
+                                <a href="Parent_Details.aspx" target="_blank">Jessia Rose</a>
                             </td>
                             <td>Female</td>
 
@@ -492,9 +486,9 @@
                         <tr>
                             <td>#0021</td>
                             <td class="text-center">
-                                <img src="img/figure/student2.png" alt="student"></td>
+                                <img src="img/figure/Parent2.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -526,8 +520,8 @@
                         <tr>
                             <td>#0022</td>
                             <td class="text-center">
-                                <img src="img/figure/student3.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent3.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -558,9 +552,9 @@
                         <tr>
                             <td>#0023</td>
                             <td class="text-center">
-                                <img src="img/figure/student4.png" alt="student"></td>
+                                <img src="img/figure/Parent4.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -592,8 +586,8 @@
                         <tr>
                             <td>#0024</td>
                             <td class="text-center">
-                                <img src="img/figure/student5.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent5.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -624,9 +618,9 @@
                         <tr>
                             <td>#0025</td>
                             <td class="text-center">
-                                <img src="img/figure/student6.png" alt="student"></td>
+                                <img src="img/figure/Parent6.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -658,8 +652,8 @@
                         <tr>
                             <td>#0026</td>
                             <td class="text-center">
-                                <img src="img/figure/student7.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent7.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -690,9 +684,9 @@
                         <tr>
                             <td>#0027</td>
                             <td class="text-center">
-                                <img src="img/figure/student8.png" alt="student"></td>
+                                <img src="img/figure/Parent8.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -724,8 +718,8 @@
                         <tr>
                             <td>#0028</td>
                             <td class="text-center">
-                                <img src="img/figure/student9.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent9.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -756,9 +750,9 @@
                         <tr>
                             <td>#0029</td>
                             <td class="text-center">
-                                <img src="img/figure/student10.png" alt="student"></td>
+                                <img src="img/figure/Parent10.png" alt="Parent"></td>
                             <td>
-                                <a href="Student_Details.aspx" target="_blank">Mark Willy</a>
+                                <a href="Parent_Details.aspx" target="_blank">Mark Willy</a>
                             </td>
                             <td>Male</td>
 
@@ -790,8 +784,8 @@
                         <tr>
                             <td>#0030</td>
                             <td class="text-center">
-                                <img src="img/figure/student6.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent6.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -822,8 +816,8 @@
                         <tr>
                             <td>#0021</td>
                             <td class="text-center">
-                                <img src="img/figure/student2.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Mark Willy</a></td>
+                                <img src="img/figure/Parent2.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Mark Willy</a></td>
                             <td>Male</td>
 
                             <td>A</td>
@@ -854,8 +848,8 @@
                         <tr>
                             <td>#0022</td>
                             <td class="text-center">
-                                <img src="img/figure/student3.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent3.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -886,8 +880,8 @@
                         <tr>
                             <td>#0023</td>
                             <td class="text-center">
-                                <img src="img/figure/student4.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Mark Willy</a></td>
+                                <img src="img/figure/Parent4.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Mark Willy</a></td>
                             <td>Male</td>
 
                             <td>A</td>
@@ -918,8 +912,8 @@
                         <tr>
                             <td>#0024</td>
                             <td class="text-center">
-                                <img src="img/figure/student5.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent5.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -950,8 +944,8 @@
                         <tr>
                             <td>#0025</td>
                             <td class="text-center">
-                                <img src="img/figure/student6.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Mark Willy</a></td>
+                                <img src="img/figure/Parent6.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Mark Willy</a></td>
                             <td>Male</td>
 
                             <td>A</td>
@@ -982,8 +976,8 @@
                         <tr>
                             <td>#0026</td>
                             <td class="text-center">
-                                <img src="img/figure/student7.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent7.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -1014,8 +1008,8 @@
                         <tr>
                             <td>#0027</td>
                             <td class="text-center">
-                                <img src="img/figure/student8.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Mark Willy</a></td>
+                                <img src="img/figure/Parent8.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Mark Willy</a></td>
                             <td>Male</td>
 
                             <td>A</td>
@@ -1046,8 +1040,8 @@
                         <tr>
                             <td>#0028</td>
                             <td class="text-center">
-                                <img src="img/figure/student9.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Jessia Rose</a></td>
+                                <img src="img/figure/Parent9.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Jessia Rose</a></td>
                             <td>Female</td>
 
                             <td>A</td>
@@ -1078,8 +1072,8 @@
                         <tr>
                             <td>#0029</td>
                             <td class="text-center">
-                                <img src="img/figure/student10.png" alt="student"></td>
-                            <td><a href="Student_Details.aspx" target="_blank">Mark Willy</a></td>
+                                <img src="img/figure/Parent10.png" alt="Parent"></td>
+                            <td><a href="Parent_Details.aspx" target="_blank">Mark Willy</a></td>
                             <td>Male</td>
 
                             <td>A</td>
@@ -1110,7 +1104,7 @@
                         <tr>
                             <td>#0030</td>
                             <td class="text-center">
-                                <img src="img/figure/student6.png" alt="student"></td>
+                                <img src="img/figure/Parent6.png" alt="Parent"></td>
                             <td>Jessia Rose</td>
                             <td>Female</td>
 
@@ -1144,7 +1138,7 @@
             </div>
         </div>
     </div>
-    <!-- Student Table Area End Here -->
+    <!-- Parent Table Area End Here -->
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
