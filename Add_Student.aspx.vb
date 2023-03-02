@@ -1,20 +1,16 @@
 ﻿#Region "Import"
 Imports System.Data
 Imports System.Data.SqlClient
-Imports System.ServiceModel.PeerResolvers
-Imports System.Threading.Tasks
-Imports System.Web.ModelBinding
 Imports AjaxControlToolkit
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
-Imports Microsoft.VisualBasic.ApplicationServices
 #End Region
 Partial Class Add_Student
     Inherits System.Web.UI.Page
 #Region "Global Variable"
 
     Dim UserID As String = "0"
-    Dim Client_Id As String = "1"
+    Dim School_Id As String = "1"
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
     Dim _sqltrans As SqlTransaction
 
@@ -25,24 +21,31 @@ Partial Class Add_Student
     ''' </summary>
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
-            'lblRes.Visible = False
+            lblRes.Visible = False
             'UserId = PublicFunctions.GetUserId(Page)
-            'Client_Id = PublicFunctions.GetClientId
+            'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
 
-                'clsLogs.AddSystemLogs("Access")
-                'LoadBundles(Me)
-                ''Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, User_Id)
-                'FillDDL()
-                'Enabler(False)
-            Else
-                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "AddScripts", "AddScripts();", True)
-                ScriptManager.RegisterStartupScript(Me.Page, Me.GetType, "load", "ViewlblMSG();", True)
-                ScriptManager.RegisterStartupScript(Me, Me.GetType(), "PreventAnimation", "PreventAnimation();", True)
+                FillDDL()
+                View()
             End If
             FillIcon()
         Catch ex As Exception
-            'ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+
+    Private Sub FillDDL()
+        Try
+            'Fill Groups
+            Dim dt = DBContext.Getdatatable("Select ID,Name from TblGroups where Isnull(isdeleted,0)=0 and SchoolId='" & School_Id & "'")
+            ddlGroups.DataValueField = "ID"
+            ddlGroups.DataTextField = "Name"
+            ddlGroups.AppendDataBoundItems = True
+            ddlGroups.DataSource = dt
+            ddlGroups.DataBind()
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
 
@@ -62,12 +65,13 @@ Partial Class Add_Student
 #Region "Save"
     Protected Sub Save()
         Try
+            'String.IsNullOrEmpty(Mode) Or String.IsNullOrEmpty(ID)
             Dim Mode As String = Request.QueryString("Mode")
             Dim ID As String = Request.QueryString("ID")
             Dim da As New TblStudentsFactory
             Dim dt As New TblStudents
-            If String.IsNullOrEmpty(Mode) Or String.IsNullOrEmpty(ID) Then
-                If Not FillDT(dt, Mode) Then
+            If lbSave.CommandArgument = "Add" Then
+                If Not FillDT(dt, "Add") Then
                     clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
                     Exit Sub
                 End If
@@ -88,17 +92,20 @@ Partial Class Add_Student
                 End If
                 _sqltrans.Commit()
                 _sqlconn.Close()
+                Clear()
                 ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
-            Else
+            ElseIf lbSave.CommandArgument = "Edit" Then
                 dt = da.GetAllBy(TblStudents.TblStudentsFields.Id, ID).FirstOrDefault
                 If dt Is Nothing Then
                     clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
                     Exit Sub
                 End If
-                If Not FillDT(dt, Mode) Then
+                If Not FillDT(dt, "Edit") Then
                     clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
                     Exit Sub
                 End If
+                _sqlconn.Open()
+                _sqltrans = _sqlconn.BeginTransaction()
                 If Not da.UpdateTrans(dt, _sqlconn, _sqltrans) Then
                     clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
                     _sqltrans.Rollback()
@@ -115,6 +122,7 @@ Partial Class Add_Student
                 _sqlconn.Close()
                 ShowMessage(lblRes, MessageTypesEnum.Update, Me.Page)
             End If
+
         Catch ex As Exception
             Throw ex
         End Try
@@ -131,7 +139,7 @@ Partial Class Add_Student
             dt.CreatedDate = DateTime.Now
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
-            dt.SchoolId = Client_Id
+            dt.SchoolId = School_Id
             da.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.StudentId, dtStudent.Id, _sqlconn, _sqltrans)
             Return da.InsertTrans(dt, sqlconn, sqltrans)
         Catch ex As Exception
@@ -145,8 +153,11 @@ Partial Class Add_Student
                 Return False
             End If
             dt.Code = txtCode.Text.Trim
-            dt.Name = txtFirstName.Text.Trim & " " & txtLastName.Text.Trim
-            dt.Mobile = txtPhone.Text
+            dt.FirstName = txtFirstName.Text.Trim
+            dt.LastName = txtLastName.Text.Trim
+            dt.Name = dt.FirstName & " " & dt.LastName
+            dt.Mobile = txtMobile.Text
+            dt.Tel = txtPhone.Text
             dt.Email = txtEmail.Text
             dt.DateOfBirth = CDate(txtDateOfBirth.Text)
             dt.Gender = ddlGender.SelectedValue
@@ -154,11 +165,11 @@ Partial Class Add_Student
             dt.Remarks = txtBio.Text
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
-            If Mode = "Insert" Then
+            If Mode = "Add" Then
                 dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
             End If
-            dt.SchoolId = Client_Id
+            dt.SchoolId = School_Id
             Return True
         Catch ex As Exception
             Return False
@@ -170,41 +181,51 @@ Partial Class Add_Student
         Try
             Dim Mode As String = Request.QueryString("Mode")
             Dim ID As String = Request.QueryString("ID")
-            If Mode = "View" And IsNumeric(ID) Then
-                Dim dt As DataTable = DBContext.Getdatatable("Select * from TblStudents Where ID='" & ID & "' And SchoolId='" & Client_Id & "' and isnull(isdeleted,0)=0")
+            If (Mode = "View" Or Mode = "Edit") And IsNumeric(ID) Then
+                Dim dt As DataTable = DBContext.Getdatatable("Select * from vw_Students Where ID='" & ID & "' And SchoolId='" & School_Id & "'")
                 If dt.Rows.Count = 0 Then
                     Exit Sub
                 End If
                 txtCode.Text = dt.Rows(0).Item("Code").ToString
-                txtFirstName.Text = dt.Rows(0).Item("Name").ToString.Split(" ").First
-                txtLastName.Text = dt.Rows(0).Item("Name").ToString.Split(" ").Last
-                txtPhone.Text = dt.Rows(0).Item("Phone").ToString
-                txtDateOfBirth.Text = dt.Rows(0).Item("DateOfBirth").ToString
+                txtFirstName.Text = dt.Rows(0).Item("FirstName").ToString
+                txtLastName.Text = dt.Rows(0).Item("LastName").ToString
+                txtPhone.Text = dt.Rows(0).Item("Tel").ToString
+                txtMobile.Text = dt.Rows(0).Item("Mobile").ToString
+                txtDateOfBirth.Text = (dt.Rows(0).Item("DateOfBirth"))
                 txtEmail.Text = dt.Rows(0).Item("Email").ToString
                 ddlGender.SelectedValue = dt.Rows(0).Item("Gender").ToString
+                ddlGroups.SelectedValue = dt.Rows(0).Item("GroupId").ToString
                 txtBio.Text = dt.Rows(0).Item("Remarks").ToString
                 imgIcon.ImageUrl = dt.Rows(0).Item("Photo").ToString
                 HiddenIcon.Text = dt.Rows(0).Item("Photo").ToString
+                lbSave.CommandArgument = "Edit"
+                pnlForm.Enabled = Mode = "Edit"
             End If
 
         Catch ex As Exception
-
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
 #End Region
 #Region "Cancel"
-    Protected Sub Cancel()
+    Protected Sub Cancel(sender As Object, e As EventArgs)
+        Response.Redirect("Dashboard.aspx")
+    End Sub
+
+    Protected Sub Clear()
         txtCode.Text = String.Empty
         txtFirstName.Text = String.Empty
         txtLastName.Text = String.Empty
         txtPhone.Text = String.Empty
+        txtMobile.Text = String.Empty
         txtEmail.Text = String.Empty
         txtDateOfBirth.Text = String.Empty
         txtBio.Text = String.Empty
 
         ddlGender.SelectedIndex = -1
         ddlGroups.SelectedIndex = -1
-        'imgProfile.Src = "img/figure/Photo.jpg"
+        HiddenIcon.Text = ""
+        imgIcon.ImageUrl = "~/img/figure/Photo.jpg"
     End Sub
 #End Region
 
@@ -221,21 +242,14 @@ Partial Class Add_Student
 
         Dim fu As New AjaxControlToolkit.AsyncFileUpload
         Try
-            Select Case sender.ID
-                Case "fuIcon"
-                    fu = fuIcon
-                    Dim type As String = fu.ContentType
-                    If type = "image/jpeg" OrElse type = "image/gif" OrElse type = "image/png" Then
-                        HiddenIcon.Text = "~/Users_Photos/" + fu.FileName
-                        fu.SaveAs(Path + fu.FileName)
-                    End If
-                Case "fuSignature"
-
-            End Select
-
+            fu = fuIcon
+            Dim type As String = fu.ContentType
+            If type = "image/jpeg" OrElse type = "image/gif" OrElse type = "image/png" Then
+                HiddenIcon.Text = "~/Users_Photos/" + fu.FileName
+                fu.SaveAs(Path + fu.FileName)
+            End If
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
-
         End Try
     End Sub
 
@@ -251,15 +265,9 @@ Partial Class Add_Student
                 HiddenIcon.Text = ""
                 imgIcon.ImageUrl = "~/img/figure/Photo.jpg"
             End If
-
-
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
-
         End Try
     End Sub
-
-
-
 #End Region
 End Class
