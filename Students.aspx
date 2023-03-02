@@ -91,7 +91,7 @@
                             <td class="text-center">
                                 <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="student"></td>
                             <td>
-                                <a href='<%# "Add_Student.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank">Mark Willy</a>
+                                <a href='<%# "Add_Student.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
 
