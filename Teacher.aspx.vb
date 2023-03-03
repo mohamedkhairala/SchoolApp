@@ -12,6 +12,8 @@ Partial Class Add_Student
     Dim UserID As String = "0"
     Dim School_Id As String = "1"
     Dim FormQry As String = "Select * from vw_Teachers "
+    Dim School_Id As String = "1"
+    Dim FormQry As String = "Select * from vw_Teachers "
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
     Dim _sqltrans As SqlTransaction
 
@@ -50,48 +52,18 @@ Partial Class Add_Student
 #Region "Save"
     Protected Sub Save()
         Try
-            'String.IsNullOrEmpty(Mode) Or String.IsNullOrEmpty(ID)
-            Dim Mode As String = Request.QueryString("Mode")
-            Dim ID As String = Request.QueryString("ID")
-            Dim da As New TblTeachersFactory
-            Dim dt As New TblTeachers
-            If lbSave.CommandArgument = "Add" Then
-                If Not FillDT(dt, "Add") Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
+            Dim dtTable As DataTable = DBContext.Getdatatable("select * from vw_Teachers where " + CollectConditions() + "")
+            If dtTable.Rows.Count > 0 Then
+                ' Initialize the sorting expression.
+                If SortExpression.Value = String.Empty Then
+                    SortExpression.Value = "Id ASC"
                 End If
-                _sqlconn.Open()
-                _sqltrans = _sqlconn.BeginTransaction()
+                ' Populate the GridView.
+                ' Convert the DataTable to DataView.
+                Dim dv As New DataView(dtTable)
 
-                If Not da.InsertTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
-
-                _sqltrans.Commit()
-                _sqlconn.Close()
-                Clear()
-                ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
-            ElseIf lbSave.CommandArgument = "Edit" Then
-                dt = da.GetAllBy(TblTeachers.TblTeachersFields.Id, ID).FirstOrDefault
-                If dt Is Nothing Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                If Not FillDT(dt, "Edit") Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                _sqlconn.Open()
-                _sqltrans = _sqlconn.BeginTransaction()
-                If Not da.UpdateTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
+                ' Set the sort column and sort order.
+                dv.Sort = SortExpression.Value.ToString()
 
                 _sqltrans.Commit()
                 _sqlconn.Close()
@@ -101,98 +73,6 @@ Partial Class Add_Student
         Catch ex As Exception
             Throw ex
         End Try
-
-    End Sub
-
-
-
-    Private Function FillDT(dt As TblTeachers, Mode As String) As Boolean
-        Try
-            If Not isValidForm() Then
-                Return False
-            End If
-            dt.Code = txtCode.Text.Trim
-            dt.Name = txtFirstName.Text.Trim
-            dt.Mobile = txtMobile.Text
-            dt.Tel = txtPhone.Text
-            dt.Email = txtEmail.Text
-            dt.DateOfBirth = CDate(txtDateOfBirth.Text)
-            dt.Gender = ddlGender.SelectedValue
-            dt.HourRate = CDec(PublicFunctions.DecimalFormat(txtRatePerHour.Text))
-            dt.StudentRate = CDec(PublicFunctions.DecimalFormat(txtRatePerStudent.Text))
-            dt.Salary = CDec(PublicFunctions.DecimalFormat(txtSalary.Text))
-            dt.Photo = HiddenIcon.Text
-            dt.Remarks = txtBio.Text
-            dt.UpdatedBy = UserID
-            dt.UpdatedDate = DateTime.Now
-            If Mode = "Add" Then
-                dt.CreatedBy = UserID
-                dt.CreatedDate = DateTime.Now
-            End If
-            dt.SchoolId = School_Id
-            Return True
-        Catch ex As Exception
-            Return False
-        End Try
-    End Function
-#End Region
-#Region "View"
-    Protected Sub View()
-        Try
-            Dim Mode As String = Request.QueryString("Mode")
-            Dim ID As String = Request.QueryString("ID")
-            If (Mode = "View" Or Mode = "Edit") And IsNumeric(ID) Then
-                Dim dt As DataTable = DBContext.Getdatatable(FormQry & "Where ID='" & ID & "' And SchoolId='" & School_Id & "'")
-                If dt.Rows.Count = 0 Then
-                    Exit Sub
-                End If
-                txtCode.Text = dt.Rows(0).Item("Code").ToString
-                txtFirstName.Text = dt.Rows(0).Item("Name").ToString
-                txtPhone.Text = dt.Rows(0).Item("Tel").ToString
-                txtMobile.Text = dt.Rows(0).Item("Mobile").ToString
-                txtDateOfBirth.Text = (dt.Rows(0).Item("DateOfBirth"))
-                txtEmail.Text = dt.Rows(0).Item("Email").ToString
-                txtRatePerHour.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("HourRate"))
-                txtRatePerStudent.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("StudentRate"))
-                txtSalary.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("Salary"))
-                ddlGender.SelectedValue = dt.Rows(0).Item("Gender").ToString
-                txtBio.Text = dt.Rows(0).Item("Remarks").ToString
-                imgIcon.ImageUrl = dt.Rows(0).Item("Photo").ToString
-                HiddenIcon.Text = dt.Rows(0).Item("Photo").ToString
-                lbSave.CommandArgument = "Edit"
-                pnlForm.Enabled = Mode = "Edit"
-                lbEdit.Visible = Mode = "View"
-            End If
-
-        Catch ex As Exception
-            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
-        End Try
-    End Sub
-#End Region
-#Region "Cancel"
-    Protected Sub Cancel(sender As Object, e As EventArgs)
-        Response.Redirect("Dashboard.aspx")
-    End Sub
-    Protected Sub Edit(sender As Object, e As EventArgs)
-        pnlForm.Enabled = True
-        sender.visible = False
-        lbSave.CommandArgument = "Edit"
-    End Sub
-
-    Protected Sub Clear()
-        txtCode.Text = String.Empty
-        txtFirstName.Text = String.Empty
-        txtPhone.Text = String.Empty
-        txtMobile.Text = String.Empty
-        txtEmail.Text = String.Empty
-        txtDateOfBirth.Text = String.Empty
-        txtBio.Text = String.Empty
-        txtRatePerHour.Text = String.Empty
-        txtRatePerStudent.Text = String.Empty
-        txtSalary.Text = String.Empty
-        ddlGender.SelectedIndex = -1
-        HiddenIcon.Text = ""
-        imgIcon.ImageUrl = "~/img/figure/Photo.jpg"
     End Sub
 #End Region
 
