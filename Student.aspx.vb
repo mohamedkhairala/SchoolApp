@@ -11,6 +11,7 @@ Partial Class Add_Student
 
     Dim UserID As String = "0"
     Dim School_Id As String = "1"
+    Dim FormQry As String = "Select * from vw_Students "
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
     Dim _sqltrans As SqlTransaction
 
@@ -25,7 +26,7 @@ Partial Class Add_Student
             'UserId = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
-
+                lbEdit.Visible = False
                 FillDDL()
                 View()
             End If
@@ -72,20 +73,20 @@ Partial Class Add_Student
             Dim dt As New TblStudents
             If lbSave.CommandArgument = "Add" Then
                 If Not FillDT(dt, "Add") Then
-                    clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     Exit Sub
                 End If
                 _sqlconn.Open()
                 _sqltrans = _sqlconn.BeginTransaction()
 
                 If Not da.InsertTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     _sqltrans.Rollback()
                     _sqlconn.Close()
                     Exit Sub
                 End If
                 If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     _sqltrans.Rollback()
                     _sqlconn.Close()
                     Exit Sub
@@ -97,23 +98,23 @@ Partial Class Add_Student
             ElseIf lbSave.CommandArgument = "Edit" Then
                 dt = da.GetAllBy(TblStudents.TblStudentsFields.Id, ID).FirstOrDefault
                 If dt Is Nothing Then
-                    clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     Exit Sub
                 End If
                 If Not FillDT(dt, "Edit") Then
-                    clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     Exit Sub
                 End If
                 _sqlconn.Open()
                 _sqltrans = _sqlconn.BeginTransaction()
                 If Not da.UpdateTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     _sqltrans.Rollback()
                     _sqlconn.Close()
                     Exit Sub
                 End If
                 If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowInfoMessgage(lblRes, "Error", Me)
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     _sqltrans.Rollback()
                     _sqlconn.Close()
                     Exit Sub
@@ -182,7 +183,7 @@ Partial Class Add_Student
             Dim Mode As String = Request.QueryString("Mode")
             Dim ID As String = Request.QueryString("ID")
             If (Mode = "View" Or Mode = "Edit") And IsNumeric(ID) Then
-                Dim dt As DataTable = DBContext.Getdatatable("Select * from vw_Students Where ID='" & ID & "' And SchoolId='" & School_Id & "'")
+                Dim dt As DataTable = DBContext.Getdatatable(FormQry & "Where ID='" & ID & "' And SchoolId='" & School_Id & "'")
                 If dt.Rows.Count = 0 Then
                     Exit Sub
                 End If
@@ -200,6 +201,7 @@ Partial Class Add_Student
                 HiddenIcon.Text = dt.Rows(0).Item("Photo").ToString
                 lbSave.CommandArgument = "Edit"
                 pnlForm.Enabled = Mode = "Edit"
+                lbEdit.Visible = Mode = "View"
             End If
 
         Catch ex As Exception
@@ -210,6 +212,11 @@ Partial Class Add_Student
 #Region "Cancel"
     Protected Sub Cancel(sender As Object, e As EventArgs)
         Response.Redirect("Dashboard.aspx")
+    End Sub
+    Protected Sub Edit(sender As Object, e As EventArgs)
+        pnlForm.Enabled = True
+        sender.visible = False
+        lbSave.CommandArgument = "Edit"
     End Sub
 
     Protected Sub Clear()

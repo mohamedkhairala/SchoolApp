@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Add Student" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Add_Student.aspx.vb" Inherits="Add_Student" %>
+<%@ Page Title="Up Skills | Add Student" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Student.aspx.vb" Inherits="Add_Student" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -28,6 +28,8 @@
             <div class="heading-layout1">
                 <div class="item-title">
                     <h3>Add New Student</h3>
+                    <asp:LinkButton ID="lbEdit" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
+                        OnClick="Edit">Edit</asp:LinkButton>
                     <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
                 <!--<div class="dropdown">
