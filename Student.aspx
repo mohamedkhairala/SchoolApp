@@ -13,12 +13,12 @@
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Add Student</h3>
+
         <ul>
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
-            <li>Add Student</li>
+            <li>Student</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -27,27 +27,22 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>Add New Student</h3>
-                    <asp:LinkButton ID="lbEdit" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
-                        OnClick="Edit">Edit</asp:LinkButton>
+                    <h3>
+                        <asp:Label Text="" runat="server" ID="lblTitle" /></h3>
+
+                    
                     <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
-                <!--<div class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                                   aria-expanded="false">...</a>
+                <asp:Panel CssClass="dropdown" runat="server" id="divActions">
+                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                        aria-expanded="false">...</a>
 
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-times text-orange-red"></i>Close
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                    </a>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                    </a>
-                                </div>
-                            </div>-->
+                    <div class="dropdown-menu dropdown-menu-right">
+                       
+                       <asp:LinkButton ID="lbEdit" CssClass="dropdown-item" runat="server" OnClick="Edit"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
+                        
+                    </div>
+                </asp:Panel>
             </div>
             <div class="new-added-form">
                 <asp:Panel runat="server" ID="pnlForm">
@@ -110,12 +105,18 @@
                                     <i class="far fa-calendar-alt"></i>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Mobile *</label>
+                                    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" MaxLength="20"></asp:TextBox>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator5" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtMobile" Display="Dynamic" Text="Required Mobile"></asp:RequiredFieldValidator>
+                                </div>
+                                <%-- <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Groups</label>
                                     <asp:DropDownList ID="ddlGroups" runat="server" CssClass="select2">
                                         <asp:ListItem Value="">Select Group</asp:ListItem>
 
                                     </asp:DropDownList>
-                                </div>
+                                </div>--%>
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label>E-Mail *</label>
                                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
@@ -130,12 +131,7 @@
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator4" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtPhone" Display="Dynamic" Text="Required Phone"></asp:RequiredFieldValidator>
                                 </div>
-                                <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label>Mobile *</label>
-                                    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" MaxLength="20"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator5" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtMobile" Display="Dynamic" Text="Required Mobile"></asp:RequiredFieldValidator>
-                                </div>
+
                                 <div class="col-lg-12 col-12 form-group">
                                     <label>Short BIO</label>
                                     <asp:TextBox ID="txtBio" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>

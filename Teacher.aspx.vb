@@ -163,7 +163,7 @@ Partial Class Add_Student
                 pnlForm.Enabled = Mode = "Edit"
                 lbEdit.Visible = Mode = "View"
             End If
-
+            lblTitle.Text = IIf(String.IsNullOrEmpty(Mode), "Add New Teacher", Mode & " Teacher")
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -177,6 +177,8 @@ Partial Class Add_Student
         pnlForm.Enabled = True
         sender.visible = False
         lbSave.CommandArgument = "Edit"
+        lblTitle.Text = "Edit Teacher"
+        divActions.Visible = False
     End Sub
 
     Protected Sub Clear()

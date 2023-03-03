@@ -2,6 +2,7 @@
 Imports System.Data
 Imports System.Data.SqlClient
 Imports AjaxControlToolkit
+Imports AjaxControlToolkit.HTMLEditor
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
 #End Region
@@ -26,8 +27,7 @@ Partial Class Add_Student
             'UserId = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
-                lbEdit.Visible = False
-                FillDDL()
+                divActions.Visible = False
                 View()
             End If
             FillIcon()
@@ -35,21 +35,6 @@ Partial Class Add_Student
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
-
-    Private Sub FillDDL()
-        Try
-            'Fill Groups
-            Dim dt = DBContext.Getdatatable("Select ID,Name from TblGroups where Isnull(isdeleted,0)=0 and SchoolId='" & School_Id & "'")
-            ddlGroups.DataValueField = "ID"
-            ddlGroups.DataTextField = "Name"
-            ddlGroups.AppendDataBoundItems = True
-            ddlGroups.DataSource = dt
-            ddlGroups.DataBind()
-        Catch ex As Exception
-            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
-        End Try
-    End Sub
-
 
 #End Region
 
@@ -85,12 +70,12 @@ Partial Class Add_Student
                     _sqlconn.Close()
                     Exit Sub
                 End If
-                If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
+                'If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
+                '    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                '    _sqltrans.Rollback()
+                '    _sqlconn.Close()
+                '    Exit Sub
+                'End If
                 _sqltrans.Commit()
                 _sqlconn.Close()
                 Clear()
@@ -113,12 +98,12 @@ Partial Class Add_Student
                     _sqlconn.Close()
                     Exit Sub
                 End If
-                If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
+                'If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
+                '    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                '    _sqltrans.Rollback()
+                '    _sqlconn.Close()
+                '    Exit Sub
+                'End If
                 _sqltrans.Commit()
                 _sqlconn.Close()
                 ShowMessage(lblRes, MessageTypesEnum.Update, Me.Page)
@@ -135,7 +120,7 @@ Partial Class Add_Student
             Dim da As New TblStudentsGroupsFactory
             Dim dt As New TblStudentsGroups
             dt.StudentId = dtStudent.Id
-            dt.GroupId = Val(ddlGroups.SelectedValue)
+            'dt.GroupId = Val(ddlGroups.SelectedValue)
             dt.CreatedBy = UserID
             dt.CreatedDate = DateTime.Now
             dt.UpdatedBy = UserID
@@ -195,15 +180,15 @@ Partial Class Add_Student
                 txtDateOfBirth.Text = (dt.Rows(0).Item("DateOfBirth"))
                 txtEmail.Text = dt.Rows(0).Item("Email").ToString
                 ddlGender.SelectedValue = dt.Rows(0).Item("Gender").ToString
-                ddlGroups.SelectedValue = dt.Rows(0).Item("GroupId").ToString
                 txtBio.Text = dt.Rows(0).Item("Remarks").ToString
                 imgIcon.ImageUrl = dt.Rows(0).Item("Photo").ToString
                 HiddenIcon.Text = dt.Rows(0).Item("Photo").ToString
                 lbSave.CommandArgument = "Edit"
                 pnlForm.Enabled = Mode = "Edit"
-                lbEdit.Visible = Mode = "View"
+                divActions.Visible = Mode = "View"
             End If
 
+            lblTitle.Text = IIf(String.IsNullOrEmpty(Mode), "Add New Student", Mode & " Student")
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -217,6 +202,8 @@ Partial Class Add_Student
         pnlForm.Enabled = True
         sender.visible = False
         lbSave.CommandArgument = "Edit"
+        lblTitle.Text = "Edit Student"
+        divActions.Visible = False
     End Sub
 
     Protected Sub Clear()
@@ -230,7 +217,6 @@ Partial Class Add_Student
         txtBio.Text = String.Empty
 
         ddlGender.SelectedIndex = -1
-        ddlGroups.SelectedIndex = -1
         HiddenIcon.Text = ""
         imgIcon.ImageUrl = "~/img/figure/Photo.jpg"
     End Sub
