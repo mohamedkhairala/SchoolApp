@@ -1,1148 +1,175 @@
-<%@ Page Title="Up Skills | All Teachers" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Teacher.aspx.vb" Inherits="Teachers" %>
+<%@ Page Title="Up Skills | Add Student" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Teacher.aspx.vb" Inherits="Add_Student" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
-    <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <!-- Select 2 CSS -->
+    <link rel="stylesheet" href="css/select2.min.css">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="css/datepicker.min.css">
+    <!-- Upload Photo CSS -->
+    <link rel="stylesheet" href="css/upload-photo.css" />
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
-    <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>All Teachers</h3>
+        <h3>Teacher</h3>
         <ul>
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
-            <li>All Teachers</li>
+            <li>Teacher</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
-    <!-- Teacher Table Area Start Here -->
+    <!-- Admit Form Area Start Here -->
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>All Teachers Data</h3>
+                    <h3>Add New Teacher</h3>
+                    <asp:LinkButton ID="lbEdit" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
+                        OnClick="Edit">Edit</asp:LinkButton>
+                    <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
                 <!--<div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
+                                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                                   aria-expanded="false">...</a>
 
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-times text-orange-red"></i>Close
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                        </a>
-                        <a class="dropdown-item" href="#">
-                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                        </a>
-                    </div>
-                </div>-->
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-times text-orange-red"></i>Close
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
+                                    </a>
+                                </div>
+                            </div>-->
             </div>
-            <div class="mg-b-20" id="divSearch" runat="server" visible ="false" >
-                <div class="row gutters-8">
-                    <div class="col-6-xxxl col-xl-6 col-lg-4 col-12 form-group">
+            <div class="new-added-form">
+                <asp:Panel runat="server" ID="pnlForm">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-6">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-12 form-group mg-t-30">
+                                    <div class="upload-profile">
+                                        <asp:AsyncFileUpload ID="fuIcon" runat="server" CssClass="form-control-file"
+                                            OnUploadedComplete="IconUploaded"
+                                            OnClientUploadComplete="UploadIconCompleted" OnClientUploadError="UploadIconError"
+                                            OnClientUploadStarted="UploadIconStarted" FailedValidation="False" />
+                                        <asp:TextBox ID="HiddenIcon" runat="server" ClientIDMode="Static" Style="display: none"></asp:TextBox>
+
+                                        <div class="dashes">
+                                            <asp:Image ID="imgIcon" runat="server" CssClass="userPhoto" ClientIDMode="Static" ImageUrl="img/figure/Photo.jpg" />
+                                        </div>
+                                        <asp:Image ID="imgIconLoader" runat="server" CssClass="img-loader-upload" ClientIDMode="Static" ImageUrl="img/preloader.gif" Style="display: none; width: 50px" />
+                                        <label class="btn-upload btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white">Upload Photo</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-6">
+                            <asp:ValidationSummary ID="ValidationSummary" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vUsers" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
+
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Code *</label>
+                                    <asp:TextBox ID="txtCode" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Name *</label>
+                                    <asp:TextBox ID="txtFirstName" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqFnAME" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtFirstName" Display="Dynamic" Text="Required Name"></asp:RequiredFieldValidator>
+                                </div>
+                                
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Gender *</label>
+                                    <asp:DropDownList ID="ddlGender" runat="server" CssClass="select2">
+                                        <asp:ListItem Value="">Please Select Gender *</asp:ListItem>
+                                        <asp:ListItem Value="M">Male</asp:ListItem>
+                                        <asp:ListItem Value="F">Female</asp:ListItem>
+                                    </asp:DropDownList>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator2" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="ddlGender" InitialValue="" Display="Dynamic" Text="Required Gender"></asp:RequiredFieldValidator>
+                                </div>
+                              <div class="col-xl-4 col-lg-6 col-3 form-group">
+                                    <label>Salary</label>
+                                    <asp:TextBox ID="txtSalary" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
+                                    <%--<asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator6" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtSalary" Display="Dynamic" Text="Required Salary"></asp:RequiredFieldValidator>--%>
+                                    <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtSalary" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-3 form-group">
+                                    <label>Rate Per Hour</label>
+                                    <asp:TextBox ID="txtRatePerHour" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
+                                    <%--<asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator6" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtHourRate" Display="Dynamic" Text="Required Hour Rate"></asp:RequiredFieldValidator>--%>
+                                    <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtRatePerHour" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-3 form-group">
+                                    <label>Rate Per Student</label>
+                                    <asp:TextBox ID="txtRatePerStudent" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
+                                    <%--<asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator7" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtRatePerStudent" Display="Dynamic" Text="Required Student Rate"></asp:RequiredFieldValidator>--%>
+                                    <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtRatePerStudent" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                                </div>
+                                   <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Date Of Birth</label>
+                                    <asp:TextBox ID="txtDateOfBirth" runat="server" placeholder="dd/mm/yyyy" CssClass="form-control air-datepicker"
+                                        data-position='bottom right'></asp:TextBox>
+                                    <i class="far fa-calendar-alt"></i>
+                                </div>
+                               
+                                <div class="col-xl-8 col-lg-6 col-12 form-group">
+                                    <label>E-Mail *</label>
+                                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator3" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtEmail" Display="Dynamic" Text="Required Email"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="revEmail" ValidationGroup="vUsers" CssClass="valid-inp" runat="server" ControlToValidate="txtEmail"
+                                        ErrorMessage="InValidEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">*</asp:RegularExpressionValidator>
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Phone *</label>
+                                    <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" MaxLength="20"></asp:TextBox>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator4" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtPhone" Display="Dynamic" Text="Required Phone"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Mobile *</label>
+                                    <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" MaxLength="20"></asp:TextBox>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator5" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtMobile" Display="Dynamic" Text="Required Mobile"></asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-lg-12 col-12 form-group">
+                                    <label>Short BIO</label>
+                                    <asp:TextBox ID="txtBio" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>
+                                </div>
+                                <div class="col-12 form-group mg-t-8">
+                                    <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vUsers"
+                                        CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
+                                        CommandArgument="Add" OnClick="Save">Save</asp:LinkButton>
+                                    <asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-4-xxxl col-xl-4 col-lg-5 col-12 form-group">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by Code, Name or Group ..." AutoPostBack="true" OnTextChanged ="FillGrid"></asp:TextBox>
-                    </div>
-                    <div class="col-2-xxxl col-xl-2 col-lg-3 col-12 form-group">
-                        <asp:LinkButton ID="lbSearch" runat="server" CssClass="fw-btn-fill btn-gradient-yellow text-white text-center" OnClick="FillGrid"><i class="fas fa-search mr-3"></i>SEARCH</asp:LinkButton>
-                    </div>
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                <asp:HiddenField ID="SortExpression" runat="server" />
-                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID"  >
-                    <LayoutTemplate>
-                        <table class="table display data-table text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Photo</th>
-                                    <th>Name</th>
-                                    <th>Gender</th>
-                                    <th>Address</th>
-                                    <th>Date Of Birth</th>
-                                    <th>Phone</th>
-                                    <th>E-mail</th>
-                                    <th>Salary</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="itemPlaceholder" runat="server">
-                                </tr>
-                            </tbody>
-                        </table>
-                    </LayoutTemplate>
-                    <ItemTemplate>
-
-                        <tr>
-                            <td>#<%# Eval("Code")%>
-                                <asp:Label ID="lblTeacherId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
-                            </td>
-                            <td class="text-center">
-                                <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="Teacher"></td>
-                            <td>
-                                <a href='<%# "Add_Teacher.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank">Mark Willy</a>
-                            </td>
-                            <td><%# Eval("FullGender")%></td>
-                            <td><%# Eval("Address")%></td>
-                            <td><%# Eval("DateOfBirth")%></td>
-                            <td><%# Eval("Mobile")%></td>
-                            <td><%# Eval("Email")%></td>
-                            <td><%# Eval("Salary")%></td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Add_Teacher.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
-                                              <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick ="Delete">
-                                              <i class="fas fa-times text-orange-red"></i>Delete
-                                        </asp:LinkButton>
-
-
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </ItemTemplate>
-                    <EmptyDataTemplate>
-                        <table style="width: 100%;">
-                            <tr class="EmptyRowStyle">
-                                <td>
-                                    <div>No Data Found.</div>
-                                </td>
-                            </tr>
-                        </table>
-                    </EmptyDataTemplate>
-                </asp:ListView>
-        <%--        <table class="table display data-table text-nowrap">
-
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th>Photo</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Group</th>
-                            <th>Teachers</th>
-                            <th>Address</th>
-                            <th>Date Of Birth</th>
-                            <th>Phone</th>
-                            <th>E-mail</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#0021</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher2.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0022</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher3.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a>
-                            </td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0023</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher4.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0024</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher5.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a>
-                            </td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0025</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher6.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0026</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher7.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a>
-                            </td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0027</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher8.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0028</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher9.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a>
-                            </td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0029</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher10.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0030</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher6.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a>
-                            </td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0021</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher2.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0022</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher3.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0023</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher4.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0024</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher5.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0025</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher6.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0026</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher7.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0027</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher8.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0028</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher9.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0029</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher10.png" alt="Teacher"></td>
-                            <td>
-                                <a href="Teacher_Details.aspx" target="_blank">Mark Willy</a>
-                            </td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0030</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher6.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0021</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher2.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Mark Willy</a></td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0022</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher3.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0023</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher4.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Mark Willy</a></td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0024</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher5.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0025</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher6.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Mark Willy</a></td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0026</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher7.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0027</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher8.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Mark Willy</a></td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0028</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher9.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Jessia Rose</a></td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0029</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher10.png" alt="Teacher"></td>
-                            <td><a href="Teacher_Details.aspx" target="_blank">Mark Willy</a></td>
-                            <td>Male</td>
-
-                            <td>A</td>
-                            <td>Jack Sparrow </td>
-                            <td>TA-107 Newyork</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>#0030</td>
-                            <td class="text-center">
-                                <img src="img/figure/Teacher6.png" alt="Teacher"></td>
-                            <td>Jessia Rose</td>
-                            <td>Female</td>
-
-                            <td>A</td>
-                            <td>Maria Jamans</td>
-                            <td>59 Australia, Sydney</td>
-                            <td>02/05/2001</td>
-                            <td>+ 123 9988568</td>
-                            <td>kazifahim93@gmail.com</td>
-                            <td>
-                                <div class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <span class="flaticon-more-button-of-three-dots"></span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-times text-orange-red"></i>Close
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </a>
-                                        <a class="dropdown-item" href="#">
-                                            <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>--%>
+                </asp:Panel>
             </div>
         </div>
     </div>
-    <!-- Teacher Table Area End Here -->
+    <!-- Admit Form Area End Here -->
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
-    <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
+    <!-- Select 2 Js -->
+    <script src="js/select2.min.js"></script>
+    <!-- Date Picker Js -->
+    <script src="js/datepicker.min.js"></script>
+    <!-- Upload Photo Js -->
+    <script src="js/UploadPhoto.js"></script>
 </asp:Content>

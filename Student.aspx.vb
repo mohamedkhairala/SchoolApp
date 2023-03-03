@@ -25,7 +25,7 @@ Partial Class Add_Student
             'UserId = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
-
+                lbEdit.Visible = False
                 FillDDL()
                 View()
             End If
@@ -200,6 +200,7 @@ Partial Class Add_Student
                 HiddenIcon.Text = dt.Rows(0).Item("Photo").ToString
                 lbSave.CommandArgument = "Edit"
                 pnlForm.Enabled = Mode = "Edit"
+                lbEdit.Visible = Mode = "View"
             End If
 
         Catch ex As Exception
@@ -210,6 +211,11 @@ Partial Class Add_Student
 #Region "Cancel"
     Protected Sub Cancel(sender As Object, e As EventArgs)
         Response.Redirect("Dashboard.aspx")
+    End Sub
+    Protected Sub Edit(sender As Object, e As EventArgs)
+        pnlForm.Enabled = True
+        sender.visible = False
+        lbSave.CommandArgument = "Edit"
     End Sub
 
     Protected Sub Clear()
