@@ -49,41 +49,241 @@
                     <div class="row">
                         <div class="col-xl-9 col-lg-6">
                             <asp:ValidationSummary ID="VSMaster" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vsMaster" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
+                            <!-- Group Master Data -->
                             <div class="row">
-                                <!-- Name -->
-                                <div id="divName" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label id="lblName" runat="server" for="txtName">Name *</label>
-                                    <asp:TextBox ID="txtName" runat="server" CssClass="form-control"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqName" runat="server" ValidationGroup="vsMaster"
-                                        ControlToValidate="txtName" Display="Dynamic" Text="Required Name"></asp:RequiredFieldValidator>
-                                </div>
-                                <!-- CourseID -->
-                                <div id="divCourseID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label id="lblCourseID" runat="server" for="ddlCourseID">Course *</label>
-                                    <asp:DropDownList ID="ddlCourseID" runat="server" CssClass="select2">
-                                        <asp:ListItem Value="">Please Select Course *</asp:ListItem>
-                                    </asp:DropDownList>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCourseID" runat="server" ValidationGroup="vsMaster"
-                                        ControlToValidate="ddlCourseID" InitialValue="" Display="Dynamic" Text="Required Course"></asp:RequiredFieldValidator>
-                                </div>
-                                <!-- TeacherID -->
-                                <div id="divTeacherID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label id="lblTeacherID" runat="server" for="ddlTeacherID">Teacher *</label>
-                                    <asp:DropDownList ID="ddlTeacherID" runat="server" CssClass="select2">
-                                        <asp:ListItem Value="">Please Select Teacher *</asp:ListItem>
-                                    </asp:DropDownList>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTeacherID" runat="server" ValidationGroup="vsMaster"
-                                        ControlToValidate="ddlTeacherID" InitialValue="" Display="Dynamic" Text="Required Teacher"></asp:RequiredFieldValidator>
-                                </div>
-                                <!-- SupervisorID -->
-                                <div id="divSupervisorID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label id="lblSupervisorID" runat="server" for="ddlSupervisorID">Course *</label>
-                                    <asp:DropDownList ID="ddlSupervisorID" runat="server" CssClass="select2">
-                                        <asp:ListItem Value="">Please Select Supervisor *</asp:ListItem>
-                                    </asp:DropDownList>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqSupervisorID" runat="server" ValidationGroup="vsMaster"
-                                        ControlToValidate="ddlSupervisorID" InitialValue="" Display="Dynamic" Text="Required Supervisor"></asp:RequiredFieldValidator>
-                                </div>
+                                <asp:Panel ID="pnlGroup" runat="server" CssClass="col-xl-12">
+                                    <!-- Name -->
+                                    <div id="divName" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                        <label id="lblName" runat="server" for="txtName">Name *</label>
+                                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control"></asp:TextBox>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqName" runat="server" ValidationGroup="vsMaster"
+                                            ControlToValidate="txtName" Display="Dynamic" Text="Required Name"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <!-- CourseID -->
+                                    <div id="divCourseID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                        <label id="lblCourseID" runat="server" for="ddlCourseID">Course *</label>
+                                        <asp:DropDownList ID="ddlCourseID" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectCourse">
+                                            <asp:ListItem Value="">Please Select Course *</asp:ListItem>
+                                        </asp:DropDownList>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCourseID" runat="server" ValidationGroup="vsMaster"
+                                            ControlToValidate="ddlCourseID" InitialValue="" Display="Dynamic" Text="Required Course"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <!-- TeacherID -->
+                                    <div id="divTeacherID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                        <label id="lblTeacherID" runat="server" for="ddlTeacherID">Teacher *</label>
+                                        <asp:DropDownList ID="ddlTeacherID" runat="server" CssClass="select2">
+                                            <asp:ListItem Value="">Please Select Teacher *</asp:ListItem>
+                                        </asp:DropDownList>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTeacherID" runat="server" ValidationGroup="vsMaster"
+                                            ControlToValidate="ddlTeacherID" InitialValue="" Display="Dynamic" Text="Required Teacher"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <!-- SupervisorID -->
+                                    <div id="divSupervisorID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                        <label id="lblSupervisorID" runat="server" for="ddlSupervisorID">Course *</label>
+                                        <asp:DropDownList ID="ddlSupervisorID" runat="server" CssClass="select2">
+                                            <asp:ListItem Value="">Please Select Supervisor *</asp:ListItem>
+                                        </asp:DropDownList>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqSupervisorID" runat="server" ValidationGroup="vsMaster"
+                                            ControlToValidate="ddlSupervisorID" InitialValue="" Display="Dynamic" Text="Required Supervisor"></asp:RequiredFieldValidator>
+                                    </div>
+                                </asp:Panel>
+                            </div>
+                            <!-- Sessions Data -->
+                            <div class="row">
+                                <asp:ValidationSummary ID="VSSessions" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vsSesions" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
+                                <asp:Panel ID="pnlSessions" runat="server">
+                                    <!-- Title -->
+                                    <div id="divTitle" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                        <label id="lblTitle" runat="server" for="txtTitle">Title *</label>
+                                        <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control"></asp:TextBox>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTitle" runat="server" ValidationGroup="VSSessions"
+                                            ControlToValidate="txtTitle" Display="Dynamic" Text="Required Title"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <!-- IssueDate -->
+                                    <div id="divIssueDate" class="col-xl-4 col-lg-6 col-12 form-group">
+                                        <label id="lblIssueDate" runat="server" for="txtIssueDate">Issue Date *</label>
+                                        <asp:TextBox ID="txtIssueDate" runat="server" placeholder="dd/mm/yyyy" CssClass="form-control air-datepicker"
+                                            data-position='bottom right'></asp:TextBox>
+                                        <i class="far fa-calendar-alt"></i>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqIssueDate" runat="server" ValidationGroup="VSSessions"
+                                            ControlToValidate="txtIssueDate" Display="Dynamic" Text="Required Issue Date"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <!-- Remarks -->
+                                    <div id="divRemarks" runat="server" class="col-lg-12 col-12 form-group">
+                                        <label id="lblRemarks" runat="server" for="txtRemarks">Remarks</label>
+                                        <asp:TextBox ID="txtRemarks" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqRemarks" runat="server" ValidationGroup="VSSessions" Visible="false"
+                                            ControlToValidate="txtRemarks" Display="Dynamic" Text="Required Remarks"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <!-- lvSessions -->
+                                    <div>
+                                        <div class="table-responsive">
+                                            <asp:HiddenField ID="hfSessionIndex" runat="server" />
+                                            <asp:ListView ID="lvSessions" runat="server" ClientIDMode="AutoID">
+                                                <LayoutTemplate>
+                                                    <table class="table display data-table text-nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No.</th>
+                                                                <th>Title</th>
+                                                                <th>Issue Date</th>
+                                                                <th>Remarks</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="itemPlaceholder" runat="server">
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <tr>
+                                                        <td>
+                                                            <asp:Label ID="lblSerialNo" runat="server" Text='<%# Val(Container.DataItemIndex.ToString) + 1 %>'></asp:Label>
+                                                            <asp:Label ID="lblSessionID" runat="server" Visible="false" Text='<%# Eval("ID")%>'></asp:Label>
+                                                            <asp:Label ID="lblGroupID" runat="server" Visible="false" Text='<%# Eval("GroupID")%>'></asp:Label>
+                                                            <%--<asp:Label ID="lblStatus" runat="server" Visible="false" Text='<%# Eval("Status")%>'></asp:Label>--%>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="lblTitle" runat="server" Text='<%# Eval("Title")%>'></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="lblIssueDate" runat="server" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate").ToString)%>'></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="lblRemarks" runat="server" Text='<%# Eval("Remarks")%>'></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="dropdown">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                                    <span class="flaticon-more-button-of-three-dots"></span>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                    <asp:LinkButton ID="lbEditSession" runat="server" CssClass="dropdown-item" OnClick="EditSession">
+                                                                        <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
+                                                                    </asp:LinkButton>
+                                                                    <asp:LinkButton ID="lbDeleteSession" runat="server" CssClass="dropdown-item" OnClick="DeleteSession">
+                                                                        <i class="fas fa-times text-orange-red"></i>Delete
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                                <EmptyDataTemplate>
+                                                    <table style="width: 100%;">
+                                                        <tr class="EmptyRowStyle">
+                                                            <td>
+                                                                <div>No Data Found.</div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </EmptyDataTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                    <!-- Submit & Cancel -->
+                                    <div class="col-12 form-group mg-t-8">
+                                        <asp:LinkButton ID="lbSubmitSession" runat="server" ValidationGroup="vsSesions"
+                                            CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
+                                            CommandArgument="Add" OnClick="SubmitSession">Submit Session</asp:LinkButton>
+                                        <asp:LinkButton ID="lbCancelSession" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="CancelSession">Cancel</asp:LinkButton>
+                                    </div>
+                                </asp:Panel>
+                            </div>
+                            <!-- Students Data -->
+                            <div class="row">
+                                <asp:ValidationSummary ID="VSStudents" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vsStudents" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
+                                <asp:Panel ID="pnlStudents" runat="server">
+                                    <!-- StudentID -->
+                                    <div id="divStudentID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                        <label id="lblStudentID" runat="server" for="ddlStudentID">Student *</label>
+                                        <asp:DropDownList ID="ddlStudentID" runat="server" CssClass="select2">
+                                            <asp:ListItem Value="">Please Select Student *</asp:ListItem>
+                                        </asp:DropDownList>
+                                        <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqStudentID" runat="server" ValidationGroup="vsStudents"
+                                            ControlToValidate="ddlStudentID" InitialValue="" Display="Dynamic" Text="Required Student"></asp:RequiredFieldValidator>
+                                    </div>
+                                    <!-- lvStudents -->
+                                    <div>
+                                        <div class="table-responsive">
+                                            <asp:HiddenField ID="hfStudentIndex" runat="server" />
+                                            <asp:ListView ID="lvStudents" runat="server" ClientIDMode="AutoID">
+                                                <LayoutTemplate>
+                                                    <table class="table display data-table text-nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No.</th>
+                                                                <th>Code</th>
+                                                                <th>Name</th>
+                                                                <th>Mobile</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr id="itemPlaceholder" runat="server">
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </LayoutTemplate>
+                                                <ItemTemplate>
+                                                    <tr>
+                                                        <td>
+                                                            <asp:Label ID="lblSerialNo" runat="server" Text='<%# Val(Container.DataItemIndex.ToString) + 1 %>'></asp:Label>
+                                                            <asp:Label ID="lblStudentID" runat="server" Visible="false" Text='<%# Eval("StudentID")%>'></asp:Label>
+                                                            <asp:Label ID="lblGroupID" runat="server" Visible="false" Text='<%# Eval("GroupID")%>'></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="lblCode" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="lblName" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <asp:Label ID="lblMobile" runat="server"></asp:Label>
+                                                        </td>
+                                                        <td>
+                                                            <div class="dropdown">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                                    <span class="flaticon-more-button-of-three-dots"></span>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                    <asp:LinkButton ID="lbEditStudent" runat="server" CssClass="dropdown-item" OnClick="EditStudent">
+                                                                        <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
+                                                                    </asp:LinkButton>
+                                                                    <asp:LinkButton ID="lbDeleteStudent" runat="server" CssClass="dropdown-item" OnClick="DeleteStudent">
+                                                                        <i class="fas fa-times text-orange-red"></i>Delete
+                                                                    </asp:LinkButton>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                                <EmptyDataTemplate>
+                                                    <table style="width: 100%;">
+                                                        <tr class="EmptyRowStyle">
+                                                            <td>
+                                                                <div>No Data Found.</div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </EmptyDataTemplate>
+                                            </asp:ListView>
+                                        </div>
+                                    </div>
+                                    <!-- Submit & Cancel -->
+                                    <div class="col-12 form-group mg-t-8">
+                                        <asp:LinkButton ID="lbSubmitStudent" runat="server" ValidationGroup="vsStudents"
+                                            CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
+                                            CommandArgument="Add" OnClick="SubmitStudent">Submit Student</asp:LinkButton>
+                                        <asp:LinkButton ID="lbCancelStudent" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="CancelStudent">Cancel</asp:LinkButton>
+                                    </div>
+                                </asp:Panel>
+                            </div>
+                            <!-- Action Buttons -->
+                            <div class="row">
+                                <!-- Save & Cancel -->
                                 <div class="col-12 form-group mg-t-8">
                                     <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vsMaster"
                                         CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
