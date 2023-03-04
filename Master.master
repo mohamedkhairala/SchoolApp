@@ -35,9 +35,9 @@
 <body>
     <form id="form1" runat="server" autocomplete="off">
         <asp:ToolkitScriptManager ID="TKSM" runat="server" ScriptMode="Release">
-           <%-- <Services>
-                <asp:ServiceReference Path="~/WebService.asmx" />
-            </Services>--%>
+            <%-- <Services>
+            <asp:ServiceReference Path="~/WebService.asmx" />
+        </Services>--%>
         </asp:ToolkitScriptManager>
         <!-- Preloader Start Here -->
         <div id="preloader"></div>
@@ -71,17 +71,17 @@
                 </div>
                 <div class="header-main-menu collapse navbar-collapse" id="mobile-navbar">
                     <!--<ul class="navbar-nav">
-                    <li class="navbar-item header-search-bar">
-                        <div class="input-group stylish-input-group">
-                            <span class="input-group-addon">
-                                <button type="submit">
-                                    <span class="flaticon-search" aria-hidden="true"></span>
-                            </button>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Find Something . . .">
-                        </div>
-                    </li>
-                </ul>-->
+                        <li class="navbar-item header-search-bar">
+                            <div class="input-group stylish-input-group">
+                                <span class="input-group-addon">
+                                    <button type="submit">
+                                        <span class="flaticon-search" aria-hidden="true"></span>
+                                </button>
+                                </span>
+                                <input type="text" class="form-control" placeholder="Find Something . . .">
+                            </div>
+                        </li>
+                    </ul>-->
                     <ul class="navbar-nav">
                         <li class="navbar-item dropdown header-admin">
                             <a class="navbar-nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
@@ -170,38 +170,26 @@
                                 </ul>
                             </li>
                             <!--<li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="all-book.html" class="nav-link">
-                                        <i class="fas fa-angle-right"></i>All
-                                        Book
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="add-book.html" class="nav-link">
-                                        <i class="fas fa-angle-right"></i>Add New
-                                        Book
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>-->
+                                <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Library</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="all-book.html" class="nav-link"><i class="fas fa-angle-right"></i>All Book</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="add-book.html" class="nav-link"><i class="fas fa-angle-right"></i>Add New Book</a>
+                                    </li>
+                                </ul>
+                            </li>-->
                             <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Groups</span>
                                 </a>
                                 <ul class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="fas fa-angle-right"></i>All
-                                        Groups
-                                        </a>
+                                        <a href="#" class="nav-link"><i class="fas fa-angle-right"></i>All Groups</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="fas fa-angle-right"></i>Add New
-                                        Group
-                                        </a>
+                                        <a href="Add_Group.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Group</a>
                                     </li>
                                 </ul>
                             </li>
@@ -211,13 +199,13 @@
                                 </a>
                             </li>
                             <!--<li class="nav-item">
-                            <a href="class-routine.html" class="nav-link">
-                                <i class="flaticon-calendar"></i><span>
-                                    Class
-                                    Routine
-                                </span>
-                            </a>
-                        </li>-->
+                                <a href="class-routine.html" class="nav-link">
+                                    <i class="flaticon-calendar"></i><span>
+                                        Class
+                                        Routine
+                                    </span>
+                                </a>
+                            </li>-->
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="flaticon-checklist"></i><span>Attendence</span>
@@ -229,22 +217,16 @@
                                 </a>
                             </li>
                             <!--<li class="nav-item sidebar-nav-item">
-                            <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
-                            <ul class="nav sub-group-menu">
-                                <li class="nav-item">
-                                    <a href="exam-schedule.html" class="nav-link">
-                                        <i class="fas fa-angle-right"></i>Exam
-                                        Schedule
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="exam-grade.html" class="nav-link">
-                                        <i class="fas fa-angle-right"></i>Exam
-                                        Grades
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>-->
+                                <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
+                                <ul class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a href="exam-schedule.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam Schedule</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="exam-grade.html" class="nav-link"><i class="fas fa-angle-right"></i>Exam Grades</a>
+                                    </li>
+                                </ul>
+                            </li>-->
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="flaticon-script"></i><span>Messages</span>
@@ -270,9 +252,7 @@
                 </div>
                 <!-- Sidebar Area End Here -->
                 <div class="dashboard-content-one">
-
                     <asp:ContentPlaceHolder ID="Content" runat="server"></asp:ContentPlaceHolder>
-
                     <!-- Footer Area Start Here -->
                     <footer class="footer-wrap-layout1">
                         <div class="copyright">© Copyrights <a href="Dashboard.aspx">Up Skills</a> 2023. All rights reserved.</div>
@@ -306,6 +286,5 @@
 <script src="js/Chart.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
-
 <asp:ContentPlaceHolder ID="Footer" runat="server"></asp:ContentPlaceHolder>
 </html>
