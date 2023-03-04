@@ -156,13 +156,13 @@
                                 <a href="#" class="nav-link"><i class="flaticon-user"></i><span>Supervisors</span></a>
                                 <ul class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="SupervisorsList.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>All
                                         Supervisors
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="Supervisor.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Add
                                         Supervisor
                                         </a>

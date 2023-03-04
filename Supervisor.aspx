@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Add Student" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Teacher.aspx.vb" Inherits="Add_Student" %>
+<%@ Page Title="Up Skills | Supervisors" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Supervisor.aspx.vb" Inherits="Supervisor" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -17,7 +17,7 @@
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
-            <li>Teacher</li>
+            <li>Supervisor</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->

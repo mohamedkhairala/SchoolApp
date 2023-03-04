@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | All Supervisors" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Supervisors.aspx.vb" Inherits="Supervisors" %>
+<%@ Page Title="Up Skills | All Supervisors" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="SupervisorsList.aspx.vb" Inherits="Supervisors" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -89,7 +89,7 @@
                             <td class="text-center">
                                 <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="Supervisor"></td>
                             <td>
-                                <a href='<%# "Add_Supervisor.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank">Mark Willy</a>
+                                <a href='<%# "Supervisor.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
                             <td><%# Eval("Address")%></td>
@@ -104,7 +104,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
 
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Add_Supervisor.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Supervisor.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
                                         <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick ="Delete">

@@ -116,7 +116,11 @@ Partial Class Add_Student
             dt.Mobile = txtMobile.Text
             dt.Tel = txtPhone.Text
             dt.Email = txtEmail.Text
-            dt.DateOfBirth = CDate(txtDateOfBirth.Text)
+            If IsDate(txtDateOfBirth.Text) Then
+                dt.DateOfBirth = CDate(txtDateOfBirth.Text)
+            Else
+                dt.DateOfBirth = Nothing
+            End If
             dt.Gender = ddlGender.SelectedValue
             dt.HourRate = CDec(PublicFunctions.DecimalFormat(txtRatePerHour.Text))
             dt.StudentRate = CDec(PublicFunctions.DecimalFormat(txtRatePerStudent.Text))

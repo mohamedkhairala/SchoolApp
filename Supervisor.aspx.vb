@@ -2,17 +2,16 @@
 Imports System.Data
 Imports System.Data.SqlClient
 Imports AjaxControlToolkit
-Imports AjaxControlToolkit.HTMLEditor
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
 #End Region
-Partial Class Add_Student
+Partial Class Supervisor
     Inherits System.Web.UI.Page
 #Region "Global Variable"
 
     Dim UserID As String = "0"
     Dim School_Id As String = "1"
-    Dim FormQry As String = "Select * from vw_Students "
+    Dim FormQry As String = "Select * from vw_Supervisors "
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
     Dim _sqltrans As SqlTransaction
 
@@ -27,7 +26,6 @@ Partial Class Add_Student
             'UserId = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
-                divActions.Visible = False
                 View()
             End If
             FillIcon()
@@ -51,11 +49,10 @@ Partial Class Add_Student
 #Region "Save"
     Protected Sub Save()
         Try
-            'String.IsNullOrEmpty(Mode) Or String.IsNullOrEmpty(ID)
             Dim Mode As String = Request.QueryString("Mode")
             Dim ID As String = Request.QueryString("ID")
-            Dim da As New TblStudentsFactory
-            Dim dt As New TblStudents
+            Dim da As New TblSupervisorsFactory
+            Dim dt As New TblSupervisors
             If lbSave.CommandArgument = "Add" Then
                 If Not FillDT(dt, "Add") Then
                     clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
@@ -70,18 +67,13 @@ Partial Class Add_Student
                     _sqlconn.Close()
                     Exit Sub
                 End If
-                'If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
-                '    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                '    _sqltrans.Rollback()
-                '    _sqlconn.Close()
-                '    Exit Sub
-                'End If
+
                 _sqltrans.Commit()
                 _sqlconn.Close()
                 Clear()
                 ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
             ElseIf lbSave.CommandArgument = "Edit" Then
-                dt = da.GetAllBy(TblStudents.TblStudentsFields.Id, ID).FirstOrDefault
+                dt = da.GetAllBy(TblSupervisors.TblSupervisorsFields.Id, ID).FirstOrDefault
                 If dt Is Nothing Then
                     clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     Exit Sub
@@ -98,12 +90,7 @@ Partial Class Add_Student
                     _sqlconn.Close()
                     Exit Sub
                 End If
-                'If Not SaveStudentGroup(dt, _sqlconn, _sqltrans) Then
-                '    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                '    _sqltrans.Rollback()
-                '    _sqlconn.Close()
-                '    Exit Sub
-                'End If
+
                 _sqltrans.Commit()
                 _sqlconn.Close()
                 ShowMessage(lblRes, MessageTypesEnum.Update, Me.Page)
@@ -115,33 +102,15 @@ Partial Class Add_Student
 
     End Sub
 
-    Private Function SaveStudentGroup(dtStudent As TblStudents, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
-        Try
-            Dim da As New TblStudentsGroupsFactory
-            Dim dt As New TblStudentsGroups
-            dt.StudentId = dtStudent.Id
-            'dt.GroupId = Val(ddlGroups.SelectedValue)
-            dt.CreatedBy = UserID
-            dt.CreatedDate = DateTime.Now
-            dt.UpdatedBy = UserID
-            dt.UpdatedDate = DateTime.Now
-            dt.SchoolId = School_Id
-            da.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.StudentId, dtStudent.Id, _sqlconn, _sqltrans)
-            Return da.InsertTrans(dt, sqlconn, sqltrans)
-        Catch ex As Exception
-            Return False
-        End Try
-    End Function
 
-    Private Function FillDT(dt As TblStudents, Mode As String) As Boolean
+
+    Private Function FillDT(dt As TblSupervisors, Mode As String) As Boolean
         Try
             If Not isValidForm() Then
                 Return False
             End If
             dt.Code = txtCode.Text.Trim
-            dt.FirstName = txtFirstName.Text.Trim
-            dt.LastName = txtLastName.Text.Trim
-            dt.Name = dt.FirstName & " " & dt.LastName
+            dt.Name = txtFirstName.Text.Trim
             dt.Mobile = txtMobile.Text
             dt.Tel = txtPhone.Text
             dt.Email = txtEmail.Text
@@ -151,6 +120,9 @@ Partial Class Add_Student
                 dt.DateOfBirth = Nothing
             End If
             dt.Gender = ddlGender.SelectedValue
+            dt.HourRate = CDec(PublicFunctions.DecimalFormat(txtRatePerHour.Text))
+            dt.StudentRate = CDec(PublicFunctions.DecimalFormat(txtRatePerStudent.Text))
+            dt.Salary = CDec(PublicFunctions.DecimalFormat(txtSalary.Text))
             dt.Photo = HiddenIcon.Text
             dt.Remarks = txtBio.Text
             dt.UpdatedBy = UserID
@@ -177,22 +149,23 @@ Partial Class Add_Student
                     Exit Sub
                 End If
                 txtCode.Text = dt.Rows(0).Item("Code").ToString
-                txtFirstName.Text = dt.Rows(0).Item("FirstName").ToString
-                txtLastName.Text = dt.Rows(0).Item("LastName").ToString
+                txtFirstName.Text = dt.Rows(0).Item("Name").ToString
                 txtPhone.Text = dt.Rows(0).Item("Tel").ToString
                 txtMobile.Text = dt.Rows(0).Item("Mobile").ToString
-                txtDateOfBirth.Text = (dt.Rows(0).Item("DateOfBirth"))
+                txtDateOfBirth.Text = (dt.Rows(0).Item("DateOfBirth").ToString)
                 txtEmail.Text = dt.Rows(0).Item("Email").ToString
+                txtRatePerHour.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("HourRate"))
+                txtRatePerStudent.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("StudentRate"))
+                txtSalary.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("Salary"))
                 ddlGender.SelectedValue = dt.Rows(0).Item("Gender").ToString
                 txtBio.Text = dt.Rows(0).Item("Remarks").ToString
                 imgIcon.ImageUrl = dt.Rows(0).Item("Photo").ToString
                 HiddenIcon.Text = dt.Rows(0).Item("Photo").ToString
                 lbSave.CommandArgument = "Edit"
                 pnlForm.Enabled = Mode = "Edit"
-                divActions.Visible = Mode = "View"
+                lbEdit.Visible = Mode = "View"
             End If
-
-            lblTitle.Text = IIf(String.IsNullOrEmpty(Mode), "Add New Student", Mode & " Student")
+            lblTitle.Text = IIf(String.IsNullOrEmpty(Mode), "Add New Supervisor", Mode & " Supervisor")
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -206,20 +179,21 @@ Partial Class Add_Student
         pnlForm.Enabled = True
         sender.visible = False
         lbSave.CommandArgument = "Edit"
-        lblTitle.Text = "Edit Student"
+        lblTitle.Text = "Edit Supervisor"
         divActions.Visible = False
     End Sub
 
     Protected Sub Clear()
         txtCode.Text = String.Empty
         txtFirstName.Text = String.Empty
-        txtLastName.Text = String.Empty
         txtPhone.Text = String.Empty
         txtMobile.Text = String.Empty
         txtEmail.Text = String.Empty
         txtDateOfBirth.Text = String.Empty
         txtBio.Text = String.Empty
-
+        txtRatePerHour.Text = String.Empty
+        txtRatePerStudent.Text = String.Empty
+        txtSalary.Text = String.Empty
         ddlGender.SelectedIndex = -1
         HiddenIcon.Text = ""
         imgIcon.ImageUrl = "~/img/figure/Photo.jpg"
