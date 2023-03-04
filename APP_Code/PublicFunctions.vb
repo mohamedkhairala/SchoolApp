@@ -31,6 +31,9 @@ Public Class PublicFunctions
     End Function
     Public Shared Function IntFormat(ByVal Value As Object) As Integer
         Try
+            If String.IsNullOrEmpty(Value) Then
+                Return "0"
+            End If
             Value = Value.ToString
             If Value = "" OrElse Value Is Nothing OrElse Value = vbNullString Then
                 Return "0"
@@ -994,6 +997,31 @@ Optional ByVal MinNumber As Integer = 0) As Integer
             Throw ex
         End Try
     End Sub
+
+    Public Shared Sub SetDDLValue(ByRef ddl As DropDownList, value As String)
+        Try
+            value = value.Trim
+            If ddl.Items.FindByValue(value) IsNot Nothing Then
+                ddl.SelectedValue = value
+            End If
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+#End Region
+
+#Region "Lookup"
+
+    Public Shared Function GetLookupID(type As String, value As String, school_id As Integer) As Integer
+        Dim query As String = "select ID from TblLookupValue where isnull(IsDeleted, 0) = 0 and SchoolID = " & school_id & " and Value = '" & value & "' and " &
+            "LookupID = (select ID from TblLookup where isnull(IsDeleted, 0) = 0 and SchoolID = & " & school_id & " and Type = '" & type & "');"
+        Dim dt As DataTable = DBContext.Getdatatable(query)
+        If dt.Rows.Count = 0 Then
+            Return 0
+        End If
+        Return IntFormat(dt.Rows(0).Item("ID").ToString)
+    End Function
 
 #End Region
 
