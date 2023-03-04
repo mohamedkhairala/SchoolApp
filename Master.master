@@ -122,30 +122,30 @@
                     <div class="sidebar-menu-content">
                         <ul class="nav nav-sidebar-menu sidebar-toggle-view">
                             <li class="nav-item">
-                                <a href="Dashboard.aspx" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                                <a id="Dashboard" href="Dashboard.aspx" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                             </li>
                             <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
-                                <ul class="nav sub-group-menu">
+                                <ul id="Students" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="StudentsList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Students</a>
+                                        <a id="StudentsList" lang="Students" href="StudentsList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Students</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="Student.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add Student</a>
+                                        <a id="Student" lang="Students" href="Student.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add Student</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link"><i class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
-                                <ul class="nav sub-group-menu">
+                                <ul id="Teachers" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="TeachersList.aspx" class="nav-link">
+                                        <a id="TeachersList" lang="Teachers" href="TeachersList.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>All
                                         Teachers
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="Teacher.aspx" class="nav-link">
+                                        <a id="Teacher" lang="Teachers" href="Teacher.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Add
                                         Teacher
                                         </a>
@@ -154,15 +154,15 @@
                             </li>
                             <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link"><i class="flaticon-user"></i><span>Supervisors</span></a>
-                                <ul class="nav sub-group-menu">
+                                <ul id="Supervisors" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="SupervisorsList.aspx" class="nav-link">
+                                        <a id="SupervisorsList" lang="Supervisors" href="SupervisorsList.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>All
                                         Supervisors
                                         </a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="Supervisor.aspx" class="nav-link">
+                                    <li id="Supervisor" class="nav-item">
+                                        <a href="Supervisor.aspx" lang="Supervisors" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Add
                                         Supervisor
                                         </a>
@@ -171,12 +171,12 @@
                             </li>
                             <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Parents</span></a>
-                                <ul class="nav sub-group-menu">
+                                <ul id="Parents" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="ParentsList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
+                                        <a id="ParentsList" lang="Parents" href="ParentsList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="Parent.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Parent</a>
+                                        <a id="Parent" lang="Parents" href="Parent.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Parent</a>
                                     </li>
                                 </ul>
                             </li>
@@ -184,12 +184,12 @@
                                 <a href="#" class="nav-link">
                                     <i class="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler"></i><span>Groups</span>
                                 </a>
-                                <ul class="nav sub-group-menu">
+                                <ul id="AllGroups" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="Groups.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Groups</a>
+                                        <a id="Groups" lang="AllGroups" href="Groups.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Groups</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="Add_Group.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Group</a>
+                                        <a id="Add_Group" lang="AllGroups" href="Add_Group.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Group</a>
                                     </li>
                                 </ul>
                             </li>
@@ -286,5 +286,7 @@
 <script src="js/Chart.min.js"></script>
 <!-- Custom Js -->
 <script src="js/main.js"></script>
+<!-- Menu Js -->
+<script src="js/jsMaster.js"></script>
 <asp:ContentPlaceHolder ID="Footer" runat="server"></asp:ContentPlaceHolder>
 </html>
