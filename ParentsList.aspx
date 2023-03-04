@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | All Parents" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Parents.aspx.vb" Inherits="Parents" %>
+<%@ Page Title="Up Skills | All Parents" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="ParentsList.aspx.vb" Inherits="Parents" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -42,12 +42,12 @@
                     </div>
                 </div>-->
             </div>
-            <div class="mg-b-20" id="divSearch" runat="server" visible ="false" >
+            <div class="mg-b-20" id="divSearch" runat="server" visible="false">
                 <div class="row gutters-8">
                     <div class="col-6-xxxl col-xl-6 col-lg-4 col-12 form-group">
                     </div>
                     <div class="col-4-xxxl col-xl-4 col-lg-5 col-12 form-group">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by Code, Name or Group ..." AutoPostBack="true" OnTextChanged ="FillGrid"></asp:TextBox>
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by Code, Name or Group ..." AutoPostBack="true" OnTextChanged="FillGrid"></asp:TextBox>
                     </div>
                     <div class="col-2-xxxl col-xl-2 col-lg-3 col-12 form-group">
                         <asp:LinkButton ID="lbSearch" runat="server" CssClass="fw-btn-fill btn-gradient-yellow text-white text-center" OnClick="FillGrid"><i class="fas fa-search mr-3"></i>SEARCH</asp:LinkButton>
@@ -57,7 +57,7 @@
 
             <div class="table-responsive">
                 <asp:HiddenField ID="SortExpression" runat="server" />
-                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID"  >
+                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
                         <table class="table display data-table text-nowrap">
                             <thead>
@@ -83,12 +83,13 @@
 
                         <tr>
                             <td>#<%# Eval("Code")%>
-                                <asp:Label ID="lblParentId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
+                                <asp:Label ID="lblParentId" runat="server" Visible="false" Text='<%# Eval("Id")%>'></asp:Label>
                             </td>
                             <td class="text-center">
-                                <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="Parent"></td>
+                                <img src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="Parent">
+                            </td>                           
                             <td>
-                                <a href='<%# "Add_Parent.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank">Mark Willy</a>
+                                <a href='<%# "Parent.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
                             <td><%# Eval("Address")%></td>
@@ -102,10 +103,10 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
 
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Add_Parent.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Parent.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick ="Delete">
+                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 
@@ -125,7 +126,7 @@
                         </table>
                     </EmptyDataTemplate>
                 </asp:ListView>
-        <%--        <table class="table display data-table text-nowrap">
+                <%--        <table class="table display data-table text-nowrap">
 
                     <thead>
                         <tr>
