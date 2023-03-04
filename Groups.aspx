@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | All Groups" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Groups.aspx.vb" Inherits="Groups" %>
+﻿<%@ Page Title="Up Skills | All Groups" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Groups.aspx.vb" Inherits="Groups" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -57,7 +57,7 @@
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
-                        <table class="table display data-table text-nowrap">
+                        <table id="DataTables" class="table display data-table text-nowrap">
                             <thead>
                                 <tr>
                                     <th>Group Name</th>
@@ -67,7 +67,7 @@
                                     <th>Teacher Name</th>
                                     <th>Supervisor Code</th>
                                     <th>Supervisor Name</th>
-                                    <th></th>
+                                    <th style="width: 50px;"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,4 +126,19 @@
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
     <script src="js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $('#DataTables').DataTable({
+            bLengthChange: false,
+            language: {
+                searchPlaceholder: "Search by Group Name, Course Code, Course Name or Teahcer ...",
+                
+            },
+            columnDefs: [
+                { orderable: false, targets: -1 }
+            ]
+        });
+
+        $.fn.dataTable.ext.errMode = 'none';
+    </script>
 </asp:Content>

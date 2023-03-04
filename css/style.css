@@ -6208,10 +6208,15 @@ ul {
     font-weight: 500;
 }
 
-.icon-search {
+.icon-search,
+.form-group i.icon-search {
     color: #ffae01;
     position: absolute;
     top: 50%;
     right: 15px;
     transform: translate(0, -50%);
+}
+
+.d-contents {
+    display: contents !important;
 }
