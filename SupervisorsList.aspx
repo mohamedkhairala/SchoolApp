@@ -59,7 +59,7 @@
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID"  >
                     <LayoutTemplate>
-                        <table class="table display data-table text-nowrap">
+                        <table id="tblSupervisors" class="table display data-table text-nowrap">
                             <thead>
                                 <tr>
                                     <th>Code</th>
@@ -71,7 +71,7 @@
                                     <th>Phone</th>
                                     <th>E-mail</th>
                                     <th>Salary</th>
-                                    <th></th>
+                                    <th style="width: 50px;"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1145,4 +1145,19 @@
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
     <script src="js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $('#tblSupervisors').DataTable({
+            bLengthChange: false,
+            language: {
+                searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
+                
+            },
+            columnDefs: [
+                { orderable: false, targets: -1 }
+            ]
+        });
+
+        $.fn.dataTable.ext.errMode = 'none';
+    </script>
 </asp:Content>
