@@ -979,4 +979,22 @@ Optional ByVal MinNumber As Integer = 0) As Integer
         Return True
     End Function
 #End Region
+
+#Region "DropDownList"
+
+    Public Shared Sub FillDropDownList(ByRef ddl As DropDownList, query As String, value_field As String, text_field As String, is_append_databound_items As Boolean)
+        Try
+            Dim dt = DBContext.Getdatatable(query)
+            ddl.DataValueField = value_field
+            ddl.DataTextField = text_field
+            ddl.AppendDataBoundItems = is_append_databound_items
+            ddl.DataSource = dt
+            ddl.DataBind()
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Sub
+
+#End Region
+
 End Class
