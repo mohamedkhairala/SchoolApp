@@ -5,7 +5,7 @@ Imports AjaxControlToolkit
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
 #End Region
-Partial Class Teachers
+Partial Class CourseList
     Inherits System.Web.UI.Page
 #Region "Global Variable"
     Dim SchoolId As String = "1"
@@ -36,7 +36,7 @@ Partial Class Teachers
     ''' </summary>
     Sub FillGrid(sender As Object, e As EventArgs)
         Try
-            Dim dtTable As DataTable = DBContext.Getdatatable("select * from vw_Teachers where " + CollectConditions() + "")
+            Dim dtTable As DataTable = DBContext.Getdatatable("select * from TblCourses where isnull(IsDeleted,0)=0 and " + CollectConditions() + "")
             If dtTable.Rows.Count > 0 Then
                 ' Initialize the sorting expression.
                 If SortExpression.Value = String.Empty Then
@@ -80,8 +80,8 @@ Partial Class Teachers
     ''' </summary>
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
-            Dim TeacherId = Val(CType(sender.parent.FindControl("lblTeacherId"), Label).Text)
-            Dim str As String = "Update TblTeachers Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & TeacherId & ";"
+            Dim CourseId = Val(CType(sender.parent.FindControl("lblCourseId"), Label).Text)
+            Dim str As String = "Update TblCourses Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & CourseId & ";"
 
             If DBContext.ExcuteQuery(str) < 1 Then
                 ShowErrorMessgage(lblRes, "حدث خطأ", Me)
