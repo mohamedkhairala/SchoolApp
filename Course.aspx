@@ -75,14 +75,14 @@
                                     <label>Rate Per Session</label>
                                     <asp:TextBox ID="txtRatePerSession" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator7" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtRatePerSession" Display="Dynamic" Text="Required Hour Rate"></asp:RequiredFieldValidator>
+                                        ControlToValidate="txtRatePerSession" Display="Dynamic" Text="Required Rate Per Session"></asp:RequiredFieldValidator>
                                     <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtRatePerSession" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-3 form-group">
                                     <label>Fees</label>
                                     <asp:TextBox ID="txtFees" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator86" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtFees" Display="Dynamic" Text="Required Hour Rate"></asp:RequiredFieldValidator>
+                                        ControlToValidate="txtFees" Display="Dynamic" Text="Required Fees"></asp:RequiredFieldValidator>
                                     <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtFees" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                                 </div>
 
