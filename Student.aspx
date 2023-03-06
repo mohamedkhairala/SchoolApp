@@ -110,13 +110,7 @@
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator5" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtMobile" Display="Dynamic" Text="Required Mobile"></asp:RequiredFieldValidator>
                                 </div>
-                                <%-- <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label>Groups</label>
-                                    <asp:DropDownList ID="ddlGroups" runat="server" CssClass="select2">
-                                        <asp:ListItem Value="">Select Group</asp:ListItem>
-
-                                    </asp:DropDownList>
-                                </div>--%>
+                                
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label>E-Mail *</label>
                                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
@@ -131,7 +125,18 @@
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator4" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtPhone" Display="Dynamic" Text="Required Phone"></asp:RequiredFieldValidator>
                                 </div>
+                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
+                                    <label>Address</label>
+                                    <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control" MaxLength="500"></asp:TextBox>
+                                   
+                                </div>
+                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                    <label>Parent</label>
+                                    <asp:DropDownList ID="ddlParent" runat="server" CssClass="select2">
+                                        <asp:ListItem Value="0">Select Parent</asp:ListItem>
 
+                                    </asp:DropDownList>
+                                </div>
                                 <div class="col-lg-12 col-12 form-group">
                                     <label>Short BIO</label>
                                     <asp:TextBox ID="txtBio" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>
