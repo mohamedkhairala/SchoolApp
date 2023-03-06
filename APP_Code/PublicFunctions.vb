@@ -1015,7 +1015,7 @@ Optional ByVal MinNumber As Integer = 0) As Integer
 
     Public Shared Function GetLookupID(type As String, value As String, school_id As Integer) As Integer
         Dim query As String = "select ID from TblLookupValue where isnull(IsDeleted, 0) = 0 and SchoolID = " & school_id & " and Value = '" & value & "' and " &
-            "LookupID = (select ID from TblLookup where isnull(IsDeleted, 0) = 0 and SchoolID = & " & school_id & " and Type = '" & type & "');"
+            "LookupID = (select ID from TblLookup where isnull(IsDeleted, 0) = 0 and SchoolID = " & school_id & " and Type = '" & type & "');"
         Dim dt As DataTable = DBContext.Getdatatable(query)
         If dt.Rows.Count = 0 Then
             Return 0

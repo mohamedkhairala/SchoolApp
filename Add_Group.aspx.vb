@@ -44,7 +44,7 @@ Partial Class Add_Group
             FillDropDownList(ddlCourseID, "select ID, (Code + ' - ' + Name) as Course from vw_Courses where SchoolID = " & School_ID & ";", "ID", "Course", True)
             FillDropDownList(ddlTeacherID, "select ID, (Code + ' - ' + Name) as Teacher from vw_Teachers where SchoolID = " & School_ID & ";", "ID", "Teacher", True)
             FillDropDownList(ddlSupervisorID, "select ID, (Code + ' - ' + Name) as Supervisor from vw_Supervisors where SchoolID = " & School_ID & ";", "ID", "Supervisor", True)
-            FillDropDownList(ddlStudentID, "select ID, (Code + ' - ' + Name) as Student from vw_Students where SchoolID = " & School_ID & ";", "ID", "Student", True)
+            FillDropDownList(ddlStudentID, "select ID, (Code + ' - ' + Name) as Student from tblStudents where isnull(IsDeleted, 0) = 0 and SchoolID = " & School_ID & ";", "ID", "Student", True)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -97,6 +97,12 @@ Partial Class Add_Group
                 _sqlconn.Close()
                 Exit Sub
             End If
+            If Not SaveStudents(dt.Id, _sqlconn, _sqltrans) Then
+                ShowErrorMessgage(lblRes, "Error", Me)
+                _sqltrans.Rollback()
+                _sqlconn.Close()
+                Exit Sub
+            End If
             _sqltrans.Commit()
             _sqlconn.Close()
             Clear()
@@ -125,9 +131,16 @@ Partial Class Add_Group
                 _sqlconn.Close()
                 Exit Sub
             End If
-            Dim daDetails As New TblSessionsFactory
-            daDetails.DeleteTrans(TblSessions.TblSessionsFields.GroupId, ID, _sqlconn, _sqltrans)
+            Dim daSessions As New TblSessionsFactory
+            daSessions.DeleteTrans(TblSessions.TblSessionsFields.GroupId, ID, _sqlconn, _sqltrans)
             If Not SaveSessions(ID, _sqlconn, _sqltrans) Then
+                _sqltrans.Rollback()
+                _sqlconn.Close()
+                Exit Sub
+            End If
+            Dim daStudents As New TblStudentsGroupsFactory
+            daStudents.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.GroupId, ID, _sqlconn, _sqltrans)
+            If Not SaveStudents(ID, _sqlconn, _sqltrans) Then
                 _sqltrans.Rollback()
                 _sqlconn.Close()
                 Exit Sub
@@ -173,7 +186,28 @@ Partial Class Add_Group
                 dtDetails.GroupId = id
                 dtDetails.Remarks = CType(item.FindControl("lblRemarks"), Label).Text
                 dtDetails.CreatedDate = DateTime.Now
-                'dtDetails.CreatedBy = UserID
+                dtDetails.CreatedBy = UserID
+                dtDetails.SchoolId = School_ID
+                If Not daDetails.InsertTrans(dtDetails, sqlconn, sqltrans) Then
+                    ShowErrorMessgage(lblRes, "Insert Error", Me)
+                    Return False
+                End If
+            Next
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Private Function SaveStudents(id As String, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
+        Try
+            Dim dtDetails As New TblStudentsGroups
+            Dim daDetails As New TblStudentsGroupsFactory
+            For Each item As ListViewItem In lvStudents.Items
+                dtDetails.StudentId = CType(item.FindControl("lblStudentID"), Label).Text
+                dtDetails.GroupId = id
+                dtDetails.CreatedDate = DateTime.Now
+                dtDetails.CreatedBy = UserID
                 dtDetails.SchoolId = School_ID
                 If Not daDetails.InsertTrans(dtDetails, sqlconn, sqltrans) Then
                     ShowErrorMessgage(lblRes, "Insert Error", Me)
@@ -273,8 +307,8 @@ Partial Class Add_Group
                     .GroupId = group_id,
                     .Remarks = String.Empty
                 }
-                'session.Status = GetLookupID("SessionStatus", "Active", School_ID)
-                'session.StatusRemarks = String.Empty
+                session.Status = GetLookupID("SessionStatus", "Active", School_ID)
+                session.StatusRemarks = String.Empty
                 lstSessions.Add(session)
             Next
             BindLVSessions()
@@ -351,13 +385,13 @@ Partial Class Add_Group
             dtDetails.IssueDate = txtIssueDate.Text
             dtDetails.GroupId = group_id
             dtDetails.Remarks = txtRemarks.Text
-            'dtDetails.CreatedBy = UserID
+            dtDetails.CreatedBy = UserID
             dtDetails.CreatedDate = DateTime.Now
             dtDetails.IsDeleted = 0
             Dim index As Integer = Val(hfSessionIndex.Value)
             Select Case Operation.ToLower
                 Case "insert"
-                    'dtDetails.Status = GetLookupID("SessionStatus", "Active", School_ID)
+                    dtDetails.Status = GetLookupID("SessionStatus", "Active", School_ID)
                     lstSessions.Add(dtDetails)
                 Case "update"
                     If index < lstSessions.Count Then
