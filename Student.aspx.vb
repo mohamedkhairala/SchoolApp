@@ -28,6 +28,7 @@ Partial Class Add_Student
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 divActions.Visible = False
+                FillDDL()
                 View()
             End If
             FillIcon()
@@ -36,6 +37,19 @@ Partial Class Add_Student
         End Try
     End Sub
 
+    Private Sub FillDDL()
+        Try
+            'Fill Parents
+            Dim dt = DBContext.Getdatatable("Select ID,Name from TblParents where Isnull(isdeleted,0)=0 and SchoolId='" & School_Id & "'")
+            ddlParent.DataValueField = "ID"
+            ddlParent.DataTextField = "Name"
+            ddlParent.AppendDataBoundItems = True
+            ddlParent.DataSource = dt
+            ddlParent.DataBind()
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
 #End Region
 
 #Region "Validation"
@@ -115,24 +129,6 @@ Partial Class Add_Student
 
     End Sub
 
-    Private Function SaveStudentGroup(dtStudent As TblStudents, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
-        Try
-            Dim da As New TblStudentsGroupsFactory
-            Dim dt As New TblStudentsGroups
-            dt.StudentId = dtStudent.Id
-            'dt.GroupId = Val(ddlGroups.SelectedValue)
-            dt.CreatedBy = UserID
-            dt.CreatedDate = DateTime.Now
-            dt.UpdatedBy = UserID
-            dt.UpdatedDate = DateTime.Now
-            dt.SchoolId = School_Id
-            da.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.StudentId, dtStudent.Id, _sqlconn, _sqltrans)
-            Return da.InsertTrans(dt, sqlconn, sqltrans)
-        Catch ex As Exception
-            Return False
-        End Try
-    End Function
-
     Private Function FillDT(dt As TblStudents, Mode As String) As Boolean
         Try
             If Not isValidForm() Then
@@ -151,6 +147,7 @@ Partial Class Add_Student
                 dt.DateOfBirth = Nothing
             End If
             dt.Gender = ddlGender.SelectedValue
+            dt.ParentId = Val(ddlParent.SelectedValue)
             dt.Photo = HiddenIcon.Text
             dt.Remarks = txtBio.Text
             dt.UpdatedBy = UserID
@@ -161,6 +158,24 @@ Partial Class Add_Student
             End If
             dt.SchoolId = School_Id
             Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Private Function SaveStudentGroup(dtStudent As TblStudents, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
+        Try
+            Dim da As New TblStudentsGroupsFactory
+            Dim dt As New TblStudentsGroups
+            dt.StudentId = dtStudent.Id
+            'dt.GroupId = Val(ddlGroups.SelectedValue)
+            dt.CreatedBy = UserID
+            dt.CreatedDate = DateTime.Now
+            dt.UpdatedBy = UserID
+            dt.UpdatedDate = DateTime.Now
+            dt.SchoolId = School_Id
+            da.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.StudentId, dtStudent.Id, _sqlconn, _sqltrans)
+            Return da.InsertTrans(dt, sqlconn, sqltrans)
         Catch ex As Exception
             Return False
         End Try
