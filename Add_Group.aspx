@@ -81,7 +81,7 @@
                             </div>
                             <!-- SupervisorID -->
                             <div id="divSupervisorID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
-                                <label id="lblSupervisorID" runat="server" for="ddlSupervisorID">Course *</label>
+                                <label id="lblSupervisorID" runat="server" for="ddlSupervisorID">Supervisor *</label>
                                 <asp:DropDownList ID="ddlSupervisorID" runat="server" CssClass="select2">
                                     <asp:ListItem Value="">Please Select Supervisor *</asp:ListItem>
                                 </asp:DropDownList>
@@ -143,7 +143,7 @@
                                                     <asp:Label ID="lblSerialNo" runat="server" Text='<%# Val(Container.DataItemIndex.ToString) + 1 %>'></asp:Label>
                                                     <asp:Label ID="lblSessionID" runat="server" Visible="false" Text='<%# Eval("ID")%>'></asp:Label>
                                                     <asp:Label ID="lblGroupID" runat="server" Visible="false" Text='<%# Eval("GroupID")%>'></asp:Label>
-                                                    <%--<asp:Label ID="lblStatus" runat="server" Visible="false" Text='<%# Eval("Status")%>'></asp:Label>--%>
+                                                    <asp:Label ID="lblStatus" runat="server" Visible="false" Text='<%# Eval("Status")%>'></asp:Label>
                                                 </td>
                                                 <td>
                                                     <asp:Label ID="lblTitle" runat="server" Text='<%# Eval("Title")%>'></asp:Label>

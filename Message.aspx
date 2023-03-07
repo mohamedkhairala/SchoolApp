@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Courses" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Course.aspx.vb" Inherits="Course" %>
+<%@ Page Title="Up Skills | Message" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Message.aspx.vb" Inherits="Message" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -18,7 +18,7 @@
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
-            <li>Course</li>
+            <li>Message</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -52,12 +52,7 @@
                             <asp:ValidationSummary ID="ValidationSummary" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vUsers" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
 
                             <div class="row">
-                                <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label>Code *</label>
-                                    <asp:TextBox ID="txtCode" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>
-                                </div>
+                               
                                 <div class="col-xl-8 col-lg-6 col-6 form-group">
                                     <label>Title *</label>
                                     <asp:TextBox ID="txtName" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
@@ -65,27 +60,14 @@
                                         ControlToValidate="txtName" Display="Dynamic" Text="Required Title"></asp:RequiredFieldValidator>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-3 form-group">
-                                    <label>Number of Sessions</label>
-                                    <asp:TextBox ID="txtNoOfSessions" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator6" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtNoOfSessions" Display="Dynamic" Text="Required Number of Sessions"></asp:RequiredFieldValidator>
-                                    <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtNoOfSessions" ValidChars="0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                                    <label>Periority</label>
+                                     <asp:DropDownList ID="ddlPeriority" runat="server" CssClass="select2">
+                                        <asp:ListItem Value="0">Please Select Periority</asp:ListItem>
+                                        <asp:ListItem Value="2">Urgent</asp:ListItem>
+                                        <asp:ListItem Value="1">Normal</asp:ListItem>
+                                    </asp:DropDownList>
                                 </div>
-                                <div class="col-xl-4 col-lg-6 col-3 form-group">
-                                    <label>Rate Per Session</label>
-                                    <asp:TextBox ID="txtRatePerSession" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator7" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtRatePerSession" Display="Dynamic" Text="Required Rate Per Session"></asp:RequiredFieldValidator>
-                                    <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtRatePerSession" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
-                                </div>
-                                <div class="col-xl-4 col-lg-6 col-3 form-group">
-                                    <label>Fees</label>
-                                    <asp:TextBox ID="txtFees" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator86" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtFees" Display="Dynamic" Text="Required Fees"></asp:RequiredFieldValidator>
-                                    <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtFees" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
-                                </div>
-
+                                
 
                                 <div class="col-lg-12 col-12 form-group">
                                     <label>Description</label>

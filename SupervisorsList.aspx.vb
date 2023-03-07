@@ -80,10 +80,8 @@ Partial Class Supervisors
     ''' </summary>
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
-            Dim StudentId = Val(CType(sender.Supervisor.FindControl("lblStudentId"), Label).Text)
-            Dim SupervisorId = Val(CType(sender.Supervisor.FindControl("lblSupervisorId"), Label).Text)
-            Dim str As String = "Update TblStudents Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & StudentId & ";"
-            str += "update TblSupervisors set IsDeleted = 1, DeletedBy = '" & UserID & "', DeletedDate = GetDate() where  ID = " & SupervisorId & ";"
+            Dim SupervisorId = Val(CType(sender.parent.FindControl("lblSupervisorId"), Label).Text)
+            Dim str As String = "Update TblSupervisors Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & SupervisorId & ";"
             If DBContext.ExcuteQuery(str) < 1 Then
                 ShowErrorMessgage(lblRes, "حدث خطأ", Me)
                 Exit Sub
