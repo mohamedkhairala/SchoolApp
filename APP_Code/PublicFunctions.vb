@@ -54,8 +54,34 @@ Public Class PublicFunctions
                 Return CDbl(Value).ToString("N2")
             End If
         Catch ex As Exception
-
             Return "0"
+        End Try
+    End Function
+    Public Shared Function GetDecimalValue(txt As Object) As Decimal
+        Try
+            If Convert.ToString(txt) = String.Empty Then
+                Return 0
+            End If
+            If Not IsNumeric(txt) Then
+                Return 0
+            End If
+            If txt Is Nothing Then
+                Return 0
+            End If
+            If Val(txt) = 0 Then
+                Return 0
+            End If
+            If IsNumeric(txt) Then
+                Dim OutD As Decimal = 0
+                If Decimal.TryParse(txt.ToString.Replace(",", ""), OutD) Then
+                    Return OutD
+                Else
+                    Return 0
+                End If
+            End If
+            Return 0
+        Catch ex As Exception
+            Return 0
         End Try
     End Function
     Public Shared Function RemoveSpecialChars(ByVal value As String) As String
