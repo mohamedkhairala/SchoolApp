@@ -2,10 +2,10 @@
 
 Imports System.Data
 Imports clsMessages
+Imports clsBindDDL
 Imports PublicFunctions
 Imports System.Data.SqlClient
 Imports BusinessLayer.BusinessLayer
-Imports AjaxControlToolkit.HTMLEditor.ToolbarButton
 
 
 #End Region
@@ -105,6 +105,12 @@ Partial Class Add_Attendance
                 _sqlconn.Close()
                 Exit Sub
             End If
+            If Not SaveStudents(dt.Id, _sqlconn, _sqltrans) Then
+                ShowErrorMessgage(lblRes, "Error", Me)
+                _sqltrans.Rollback()
+                _sqlconn.Close()
+                Exit Sub
+            End If
             _sqltrans.Commit()
             _sqlconn.Close()
             Clear()
@@ -129,6 +135,13 @@ Partial Class Add_Attendance
             _sqltrans = _sqlconn.BeginTransaction()
             If Not da.UpdateTrans(dt, _sqlconn, _sqltrans) Then
                 ShowInfoMessgage(lblRes, "Error", Me)
+                _sqltrans.Rollback()
+                _sqlconn.Close()
+                Exit Sub
+            End If
+            Dim daStudents As New TblAttendanceDetailsFactory
+            daStudents.DeleteTrans(TblAttendanceDetails.TblAttendanceDetailsFields.AttendanceId, ID, _sqlconn, _sqltrans)
+            If Not SaveStudents(ID, _sqlconn, _sqltrans) Then
                 _sqltrans.Rollback()
                 _sqlconn.Close()
                 Exit Sub
@@ -165,6 +178,28 @@ Partial Class Add_Attendance
         End Try
     End Function
 
+    Private Function SaveStudents(id As String, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
+        Try
+            Dim dtDetails As New TblAttendanceDetails
+            Dim daDetails As New TblAttendanceDetailsFactory
+            For Each item As ListViewItem In lvStudents.Items
+                dtDetails.AttendanceId = IntFormat(id)
+                dtDetails.StudentId = IntFormat(CType(item.FindControl("lblStudentID"), Label).Text)
+                dtDetails.IsAbsent = CType(item.FindControl("chkIsAttend"), CheckBox).Checked
+                dtDetails.CreatedDate = DateTime.Now
+                'dtDetails.CreatedBy = UserID
+                dtDetails.SchoolId = School_ID
+                If Not daDetails.InsertTrans(dtDetails, sqlconn, sqltrans) Then
+                    ShowErrorMessgage(lblRes, "Insert Error", Me)
+                    Return False
+                End If
+            Next
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
 #End Region
 
 #Region "View"
@@ -186,6 +221,12 @@ Partial Class Add_Attendance
                 txtActualPeriodHour.Text = dt.Rows(0).Item("Period").ToString
                 SetDDLValue(ddlTeacherID, dt.Rows(0).Item("TeacherID").ToString)
                 SetDDLValue(ddlSupervisorID, dt.Rows(0).Item("SupervisorID").ToString)
+                ' students data
+                dt = DBContext.Getdatatable("select * from vw_AttendanceDetails where AttendanceID = '" & ID & "' and SchoolID = '" & School_ID & "';")
+                If dt.Rows.Count > 0 Then
+                    lvStudents.DataSource = dt
+                    lvStudents.DataBind()
+                End If
                 lbSave.CommandArgument = "Edit"
                 pnlForm.Enabled = Mode = "Edit"
             End If
@@ -240,6 +281,11 @@ Partial Class Add_Attendance
             Else
                 FillDropDownList(ddlSessionID, "select 0 as ID, 'Please Select Session' as [Session] union select ID, Title as Session from vw_Sessions where GroupID = " & IntFormat(ddlGroupID.SelectedValue) & " and SchoolID = " & School_ID & ";", "ID", "Session", False)
             End If
+            Dim query As String = "select CourseID from vw_Groups where ID = " & IntFormat(ddlGroupID.SelectedValue) & " and SchoolID = " & School_ID & ";"
+            Dim dt As DataTable = DBContext.Getdatatable(query)
+            If dt.Rows.Count > 0 Then
+                SetDDLValue(ddlCourseID, dt.Rows(0).Item("CourseID").ToString)
+            End If
             ddlSessionID.SelectedIndex = -1
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
@@ -248,6 +294,7 @@ Partial Class Add_Attendance
 
     Protected Sub SelectSession(sender As Object, e As EventArgs)
         Try
+            ' fill master data
             Dim query As String = "select CourseID, GroupID, DefaultPeriodHour, TeacherID, SupervisorID from vw_Sessions " &
                 "where ID = " & IntFormat(ddlSessionID.SelectedValue) & " and SchoolID = " & School_ID & ";"
             Dim dt As DataTable = DBContext.Getdatatable(query)
@@ -259,6 +306,14 @@ Partial Class Add_Attendance
             txtActualPeriodHour.Text = dt.Rows(0).Item("DefaultPeriodHour").ToString
             SetDDLValue(ddlTeacherID, dt.Rows(0).Item("TeacherID").ToString)
             SetDDLValue(ddlSupervisorID, dt.Rows(0).Item("SupervisorID").ToString)
+            ' fill details data
+            query = "select *, 0 as AttendanceID, 0 as IsAbsent from vw_StudentsGroups where SchoolID = " & School_ID & " and GroupID = " & IntFormat(ddlGroupID.SelectedValue) & ";"
+            dt = DBContext.Getdatatable(query)
+            If dt.Rows.Count = 0 Then
+                Exit Sub
+            End If
+            lvStudents.DataSource = dt
+            lvStudents.DataBind()
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
         End Try
