@@ -30,15 +30,15 @@
                     
                     <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
-                 <asp:Panel CssClass="dropdown" runat="server" id="divActions">
-                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                        aria-expanded="false">...</a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                       
-                       <asp:LinkButton ID="lbEdit" CssClass="dropdown-item" runat="server" OnClick="Edit"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
-                        
-                    </div>
+                 <asp:Panel runat="server" id="divActions" CssClass="header-actions">
+                     <ul>
+                        <li>
+                            <asp:LinkButton ID="lbEdit" CssClass="action-green" runat="server" OnClick="Edit"><i class="far fa-edit"></i></asp:LinkButton>
+                        </li>
+                        <li>
+                            <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server"><i class="far fa-trash-alt"></i></asp:LinkButton>
+                        </li>
+                    </ul>
                 </asp:Panel>
             </div>
             <div class="new-added-form">

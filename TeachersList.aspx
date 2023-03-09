@@ -87,7 +87,7 @@
                                 <asp:Label ID="lblTeacherId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
                             </td>
                             <td class="text-center">
-                                <img src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="Teacher"></td>
+                                <img class="img-thumbnail" src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="Teacher"></td>
                             <td>
                                 <a href='<%# "Teacher.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>

@@ -20,7 +20,7 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                     <asp:Label Text="" ID="lblRes" runat="server" />
+                    <asp:Label Text="" ID="lblRes" runat="server" />
                     <h3>About</h3>
                 </div>
 
@@ -34,12 +34,18 @@
                         <div class="item-content">
                             <div class="header-inline item-header">
                                 <h3 class="text-dark-medium font-medium"><%# Eval("Name")%></h3>
-                               
-                                <div class="header-elements">
-                                    <ul>
-                                        <li><a href='<%# "Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'><i class="far fa-edit"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-print"></i></a></li>
 
+                                <div class="header-actions">
+                                    <ul>
+                                        <li>
+                                            <a id="lbEdit" class="action-green" runat="server" href='<%# "Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'><i class="far fa-edit"></i></a>
+                                        </li>
+                                        <li>
+                                            <asp:LinkButton ID="lbPrint" CssClass="action-blue" runat="server"><i class="fas fa-print"></i></asp:LinkButton>
+                                        </li>
+                                        <li>
+                                            <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server"><i class="far fa-trash-alt"></i></asp:LinkButton>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

@@ -86,7 +86,7 @@
                                 <asp:Label ID="lblParentId" runat="server" Visible="false" Text='<%# Eval("Id")%>'></asp:Label>
                             </td>
                             <td class="text-center">
-                                <img src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="Parent">
+                                <img class="img-thumbnail" src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="Parent">
                             </td>                           
                             <td>
                                 <a href='<%# "Parent.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>

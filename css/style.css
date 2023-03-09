@@ -1081,6 +1081,10 @@ h6 {
         vertical-align: middle;
     }
 
+        .dataTables_wrapper .table tbody tr td img {
+            max-height: 50px;
+        }
+
         .dataTables_wrapper .table tbody tr td .dropdown .dropdown-toggle span:before {
             color: #bcbcbc;
             font-weight: 700;
@@ -2873,6 +2877,7 @@ ul {
 }
 
 .single-info-details .item-img {
+    max-width: 30%;
     margin-right: 40px;
 }
 
@@ -6220,3 +6225,54 @@ ul {
 .d-contents {
     display: contents !important;
 }
+
+/*a.text-green:hover {
+    color: #3cb878;
+}
+
+a.text-red:hover {
+    color: #ff0000;
+}*/
+
+.header-actions ul li {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+    .header-actions ul li:last-child {
+        margin-right: 0;
+    }
+
+    .header-actions ul li a {
+        display: block;
+        background-color: #f0f1f3;
+        border-radius: 4px;
+        color: #646464;
+        font-size: 14px;
+        padding: 7px 12px;
+        -webkit-transition: all 0.3s ease-out;
+        -moz-transition: all 0.3s ease-out;
+        -ms-transition: all 0.3s ease-out;
+        -o-transition: all 0.3s ease-out;
+        transition: all 0.3s ease-out;
+    }
+
+        .header-actions ul li a:hover {
+            background-color: #ff9d01;
+            color: #fff;
+        }
+
+        .header-actions ul li a.action-green:hover {
+            background-color: #3cb878;
+            color: #fff;
+        }
+
+        .header-actions ul li a.action-blue:hover {
+            background-color: #3f7afc;
+            color: #fff;
+        }
+
+        .header-actions ul li a.action-red:hover {
+            background-color: #ff0000;
+            color: #fff;
+        }

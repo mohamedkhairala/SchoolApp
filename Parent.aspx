@@ -30,18 +30,18 @@
                     <h3>
                         <asp:Label Text="" runat="server" ID="lblTitle" /></h3>
 
-                    
+
                     <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
-                <asp:Panel CssClass="dropdown" runat="server" id="divActions">
-                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                        aria-expanded="false">...</a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                       
-                       <asp:LinkButton ID="lbEdit" CssClass="dropdown-item" runat="server" OnClick="Edit"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
-                        
-                    </div>
+                <asp:Panel runat="server" ID="divActions" CssClass="header-actions">
+                    <ul>
+                        <li>
+                            <asp:LinkButton ID="lbEdit" CssClass="action-green" runat="server" OnClick="Edit"><i class="far fa-edit"></i></asp:LinkButton>
+                        </li>
+                        <li>
+                            <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server"><i class="far fa-trash-alt"></i></asp:LinkButton>
+                        </li>
+                    </ul>
                 </asp:Panel>
             </div>
             <div class="new-added-form">
@@ -81,7 +81,7 @@
                                     <asp:TextBox ID="txtName" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqFnAME" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtName" Display="Dynamic" Text="Required Name"></asp:RequiredFieldValidator>
-                                </div>       
+                                </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Gender *</label>
                                     <asp:DropDownList ID="ddlGender" runat="server" CssClass="select2">
@@ -104,7 +104,7 @@
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator5" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtMobile" Display="Dynamic" Text="Required Mobile"></asp:RequiredFieldValidator>
                                 </div>
-                                 
+
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label>E-Mail *</label>
                                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>

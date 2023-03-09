@@ -13,7 +13,7 @@
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-         <ul>
+        <ul>
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
@@ -26,19 +26,20 @@
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3><asp:Label Text="" runat="server" ID="lblTitle" /></h3>
-                    
+                    <h3>
+                        <asp:Label Text="" runat="server" ID="lblTitle" /></h3>
+
                     <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
-                 <asp:Panel CssClass="dropdown" runat="server" id="divActions">
-                    <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                        aria-expanded="false">...</a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                       
-                       <asp:LinkButton ID="lbEdit" CssClass="dropdown-item" runat="server" OnClick="Edit"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
-                        
-                    </div>
+                <asp:Panel runat="server" ID="divActions" CssClass="header-actions">
+                    <ul>
+                        <li>
+                            <asp:LinkButton ID="lbEdit" CssClass="action-green" runat="server" OnClick="Edit"><i class="far fa-edit"></i></asp:LinkButton>
+                        </li>
+                        <li>
+                            <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server"><i class="far fa-trash-alt"></i></asp:LinkButton>
+                        </li>
+                    </ul>
                 </asp:Panel>
             </div>
             <div class="new-added-form">
@@ -79,7 +80,7 @@
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqFnAME" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtFirstName" Display="Dynamic" Text="Required Name"></asp:RequiredFieldValidator>
                                 </div>
-                                
+
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Gender *</label>
                                     <asp:DropDownList ID="ddlGender" runat="server" CssClass="select2">
@@ -90,7 +91,7 @@
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator2" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="ddlGender" InitialValue="" Display="Dynamic" Text="Required Gender"></asp:RequiredFieldValidator>
                                 </div>
-                              <div class="col-xl-4 col-lg-6 col-3 form-group">
+                                <div class="col-xl-4 col-lg-6 col-3 form-group">
                                     <label>Salary</label>
                                     <asp:TextBox ID="txtSalary" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
                                     <%--<asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator6" runat="server" ValidationGroup="vUsers"
@@ -111,13 +112,13 @@
                                         ControlToValidate="txtRatePerStudent" Display="Dynamic" Text="Required Student Rate"></asp:RequiredFieldValidator>--%>
                                     <asp:FilteredTextBoxExtender runat="server" TargetControlID="txtRatePerStudent" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                                 </div>
-                                   <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Date Of Birth</label>
                                     <asp:TextBox ID="txtDateOfBirth" runat="server" placeholder="dd/mm/yyyy" CssClass="form-control air-datepicker"
                                         data-position='bottom right'></asp:TextBox>
                                     <i class="far fa-calendar-alt"></i>
                                 </div>
-                               
+
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label>E-Mail *</label>
                                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
