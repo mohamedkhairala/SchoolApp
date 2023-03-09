@@ -46,7 +46,7 @@
             <div class="card-body">
                 <div class="heading-layout1">
                     <div class="item-title">
-                        <h3>Sessions</h3>
+                        <h3>Groups</h3>
                     </div>
                 </div>
                 <div class="new-added-form">
@@ -89,6 +89,20 @@
                                     ControlToValidate="ddlSupervisorID" InitialValue="" Display="Dynamic" Text="Required Supervisor"></asp:RequiredFieldValidator>
                             </div>
                         </asp:Panel>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card height-auto">
+            <div class="card-body">
+                <div class="heading-layout1">
+                    <div class="item-title">
+                        <h3>Sessions</h3>
+                    </div>
+                </div>
+                <div class="new-added-form">
+                    <div class="row w-100">
                         <!-- Sessions Data -->
                         <asp:ValidationSummary ID="VSSessions" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vsSessions" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
                         <asp:Panel ID="pnlSessions" runat="server" CssClass="d-contents">
