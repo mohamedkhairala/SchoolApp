@@ -222,7 +222,16 @@ Partial Class Course
     Protected Sub UploadFile()
         Try
             Dim Attachments As DataTable
-            Attachments = GetUploadedFilesDT()
+            Dim gvFiles As GridView
+            Dim isTeacher As Boolean = False
+            If isTeacher Then
+                Attachments = GetTeacherUploadedFilesDT()
+                gvFiles = gvTeacherFiles
+            Else
+                Attachments = GetStudentUploadedFilesDT()
+                gvFiles = gvStudentFiles
+            End If
+
             If fuAttachments.HasFiles Then
                 Dim Path As String = Server.MapPath("~/Attachments/")
                 For Each f As HttpPostedFile In fuAttachments.PostedFiles
@@ -240,15 +249,15 @@ Partial Class Course
                 Next
 
             End If
-            gvTeacherFiles.DataSource = Attachments
-            gvTeacherFiles.DataBind()
-            ShowNewFileTypes()
+            gvFiles.DataSource = Attachments
+            gvFiles.DataBind()
+            ShowNewFileTypes(gvFiles)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
 
     End Sub
-    Protected Function FormatApplicantDT(ByRef dt As DataTable) As DataTable
+    Protected Function AttachmentSchema(ByRef dt As DataTable) As DataTable
         Try
             dt.Columns.Add("ID", GetType(String))
             dt.Columns.Add("FileName", GetType(String))
@@ -260,10 +269,10 @@ Partial Class Course
             Return Nothing
         End Try
     End Function
-    Protected Function GetUploadedFilesDT() As DataTable
+    Protected Function GetTeacherUploadedFilesDT() As DataTable
         Dim dt As New DataTable
         Try
-            dt = FormatApplicantDT(dt)
+            dt = AttachmentSchema(dt)
 
             If gvTeacherFiles.Rows.Count > 0 Then
                 Dim i As Integer = 0
@@ -285,25 +294,60 @@ Partial Class Course
         End Try
     End Function
 
+    Protected Function GetStudentUploadedFilesDT() As DataTable
+        Dim dt As New DataTable
+        Try
+            dt = AttachmentSchema(dt)
+
+            If gvStudentFiles.Rows.Count > 0 Then
+                Dim i As Integer = 0
+                While i < gvStudentFiles.Rows.Count
+                    Dim dr As DataRow = dt.NewRow
+                    dr("FileName") = CType(gvStudentFiles.Rows(i).FindControl("txtName"), TextBox).Text
+                    dr("Description") = CType(gvStudentFiles.Rows(i).FindControl("txtDescription"), TextBox).Text
+                    If CType(gvStudentFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue <> vbNullString Then
+                        dr("FileType") = CType(gvStudentFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue
+                    End If
+                    dr("URL") = CType(gvStudentFiles.Rows(i).FindControl("lblDocumentCopy"), Label).Text
+                    dt.Rows.Add(dr)
+                    i += 1
+                End While
+            End If
+            Return dt
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Function
+
     Protected Sub DeleteMultiFiles(ByVal sender As Object, ByVal e As System.EventArgs)
         Dim parent As GridViewRow = sender.parent.parent
         Dim dt As New DataTable
         Try
-            dt = GetUploadedFilesDT()
-            dt.Rows.RemoveAt(parent.RowIndex)
-            gvTeacherFiles.DataSource = dt
-            gvTeacherFiles.DataBind()
-            ShowNewFileTypes()
+            Dim gvFiles As GridView
+            Dim SenderId As String = parent.Parent.Parent.ID
+            If SenderId = "gvTeacherFiles" Then
+                dt = GetTeacherUploadedFilesDT()
+                gvFiles = gvTeacherFiles
+            Else
+                dt = GetStudentUploadedFilesDT()
+                gvFiles = gvStudentFiles
+            End If
+
+            If dt.Rows.Count > 0 Then
+                dt.Rows.RemoveAt(parent.RowIndex)
+            End If
+            gvFiles.DataSource = dt
+            gvFiles.DataBind()
+            ShowNewFileTypes(gvFiles)
         Catch ex As Exception
             Throw ex
         End Try
     End Sub
-    Private Sub ShowNewFileTypes()
+    Private Sub ShowNewFileTypes(ByRef gvFiles As GridView)
         Try
-            For Each row As GridViewRow In gvTeacherFiles.Rows
+            For Each row As GridViewRow In gvFiles.Rows
                 Dim imgDoc As System.Web.UI.WebControls.Image = DirectCast(row.FindControl("file"), System.Web.UI.WebControls.Image)
                 Dim imgIcon As System.Web.UI.WebControls.Image = DirectCast(row.FindControl("fileIcon"), System.Web.UI.WebControls.Image)
-
                 If imgDoc.ImageUrl.ToString.Split(".").Last.ToLower = "doc" Or imgDoc.ImageUrl.ToString.Split(".").Last.ToLower = "docx" Then
                     imgIcon.ImageUrl = "~/images/word.png"
                 ElseIf imgDoc.ImageUrl.ToString.Split(".").Last.ToLower = "xls" Or imgDoc.ImageUrl.ToString.Split(".").Last.ToLower = "xlsx" Then
@@ -326,12 +370,27 @@ Partial Class Course
         End Try
     End Sub
 
-    Private Sub listView_ItemDataBound(sender As Object, e As EventArgs) Handles gvTeacherFiles.DataBound
+    Private Sub gvTeacherFiles_ItemDataBound(sender As Object, e As EventArgs) Handles gvTeacherFiles.DataBound
+
+        Dim Types As String = "Select tblLookupValue.Id,Value from tblLookupValue inner join tblLookup on tblLookup.ID = tblLookupValue.lookupid  where tblLookup.Type='FileType' and isnull(tblLookupValue.isDeleted,0)=0 and tblLookupValue.schoolId='" + School_Id + "'"
+        Dim dt As DataTable = DBContext.Getdatatable(Types)
         For Each row As GridViewRow In gvTeacherFiles.Rows
+            Dim FileType As String = CType(row.FindControl("lblFileType"), Label).Text
             Dim ddlTypes As DropDownList = CType(row.FindControl("ddlFileType"), DropDownList)
-            Dim Types As String = "select tblLookupValue.Id,Value from tblLookupValue inner join tblLookup on tblLookup.ID = tblLookupValue.lookupid  where tblLookup.Type='FileType' and isnull(tblLookupValue.isDeleted,0)=0 and tblLookupValue.schoolId='" + School_Id + "'"
-            clsBindDDL.BindCustomDDLs(Types, "Value", "Id", ddlTypes, True)
+            clsBindDDL.BindCustomDDLs(dt, "Value", "Id", ddlTypes, True,,, FileType)
             'ddlTypes.SelectedValue = FileCategory ' PublicFunctions.GetLockupId("Pending", "RequisitionStatus")
+        Next
+    End Sub
+
+    Private Sub gvStudentFiles_ItemDataBound(sender As Object, e As EventArgs) Handles gvStudentFiles.DataBound
+
+        Dim Types As String = "Select tblLookupValue.Id,Value from tblLookupValue inner join tblLookup on tblLookup.ID = tblLookupValue.lookupid  where tblLookup.Type='FileType' and isnull(tblLookupValue.isDeleted,0)=0 and tblLookupValue.schoolId='" + School_Id + "'"
+        Dim dt As DataTable = DBContext.Getdatatable(Types)
+        For Each row As GridViewRow In gvStudentFiles.Rows
+            Dim FileType As String = CType(row.FindControl("lblFileType"), Label).Text
+
+            Dim ddlTypes As DropDownList = CType(row.FindControl("ddlFileType"), DropDownList)
+            clsBindDDL.BindCustomDDLs(dt, "Value", "Id", ddlTypes, True,,, FileType)
         Next
     End Sub
 #End Region

@@ -85,7 +85,7 @@
                                     <asp:Label ID="listofuploadedfiles" runat="server" />
                                 </div>
                                 <div class="col-xl-12 col-lg-6 col-12 form-group">
-                                     <label>Teacher Files</label>
+                                    <label>Teacher Files</label>
                                     <asp:GridView ID="gvTeacherFiles" runat="server" CssClass="table table-bordered table-hover table-striped w-100 dataTable dtr-inline collapsed mt-2"
                                         AutoGenerateColumns="false">
                                         <Columns>
@@ -122,7 +122,6 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Type">
                                                 <ItemTemplate>
-                                                    <%--                                                    <asp:Label ID="lblFileCategory" runat="server" Text='<%# Eval("FileCat").ToString %>' Visible="false"></asp:Label>--%>
                                                     <asp:DropDownList ID="ddlFileType" runat="server" CssClass="form-control"></asp:DropDownList>
                                                 </ItemTemplate>
                                             </asp:TemplateField>

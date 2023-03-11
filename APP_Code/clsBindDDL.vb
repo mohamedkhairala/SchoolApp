@@ -86,4 +86,31 @@ Public Class clsBindDDL
             Return False
         End Try
     End Function
+
+
+    Public Shared Function BindCustomDDLs(ByVal dt As DataTable, ByVal DataTextField As String, ByVal DataValueField As String, ByRef ddlList As DropDownList, ByVal SelectOption As Boolean, Optional SelectOptionText As String = "-- Select --", Optional Sort As String = "ASC", Optional Selected As String = "") As Boolean
+        Try
+            ddlList.Items.Clear()
+            ddlList.AppendDataBoundItems = True
+            Dim list As New ListItem
+            list.Value = "0"
+            list.Text = SelectOptionText
+            If SelectOption Then
+                ddlList.Items.Add(list)
+            End If
+            'Dim dt As DataTable = DBContext.Getdatatable(Query + " order by " + DataTextField + " " + Sort + "  ")
+            If dt.Rows.Count <> 0 Then
+                ddlList.DataSource = dt
+                ddlList.DataTextField = DataTextField
+                ddlList.DataValueField = DataValueField
+                ddlList.DataBind()
+            End If
+            If Selected <> "" Then
+                ddlList.SelectedValue = Selected
+            End If
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
 End Class
