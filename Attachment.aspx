@@ -31,6 +31,7 @@
                         <asp:Label Text="" runat="server" ID="lblTitle" /></h3>
 
 
+                    <asp:Label Text="" ID="lblUserRole" Visible="false" runat="server" />
                     <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
                 <asp:Panel CssClass="dropdown" runat="server" ID="divActions">

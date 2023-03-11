@@ -30,6 +30,7 @@ Partial Class Course
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 divActions.Visible = False
+                lblUserRole.Text = GetUserRole(UserID)
                 FillDDL()
                 View()
             End If
@@ -37,6 +38,10 @@ Partial Class Course
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
+
+    Private Function GetUserRole(userID As String) As String
+        Return "Teacher"
+    End Function
 
     Private Sub FillDDL()
         Try
@@ -60,6 +65,7 @@ Partial Class Course
             End If
             ddlGroup.SelectedIndex = -1
             ddlSession.SelectedIndex = -1
+            FillGrid()
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
         End Try
@@ -74,6 +80,7 @@ Partial Class Course
                 FillDropDownList(ddlSession, "select 0 as ID, 'Please Select Session' as [Session] union select ID, Title as Session from vw_Sessions where GroupID = " & IntFormat(ddlGroup.SelectedValue) & " and SchoolID = " & School_Id & ";", "ID", "Session", False)
             End If
             ddlSession.SelectedIndex = -1
+            FillGrid()
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
         End Try
@@ -89,12 +96,39 @@ Partial Class Course
             End If
             SetDDLValue(ddlCourse, dt.Rows(0).Item("CourseID").ToString)
             SetDDLValue(ddlGroup, dt.Rows(0).Item("GroupID").ToString)
-
+            FillGrid()
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
         End Try
     End Sub
 
+
+    Protected Sub FillGrid()
+        Try
+            Dim dt As DataTable = DBContext.Getdatatable("Select * from TblAttachments where " & CollectConditions())
+            Dim dv As New DataView(dt)
+            dv.RowFilter = "isnull(studentId,0)=0"
+            gvTeacherFiles.DataSource = dv
+            gvTeacherFiles.DataBind()
+
+            dv.RowFilter = "isnull(TeacherId,0)=0"
+            gvStudentFiles.DataSource = dv
+            gvStudentFiles.DataBind()
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+
+    Private Function CollectConditions() As String
+        Try
+            Dim Course = IIf(Val(ddlCourse.SelectedValue) = 0, "1=1", "CourseId='" & ddlCourse.SelectedValue & "'")
+            Dim Group = IIf(Val(ddlGroup.SelectedValue) = 0, "1=1", "ddlGroupId='" & ddlGroup.SelectedValue & "'")
+            Dim Session = IIf(Val(ddlSession.SelectedValue) = 0, "1=1", "SessionId='" & ddlSession.SelectedValue & "'")
+            Return Course & " and " & Group & " and " & Session
+        Catch ex As Exception
+            Return " 1<>1 "
+        End Try
+    End Function
 #End Region
 #Region "Validation"
     Private Function isValidForm() As Boolean
@@ -108,48 +142,19 @@ Partial Class Course
             'String.IsNullOrEmpty(Mode) Or String.IsNullOrEmpty(ID)
             Dim Mode As String = Request.QueryString("Mode")
             Dim ID As String = Request.QueryString("ID")
-            Dim da As New TblCoursesFactory
-            Dim dt As New TblCourses
-            If lbSave.CommandArgument = "Add" Then
-                If Not FillDT(dt, "Add") Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                _sqlconn.Open()
-                _sqltrans = _sqlconn.BeginTransaction()
+            Dim dt As New TblAttachments
 
-                If Not da.InsertTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
-                _sqltrans.Commit()
-                _sqlconn.Close()
-                Clear()
-                ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
-            ElseIf lbSave.CommandArgument = "Edit" Then
-                dt = da.GetAllBy(TblCourses.TblCoursesFields.Id, ID).FirstOrDefault
-                If dt Is Nothing Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                If Not FillDT(dt, "Edit") Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                _sqlconn.Open()
-                _sqltrans = _sqlconn.BeginTransaction()
-                If Not da.UpdateTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
-                _sqltrans.Commit()
-                _sqlconn.Close()
-                ShowMessage(lblRes, MessageTypesEnum.Update, Me.Page)
+            _sqlconn.Open()
+            _sqltrans = _sqlconn.BeginTransaction()
+            If Not SaveAttachmentDetails(_sqlconn, _sqltrans) Then
+                Exit Sub
             End If
+            _sqltrans.Commit()
+            _sqlconn.Close()
+            Clear()
+            ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
+
+
 
         Catch ex As Exception
             Throw ex
@@ -157,23 +162,67 @@ Partial Class Course
 
     End Sub
 
-    Private Function FillDT(dt As TblCourses, Mode As String) As Boolean
+    Private Function SaveAttachmentDetails(_sqlconn As SqlConnection, _sqltrans As SqlTransaction) As Boolean
         Try
-            If Not isValidForm() Then
-                Return False
-            End If
+            Dim da As New TblAttachmentsFactory
+            Dim gvFills As New GridView
+            Dim UserRole As String = lblUserRole.Text
+            Dim TeacherId As String = 0
+            Dim StudentId As String = 0
+            Select Case UserRole
+                Case "Teacher"
+                    TeacherId = GetTeacherIdFromUser(UserID)
+                    ExecuteQuery.ExecuteAlCommands(_sqltrans, _sqlconn, New SqlCommand("Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "'"))
+                    gvFills = gvTeacherFiles
+                Case "Student"
+                    StudentId = GetStudentIdFromUser(UserID)
+                    ExecuteQuery.ExecuteAlCommands(_sqltrans, _sqlconn, New SqlCommand("Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "' and StudentId='" & StudentId & "'"))
+                    gvFills = gvStudentFiles
+            End Select
+            'Save Teacher Attachments
 
-            dt.UpdatedBy = UserID
-            dt.UpdatedDate = DateTime.Now
-            If Mode = "Add" Then
+
+            Dim i As Integer = 0
+            While i < gvFills.Rows.Count
+                Dim dt As New TblAttachments
+                dt.FileName = CType(gvFills.Rows(i).FindControl("txtName"), TextBox).Text
+                dt.Description = CType(gvFills.Rows(i).FindControl("txtDescription"), TextBox).Text
+                dt.FileType = Val(CType(gvFills.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue)
+                dt.URL = CType(gvFills.Rows(i).FindControl("lblDocumentCopy"), Label).Text
+                dt.CourseId = Val(ddlCourse.SelectedValue)
+                dt.GroupId = Val(ddlGroup.SelectedValue)
+                dt.SessionId = Val(ddlSession.SelectedValue)
+                dt.TeacherId = TeacherId
+                dt.StudentId = StudentId
+                dt.UpdatedBy = UserID
+                dt.UpdatedDate = DateTime.Now
                 dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
-            End If
-            dt.SchoolId = School_Id
+                dt.SchoolId = School_Id
+                If Not da.InsertTrans(dt, _sqlconn, _sqltrans) Then
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                    _sqltrans.Rollback()
+                    _sqlconn.Close()
+                    Return False
+                End If
+                i += 1
+            End While
+
+
+
+
             Return True
         Catch ex As Exception
             Return False
         End Try
+    End Function
+
+    Private Function GetStudentIdFromUser(userID As String) As String
+        Return 1
+    End Function
+
+    Private Function GetTeacherIdFromUser(userID As String) As String
+        Return 2
     End Function
 #End Region
 #Region "View"
@@ -274,24 +323,23 @@ Partial Class Course
         Try
             dt = AttachmentSchema(dt)
 
-            If gvTeacherFiles.Rows.Count > 0 Then
-                Dim i As Integer = 0
-                While i < gvTeacherFiles.Rows.Count
-                    Dim dr As DataRow = dt.NewRow
-                    dr("FileName") = CType(gvTeacherFiles.Rows(i).FindControl("txtName"), TextBox).Text
-                    dr("Description") = CType(gvTeacherFiles.Rows(i).FindControl("txtDescription"), TextBox).Text
-                    If CType(gvTeacherFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue <> vbNullString Then
-                        dr("FileType") = CType(gvTeacherFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue
-                    End If
-                    dr("URL") = CType(gvTeacherFiles.Rows(i).FindControl("lblDocumentCopy"), Label).Text
-                    dt.Rows.Add(dr)
-                    i += 1
-                End While
-            End If
-            Return dt
+            Dim i As Integer = 0
+            While i < gvTeacherFiles.Rows.Count
+                Dim dr As DataRow = dt.NewRow
+                dr("FileName") = CType(gvTeacherFiles.Rows(i).FindControl("txtName"), TextBox).Text
+                dr("Description") = CType(gvTeacherFiles.Rows(i).FindControl("txtDescription"), TextBox).Text
+                If CType(gvTeacherFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue <> vbNullString Then
+                    dr("FileType") = CType(gvTeacherFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue
+                End If
+                dr("URL") = CType(gvTeacherFiles.Rows(i).FindControl("lblDocumentCopy"), Label).Text
+                dt.Rows.Add(dr)
+                i += 1
+            End While
+
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
+        Return dt
     End Function
 
     Protected Function GetStudentUploadedFilesDT() As DataTable
@@ -299,24 +347,23 @@ Partial Class Course
         Try
             dt = AttachmentSchema(dt)
 
-            If gvStudentFiles.Rows.Count > 0 Then
-                Dim i As Integer = 0
-                While i < gvStudentFiles.Rows.Count
-                    Dim dr As DataRow = dt.NewRow
-                    dr("FileName") = CType(gvStudentFiles.Rows(i).FindControl("txtName"), TextBox).Text
-                    dr("Description") = CType(gvStudentFiles.Rows(i).FindControl("txtDescription"), TextBox).Text
-                    If CType(gvStudentFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue <> vbNullString Then
-                        dr("FileType") = CType(gvStudentFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue
-                    End If
-                    dr("URL") = CType(gvStudentFiles.Rows(i).FindControl("lblDocumentCopy"), Label).Text
-                    dt.Rows.Add(dr)
-                    i += 1
-                End While
-            End If
-            Return dt
+            Dim i As Integer = 0
+            While i < gvStudentFiles.Rows.Count
+                Dim dr As DataRow = dt.NewRow
+                dr("FileName") = CType(gvStudentFiles.Rows(i).FindControl("txtName"), TextBox).Text
+                dr("Description") = CType(gvStudentFiles.Rows(i).FindControl("txtDescription"), TextBox).Text
+                If CType(gvStudentFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue <> vbNullString Then
+                    dr("FileType") = CType(gvStudentFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue
+                End If
+                dr("URL") = CType(gvStudentFiles.Rows(i).FindControl("lblDocumentCopy"), Label).Text
+                dt.Rows.Add(dr)
+                i += 1
+            End While
+
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
+        Return dt
     End Function
 
     Protected Sub DeleteMultiFiles(ByVal sender As Object, ByVal e As System.EventArgs)
