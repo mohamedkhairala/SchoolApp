@@ -1024,16 +1024,16 @@ Optional ByVal MinNumber As Integer = 0) As Integer
         End Try
     End Sub
 
-    Public Shared Sub SetDDLValue(ByRef ddl As DropDownList, value As String)
-        Try
-            value = value.Trim
-            If ddl.Items.FindByValue(value) IsNot Nothing Then
-                ddl.SelectedValue = value
-            End If
-        Catch ex As Exception
-            Throw ex
-        End Try
-    End Sub
+    'Public Shared Sub SetDDLValue(ByRef ddl As DropDownList, value As String)
+    '    Try
+    '        value = value.Trim
+    '        If ddl.Items.FindByValue(value) IsNot Nothing Then
+    '            ddl.SelectedValue = value
+    '        End If
+    '    Catch ex As Exception
+    '        Throw ex
+    '    End Try
+    'End Sub
 
 #End Region
 
