@@ -85,7 +85,7 @@
                                     <asp:Button runat="server" ID="uploadedFile" Text="Upload" OnClick="UploadFile" />
                                     <asp:Label ID="listofuploadedfiles" runat="server" />
                                 </div>
-                                <div class="col-xl-12 col-lg-6 col-12 form-group">
+                                <asp:Panel ID="pnlTeacherFiles" runat="server" CssClass="col-xl-12 col-lg-6 col-12 form-group" Visible="false">
                                     <label>Teacher Files</label>
                                     <asp:GridView ID="gvTeacherFiles" runat="server" CssClass="table table-bordered table-hover table-striped w-100 dataTable dtr-inline collapsed mt-2"
                                         AutoGenerateColumns="false">
@@ -151,8 +151,8 @@
                                             </table>
                                         </EmptyDataTemplate>
                                     </asp:GridView>
-                                </div>
-                                <div class="col-lg-12 col-12 form-group">
+                                </asp:Panel>
+                                <asp:Panel ID="pnlStudentFiles" runat="server" CssClass="col-lg-12 col-12 form-group" Visible="false">
                                     <label>Student Files</label>
                                     <asp:GridView ID="gvStudentFiles" runat="server" CssClass="table table-bordered table-hover table-striped w-100 dataTable dtr-inline collapsed mt-2"
                                         AutoGenerateColumns="false">
@@ -219,7 +219,7 @@
                                             </table>
                                         </EmptyDataTemplate>
                                     </asp:GridView>
-                                </div>
+                                </asp:Panel>
                                 <div class="col-12 form-group mg-t-8">
                                     <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vUsers"
                                         CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"

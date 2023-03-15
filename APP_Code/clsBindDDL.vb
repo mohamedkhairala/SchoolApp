@@ -113,4 +113,12 @@ Public Class clsBindDDL
             Return False
         End Try
     End Function
+
+    Public Shared Sub SetDDLValue(ByRef ddl As DropDownList, ByVal value As String)
+        If ddl.Items.FindByValue(value) IsNot Nothing Then
+            ddl.SelectedValue = value
+        Else
+            ddl.SelectedIndex = -1
+        End If
+    End Sub
 End Class
