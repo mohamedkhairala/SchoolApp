@@ -109,7 +109,7 @@
                                 <div class="col-12 form-group mg-t-8">
                                     <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vUsers"
                                         CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
-                                        CommandArgument="Add" OnClick="Save">Save</asp:LinkButton>
+                                        CommandArgument="Add" OnClick="Save">Send</asp:LinkButton>
                                     <asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>
                                 </div>
 

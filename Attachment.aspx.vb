@@ -12,7 +12,7 @@ Partial Class Course
     Inherits System.Web.UI.Page
 #Region "Global Variable"
 
-    Dim UserID As String = "0"
+    Dim UserID As String = "1"
     Dim School_Id As String = "1"
     Dim FormQry As String = "Select * from vw_Courses "
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
@@ -94,8 +94,8 @@ Partial Class Course
             If dt.Rows.Count = 0 Then
                 Exit Sub
             End If
-            SetDDLValue(ddlCourse, dt.Rows(0).Item("CourseID").ToString)
-            SetDDLValue(ddlGroup, dt.Rows(0).Item("GroupID").ToString)
+            clsBindDDL.SetDDLValue(ddlCourse, dt.Rows(0).Item("CourseID").ToString)
+            clsBindDDL.SetDDLValue(ddlGroup, dt.Rows(0).Item("GroupID").ToString)
             FillGrid()
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
@@ -107,13 +107,16 @@ Partial Class Course
         Try
             Dim dt As DataTable = DBContext.Getdatatable("Select * from TblAttachments where " & CollectConditions())
             Dim dv As New DataView(dt)
-            dv.RowFilter = "isnull(studentId,0)=0"
+            dv.RowFilter = "OwnerType='T' and CreatedBy='" & UserID & "'"
             gvTeacherFiles.DataSource = dv
             gvTeacherFiles.DataBind()
 
-            dv.RowFilter = "isnull(TeacherId,0)=0"
+            dv.RowFilter = "OwnerType='S' and CreatedBy='" & UserID & "'"
             gvStudentFiles.DataSource = dv
             gvStudentFiles.DataBind()
+
+            pnlStudentFiles.Visible = True
+            pnlTeacherFiles.Visible = True
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -122,7 +125,7 @@ Partial Class Course
     Private Function CollectConditions() As String
         Try
             Dim Course = IIf(Val(ddlCourse.SelectedValue) = 0, "1=1", "CourseId='" & ddlCourse.SelectedValue & "'")
-            Dim Group = IIf(Val(ddlGroup.SelectedValue) = 0, "1=1", "ddlGroupId='" & ddlGroup.SelectedValue & "'")
+            Dim Group = IIf(Val(ddlGroup.SelectedValue) = 0, "1=1", "GroupId='" & ddlGroup.SelectedValue & "'")
             Dim Session = IIf(Val(ddlSession.SelectedValue) = 0, "1=1", "SessionId='" & ddlSession.SelectedValue & "'")
             Return Course & " and " & Group & " and " & Session
         Catch ex As Exception
@@ -139,23 +142,18 @@ Partial Class Course
 #Region "Save"
     Protected Sub Save()
         Try
-            'String.IsNullOrEmpty(Mode) Or String.IsNullOrEmpty(ID)
-            Dim Mode As String = Request.QueryString("Mode")
-            Dim ID As String = Request.QueryString("ID")
-            Dim dt As New TblAttachments
-
             _sqlconn.Open()
             _sqltrans = _sqlconn.BeginTransaction()
             If Not SaveAttachmentDetails(_sqlconn, _sqltrans) Then
+                clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                _sqltrans.Rollback()
+                _sqlconn.Close()
                 Exit Sub
             End If
             _sqltrans.Commit()
             _sqlconn.Close()
             Clear()
             ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
-
-
-
         Catch ex As Exception
             Throw ex
         End Try
@@ -167,18 +165,21 @@ Partial Class Course
             Dim da As New TblAttachmentsFactory
             Dim gvFills As New GridView
             Dim UserRole As String = lblUserRole.Text
-            Dim TeacherId As String = 0
-            Dim StudentId As String = 0
+            'Dim TeacherId As String = 0
+            'Dim StudentId As String = 0
+            Dim qry As String = "Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "' and CreatedBy='" & UserID & "'"
             Select Case UserRole
                 Case "Teacher"
-                    TeacherId = GetTeacherIdFromUser(UserID)
-                    ExecuteQuery.ExecuteAlCommands(_sqltrans, _sqlconn, New SqlCommand("Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "'"))
+                    qry &= " and OwnerType='T'"
                     gvFills = gvTeacherFiles
                 Case "Student"
-                    StudentId = GetStudentIdFromUser(UserID)
-                    ExecuteQuery.ExecuteAlCommands(_sqltrans, _sqlconn, New SqlCommand("Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "' and StudentId='" & StudentId & "'"))
+                    qry &= " and OwnerType='ST'"
                     gvFills = gvStudentFiles
             End Select
+            ExecuteQuery.ExecuteAlCommands(_sqltrans, _sqlconn, New SqlCommand(qry))
+
+
+
             'Save Teacher Attachments
 
 
@@ -192,8 +193,8 @@ Partial Class Course
                 dt.CourseId = Val(ddlCourse.SelectedValue)
                 dt.GroupId = Val(ddlGroup.SelectedValue)
                 dt.SessionId = Val(ddlSession.SelectedValue)
-                dt.TeacherId = TeacherId
-                dt.StudentId = StudentId
+                'dt.TeacherId = TeacherId
+                'dt.StudentId = StudentId
                 dt.UpdatedBy = UserID
                 dt.UpdatedDate = DateTime.Now
                 dt.CreatedBy = UserID
@@ -217,36 +218,69 @@ Partial Class Course
         End Try
     End Function
 
-    Private Function GetStudentIdFromUser(userID As String) As String
-        Return 1
-    End Function
-
-    Private Function GetTeacherIdFromUser(userID As String) As String
-        Return 2
-    End Function
 #End Region
 #Region "View"
     Protected Sub View()
         Try
             Dim Mode As String = Request.QueryString("Mode")
-            Dim ID As String = Request.QueryString("ID")
-            If (Mode = "View" Or Mode = "Edit") And IsNumeric(ID) Then
-                Dim dt As DataTable = DBContext.Getdatatable(FormQry & "Where ID='" & ID & "' And SchoolId='" & School_Id & "'")
+            Dim FileID As String = Request.QueryString("FileID")
+            Dim GroupID As String = Request.QueryString("GroupID")
+            Dim CourseID As String = Request.QueryString("CourseID")
+            Dim SessionID As String = Request.QueryString("SessionID")
+
+            lblTitle.Text = "Attachments"
+
+            If IsNumeric(CourseID) Then
+                'Check is valid course Id 
+                Dim dt = DBContext.Getdatatable("Select * from vw_Courses where ID='" & CourseID & "' and SchoolId='" & School_Id & "'")
                 If dt.Rows.Count = 0 Then
+                    ShowInfoMessgage(lblRes, "Course is not available", Me)
                     Exit Sub
                 End If
-
-                lbSave.CommandArgument = "Edit"
-                pnlForm.Enabled = Mode = "Edit"
-                divActions.Visible = Mode = "View"
+                lblTitle.Text = dt.Rows(0).Item("Name").ToString & " Attachments"
+                clsBindDDL.SetDDLValue(ddlCourse, CourseID)
+                SelectCourse(ddlCourse, Nothing)
             End If
 
-            lblTitle.Text = IIf(String.IsNullOrEmpty(Mode), "Add New Attachments", Mode & " Attachments")
+            If IsNumeric(GroupID) Then
+                'Check is valid course Id 
+                Dim dt = DBContext.Getdatatable("Select * from vw_Groups where ID='" & GroupID & "' and SchoolId='" & School_Id & "'")
+                If dt.Rows.Count = 0 Then
+                    ShowInfoMessgage(lblRes, "Group is not available", Me)
+                    Exit Sub
+                End If
+                lblTitle.Text = dt.Rows(0).Item("Name").ToString & " Attachments"
+                CourseID = dt.Rows(0).Item("CourseID").ToString
+                clsBindDDL.SetDDLValue(ddlCourse, CourseID)
+                SelectCourse(ddlCourse, Nothing)
+                clsBindDDL.SetDDLValue(ddlGroup, GroupID)
+            End If
+
+            If IsNumeric(SessionID) Then
+                'Check is valid course Id 
+                Dim dt = DBContext.Getdatatable("Select * from vw_Sessions where ID='" & SessionID & "' and SchoolId='" & School_Id & "'")
+                If dt.Rows.Count = 0 Then
+                    ShowInfoMessgage(lblRes, "Session is not available", Me)
+                    Exit Sub
+                End If
+                lblTitle.Text = dt.Rows(0).Item("Title").ToString & " Attachments"
+                CourseID = dt.Rows(0).Item("CourseID").ToString
+                GroupID = dt.Rows(0).Item("GroupID").ToString
+                clsBindDDL.SetDDLValue(ddlCourse, CourseID)
+                SelectCourse(ddlCourse, Nothing)
+                clsBindDDL.SetDDLValue(ddlGroup, GroupID)
+                SelectGroup(ddlGroup, Nothing)
+                clsBindDDL.SetDDLValue(ddlSession, SessionID)
+            End If
+
+
+
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
 #End Region
+
 #Region "Cancel"
     Protected Sub Cancel(sender As Object, e As EventArgs)
         Response.Redirect("Dashboard.aspx")
@@ -265,7 +299,6 @@ Partial Class Course
     End Sub
 
 #End Region
-
 
 #Region "Attachments"
     Protected Sub UploadFile()
@@ -292,7 +325,7 @@ Partial Class Course
                     Dim dr As DataRow = Attachments.NewRow
                     dr("ID") = fuAttachments.PostedFiles.IndexOf(f) + 1
                     dr("URL") = "~/Attachments/" + FName
-                    dr("FileName") = f.FileName
+                    dr("FileName") = f.FileName.Split(".").First
                     dr("Description") = ""
                     Attachments.Rows.Add(dr)
                 Next
@@ -301,6 +334,11 @@ Partial Class Course
             gvFiles.DataSource = Attachments
             gvFiles.DataBind()
             ShowNewFileTypes(gvFiles)
+
+
+
+            pnlTeacherFiles.Visible = True
+            pnlStudentFiles.Visible = True
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -425,8 +463,9 @@ Partial Class Course
             Dim FileType As String = CType(row.FindControl("lblFileType"), Label).Text
             Dim ddlTypes As DropDownList = CType(row.FindControl("ddlFileType"), DropDownList)
             clsBindDDL.BindCustomDDLs(dt, "Value", "Id", ddlTypes, True,,, FileType)
-            'ddlTypes.SelectedValue = FileCategory ' PublicFunctions.GetLockupId("Pending", "RequisitionStatus")
         Next
+
+        gvTeacherFiles.Columns(6).Visible = lblUserRole.Text = "Teacher"
     End Sub
 
     Private Sub gvStudentFiles_ItemDataBound(sender As Object, e As EventArgs) Handles gvStudentFiles.DataBound
@@ -439,6 +478,7 @@ Partial Class Course
             Dim ddlTypes As DropDownList = CType(row.FindControl("ddlFileType"), DropDownList)
             clsBindDDL.BindCustomDDLs(dt, "Value", "Id", ddlTypes, True,,, FileType)
         Next
+        gvStudentFiles.Columns(6).Visible = lblUserRole.Text = "Student"
     End Sub
 #End Region
 End Class

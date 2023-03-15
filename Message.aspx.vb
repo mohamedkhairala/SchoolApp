@@ -47,72 +47,114 @@ Partial Class Message
 #Region "Save"
     Protected Sub Save()
         Try
-            Exit Sub
-            Dim Mode As String = Request.QueryString("Mode")
-            Dim ID As String = Request.QueryString("ID")
-            Dim da As New TblMessagesFactory
-            Dim dt As New TblMessages
-            If lbSave.CommandArgument = "Add" Then
-                If Not FillDT(dt, "Add") Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                _sqlconn.Open()
-                _sqltrans = _sqlconn.BeginTransaction()
-
-                If Not da.InsertTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
-                _sqltrans.Commit()
+            _sqlconn.Open()
+            _sqltrans = _sqlconn.BeginTransaction()
+            Dim isOKay As Boolean = True
+            'If Student ID = 0 --- > Send To All Students in That Group
+            'If Supervisor ID = 0 --- > Send To All Supervisor  
+            'If Teacher ID = 0 --- > Send To All Teachers  
+            Dim TYP As String = rplTypes.SelectedValue
+            Select Case TYP
+                Case "Student"
+                    isOKay = MessageStudents()
+                Case "Teacher"
+                    isOKay = MessageTeachers()
+                Case "Supervisor"
+                    isOKay = MessageSupervisors()
+            End Select
+            If Not isOKay Then
+                clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                _sqltrans.Rollback()
                 _sqlconn.Close()
-                Clear()
-                ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
-            ElseIf lbSave.CommandArgument = "Edit" Then
-                dt = da.GetAllBy(TblMessages.TblMessagesFields.Id, ID).FirstOrDefault
-                If dt Is Nothing Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                If Not FillDT(dt, "Edit") Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                _sqlconn.Open()
-                _sqltrans = _sqlconn.BeginTransaction()
-                If Not da.UpdateTrans(dt, _sqlconn, _sqltrans) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    _sqltrans.Rollback()
-                    _sqlconn.Close()
-                    Exit Sub
-                End If
-                _sqltrans.Commit()
-                _sqlconn.Close()
-                ShowMessage(lblRes, MessageTypesEnum.Update, Me.Page)
+                Exit Sub
             End If
+            _sqltrans.Commit()
+            _sqlconn.Close()
+            Clear()
+            ShowMessage(lblRes, "Sent Successfully!", Me.Page)
 
         Catch ex As Exception
+            _sqltrans.Rollback()
+            _sqlconn.Close()
             Throw ex
         End Try
 
     End Sub
 
-    Private Function FillDT(dt As TblMessages, Mode As String) As Boolean
+
+
+    Private Function MessageSupervisors() As Boolean
         Try
-            If Not isValidForm() Then
-                Return False
-            End If
-            dt.MessageTitle = txtMessageTitle.Text.Trim
-            dt.MessageBody = txtDescription.Text
-            dt.UpdatedBy = UserID
-            dt.UpdatedDate = DateTime.Now
-            If Mode = "Add" Then
-                dt.SenderId = UserID
-                dt.CreatedDate = DateTime.Now
-            End If
-            dt.SchoolId = School_Id
+            Dim Condition As String = IIf(Val(ddlSupervisors.SelectedValue) = 0, "1=1", "Id=" & Val(ddlSupervisors.SelectedValue))
+            Dim da As New TblMessagesFactory
+            'Send To All Group Students Or selected Student
+            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_Supervisors where SchoolId='" & School_Id & "' And " & Condition)
+            For Each STD As DataRow In dtGroupStudent.Rows
+                Dim SupervisorUserId = STD("SupervisorUserId")
+                Dim msg As New TblMessages
+                msg.MessageTitle = txtMessageTitle.Text.Trim
+                msg.MessageBody = txtDescription.Text
+                msg.SenderId = UserID
+                msg.ReceiverId = SupervisorUserId
+                msg.SenderId = UserID
+                msg.CreatedDate = DateTime.Now
+                msg.SchoolId = School_Id
+                If Not da.InsertTrans(msg, _sqlconn, _sqltrans) Then
+                    Return False
+                End If
+            Next
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Private Function MessageTeachers() As Boolean
+        Try
+            Dim Condition As String = IIf(Val(ddlTeachers.SelectedValue) = 0, "1=1", "Id=" & Val(ddlTeachers.SelectedValue))
+            Dim da As New TblMessagesFactory
+            'Send To All Group Students Or selected Student
+            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_Teachers where SchoolId='" & School_Id & "' And " & Condition)
+            For Each STD As DataRow In dtGroupStudent.Rows
+                Dim TeacherUserID = STD("TeacherUserID")
+                Dim msg As New TblMessages
+                msg.MessageTitle = txtMessageTitle.Text.Trim
+                msg.MessageBody = txtDescription.Text
+                msg.SenderId = UserID
+                msg.ReceiverId = TeacherUserID
+                msg.SenderId = UserID
+                msg.CreatedDate = DateTime.Now
+                msg.SchoolId = School_Id
+                If Not da.InsertTrans(msg, _sqlconn, _sqltrans) Then
+                    Return False
+                End If
+            Next
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Private Function MessageStudents() As Boolean
+        Try
+            Dim Condition As String = IIf(Val(ddlStudent.SelectedValue) = 0, "1=1", "StudentID=" & Val(ddlStudent.SelectedValue))
+            Dim da As New TblMessagesFactory
+            'Send To All Group Students Or selected Student
+            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_StudentsGroups where SchoolId='" & School_Id & "' And " & Condition)
+            For Each STD As DataRow In dtGroupStudent.Rows
+                Dim StudentUserID = PublicFunctions.IntFormat(STD("StudentUserID").ToString)
+                Dim msg As New TblMessages
+                msg.MessageTitle = txtMessageTitle.Text.Trim
+                msg.MessageBody = txtDescription.Text
+                msg.SenderId = UserID
+                msg.ReceiverId = StudentUserID
+                msg.SenderId = UserID
+                msg.CreatedDate = DateTime.Now
+                msg.SchoolId = School_Id
+                If Not da.InsertTrans(msg, _sqlconn, _sqltrans) Then
+                    Return False
+                End If
+            Next
             Return True
         Catch ex As Exception
             Return False
@@ -158,7 +200,6 @@ Partial Class Message
     Protected Sub Clear()
         txtMessageTitle.Text = String.Empty
         txtDescription.Text = String.Empty
-
     End Sub
 #End Region
 
