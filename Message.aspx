@@ -46,74 +46,64 @@
             </div>
             <div class="new-added-form">
                 <asp:Panel runat="server" ID="pnlForm">
+                    <asp:ValidationSummary ID="ValidationSummary" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vUsers" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
+
                     <div class="row">
-
-                        <div class="col-xl-9 col-lg-6">
-                            <asp:ValidationSummary ID="ValidationSummary" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vUsers" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
-
-                            <div class="row">
-
-                                <div class="col-xl-8 col-lg-6 col-6 form-group">
-                                    <label>Title *</label>
-                                    <asp:TextBox ID="txtMessageTitle" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqFnAME" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtMessageTitle" Display="Dynamic" Text="Required Title"></asp:RequiredFieldValidator>
-                                </div>
-                                <div class="col-xl-8 col-lg-6 col-3 form-group">
-                                    <label>Stack Holder</label>
-                                    <asp:RadioButtonList ID="rplTypes" runat="server" RepeatDirection="Horizontal" AutoPostBack="true" OnSelectedIndexChanged="SelectType">
-                                        <asp:ListItem Value="Student" Selected="True">Student</asp:ListItem>
-                                        <asp:ListItem Value="Supervisor">Supervisors</asp:ListItem>
-                                        <asp:ListItem Value="Teacher">Teacher</asp:ListItem>
-                                    </asp:RadioButtonList>
-                                </div>
+                        <div class="col-xl-12 col-lg-12 col-12 form-group">
+                            <label>Title *</label>
+                            <asp:TextBox ID="txtMessageTitle" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
+                            <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqFnAME" runat="server" ValidationGroup="vUsers"
+                                ControlToValidate="txtMessageTitle" Display="Dynamic" Text="Required Title"></asp:RequiredFieldValidator>
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-4 form-group">
+                            <label>Stack Holder</label>
+                            <div class="radio-list">
+                                <asp:RadioButtonList ID="rplTypes" runat="server" AutoPostBack="true" RepeatLayout="UnorderedList" OnSelectedIndexChanged="SelectType">
+                                    <asp:ListItem Value="Student" Selected="True">Student</asp:ListItem>
+                                    <asp:ListItem Value="Supervisor">Supervisors</asp:ListItem>
+                                    <asp:ListItem Value="Teacher">Teacher</asp:ListItem>
+                                </asp:RadioButtonList>
                             </div>
-                            <div class="row">
-                                <asp:Panel runat="server" ID="pnlStudent" CssClass="d-contents">
-                                    <div class="col-xl-4 col-lg-6 col-3 form-group">
-                                        <label>Groups</label>
-                                        <asp:DropDownList ID="ddlGroups" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="FillGroupStudent">
-                                            <asp:ListItem Value="0">Select Group</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                    <div class="col-xl-4 col-lg-6 col-3 form-group">
-                                        <label>Students</label>
-                                        <asp:DropDownList ID="ddlStudent" runat="server" CssClass="select2">
-                                            <asp:ListItem Value="0">Select Student</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-                                </asp:Panel>
-                                <asp:Panel runat="server" ID="pnlTeachers" CssClass="d-contents" Visible="false">
-                                    <div class="col-xl-4 col-lg-6 col-3 form-group">
-                                        <label>Teachers</label>
-                                        <asp:DropDownList ID="ddlTeachers" runat="server" CssClass="select2">
-                                            <asp:ListItem Value="0">Select Teacher</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-
-                                </asp:Panel>
-                                <asp:Panel runat="server" ID="pnlSupervisors" CssClass="d-contents" Visible="false">
-                                    <div class="col-xl-4 col-lg-6 col-3 form-group">
-                                        <label>Supervisors</label>
-                                        <asp:DropDownList ID="ddlSupervisors" runat="server" CssClass="select2">
-                                            <asp:ListItem Value="0">Select Supervisor</asp:ListItem>
-                                        </asp:DropDownList>
-                                    </div>
-
-                                </asp:Panel>
-
-                                <div class="col-lg-12 col-12 form-group">
-                                    <label>Description</label>
-                                    <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="Description" Rows="9"></asp:TextBox>
-                                </div>
-                                <div class="col-12 form-group mg-t-8">
-                                    <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vUsers"
-                                        CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
-                                        CommandArgument="Add" OnClick="Save">Send</asp:LinkButton>
-                                    <asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>
-                                </div>
-
+                        </div>
+                        <asp:Panel runat="server" ID="pnlStudent" CssClass="d-contents">
+                            <div class="col-xl-4 col-lg-4 col-4 form-group">
+                                <label>Groups</label>
+                                <asp:DropDownList ID="ddlGroups" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="FillGroupStudent">
+                                    <asp:ListItem Value="0">Select Group</asp:ListItem>
+                                </asp:DropDownList>
                             </div>
+                            <div class="col-xl-4 col-lg-4 col-4 form-group">
+                                <label>Students</label>
+                                <asp:DropDownList ID="ddlStudent" runat="server" CssClass="select2">
+                                    <asp:ListItem Value="0">Select Student</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </asp:Panel>
+                        <asp:Panel runat="server" ID="pnlTeachers" CssClass="d-contents" Visible="false">
+                            <div class="col-xl-4 col-lg-4 col-4 form-group">
+                                <label>Teachers</label>
+                                <asp:DropDownList ID="ddlTeachers" runat="server" CssClass="select2">
+                                    <asp:ListItem Value="0">Select Teacher</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </asp:Panel>
+                        <asp:Panel runat="server" ID="pnlSupervisors" CssClass="d-contents" Visible="false">
+                            <div class="col-xl-4 col-lg-4 col-4 form-group">
+                                <label>Supervisors</label>
+                                <asp:DropDownList ID="ddlSupervisors" runat="server" CssClass="select2">
+                                    <asp:ListItem Value="0">Select Supervisor</asp:ListItem>
+                                </asp:DropDownList>
+                            </div>
+                        </asp:Panel>
+                        <div class="col-xl-12 col-lg-12 col-12 form-group">
+                            <label>Description</label>
+                            <asp:TextBox ID="txtDescription" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="Description" Rows="5"></asp:TextBox>
+                        </div>
+                        <div class="col-12 form-group mg-t-8">
+                            <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vUsers"
+                                CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
+                                CommandArgument="Add" OnClick="Save">Send</asp:LinkButton>
+                            <asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>
                         </div>
                     </div>
                 </asp:Panel>

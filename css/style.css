@@ -58,6 +58,11 @@ Version: 1.0
 /*=======================================================================
 [01] TYPOGRAPHY
 =========================================================================*/
+:root {
+    --color: #999;
+    --checked-color: #ff5722;
+    --bg-color: #e8e8e8;
+}
 
 @import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900);
 
@@ -6276,3 +6281,83 @@ a.text-red:hover {
             background-color: #ff0000;
             color: #fff;
         }
+
+/* Start Radio Button */
+.radio-list {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+    .radio-list ul {
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .radio-list ul li {
+            display: flex;
+            align-items: center;
+            margin-right: 2.5rem;
+        }
+
+            .radio-list ul li:last-child {
+                margin-right: 0;
+            }
+
+    .radio-list input,
+    .radio-list label {
+        cursor: pointer;
+    }
+
+    .radio-list label {
+        margin: 0 !important;
+    }
+
+    .radio-list .custom-radio,
+    .radio-list input[type="radio"] {
+        height: 2rem;
+        width: 2rem;
+        margin-right: 0.5rem;
+        /* hiding browser el */
+        appearance: none;
+        /* Safari support */
+        -webkit-appearance: none;
+        border: 0.35rem solid #fff;
+        background-color: var(--bg-color);
+        border-radius: 50%;
+        outline: 1px solid var(--color);
+    }
+
+        .radio-list .custom-radio:hover,
+        .radio-list input[type="radio"]:hover {
+            outline-color: var(--checked-color);
+        }
+
+        /* keyboard navigation focus appearance */
+        .radio-list .custom-radio:focus-visible,
+        .radio-list input[type="radio"]:focus-visible {
+            outline-offset: 0;
+        }
+
+        .radio-list .custom-radio:checked,
+        .radio-list input[type="radio"]:checked {
+            outline-color: var(--checked-color);
+            background-color: var(--checked-color);
+            animation: outline-checked;
+            animation-duration: 0.1s;
+            animation-iteration-count: 4;
+            animation-direction: alternate;
+            animation-timing-function: linear;
+        }
+
+@keyframes outline-checked {
+    0% {
+        outline-offset: 0;
+    }
+
+    100% {
+        outline-offset: -0.2rem;
+    }
+}
+/* End Radio Button */
