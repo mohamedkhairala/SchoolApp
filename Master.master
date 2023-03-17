@@ -210,12 +210,12 @@
                                 <a href="#" class="nav-link">
                                     <i class="flaticon-checklist"></i><span>Attendance</span>
                                 </a>
-                                <ul class="nav sub-group-menu">
+                                <ul id="Attendances" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
+                                        <a id="Attendance" lang="Attendances" href="Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
+                                        <a id="Add_Attendance" lang="Attendances" href="Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
                                     </li>
                                 </ul>
                             </li>
@@ -236,20 +236,20 @@
                                 </ul>
                             </li>-->
                             <li class="nav-item">
-                                <a href="Message.aspx" class="nav-link">
+                                <a id="Message" href="Message.aspx" class="nav-link">
                                     <i class="flaticon-script"></i><span>Messages</span>
                                 </a>
                             </li>
                             <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link"><i class="flaticon-settings"></i><span>Settings</span></a>
-                                <ul class="nav sub-group-menu">
+                                <ul id="Settings" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a id="users" lang="Settings" href="users.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Users Permissions
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a id="MasterData" lang="Settings" href="#" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Master Data
                                         </a>
                                     </li>
