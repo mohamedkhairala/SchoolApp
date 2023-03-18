@@ -997,12 +997,14 @@ h6 {
     border: 1px solid #e1e1e1;
 }
 
-    .dataTables_wrapper .table thead .sorting {
+    .dataTables_wrapper .table thead .sorting,
+    .dataTables_wrapper .table tbody tr.header-row .sorting {
         background-image: none;
         position: relative;
     }
 
-        .dataTables_wrapper .table thead .sorting:before {
+        .dataTables_wrapper .table thead .sorting:before,
+        .dataTables_wrapper .table tbody tr.header-row .sorting:before {
             content: "\f0d8";
             font-family: "Font Awesome 5 Free";
             font-size: 14px;
@@ -1014,7 +1016,8 @@ h6 {
             transform: translateY(-50%);
         }
 
-        .dataTables_wrapper .table thead .sorting:after {
+        .dataTables_wrapper .table thead .sorting:after,
+        .dataTables_wrapper .table tbody tr.header-row .sorting:after {
             content: "\f0d7";
             font-family: "Font Awesome 5 Free";
             font-size: 14px;
@@ -1026,12 +1029,14 @@ h6 {
             transform: translateY(50%);
         }
 
-    .dataTables_wrapper .table thead .sorting_asc {
+    .dataTables_wrapper .table thead .sorting_asc,
+    .dataTables_wrapper .table tbody tr.header-row .sorting_asc {
         background-image: none;
         position: relative;
     }
 
-        .dataTables_wrapper .table thead .sorting_asc:after {
+        .dataTables_wrapper .table thead .sorting_asc:after,
+        .dataTables_wrapper .table tbody tr.header-row .sorting_asc:after {
             content: "\f0d8";
             font-family: "Font Awesome 5 Free";
             font-size: 14px;
@@ -1043,12 +1048,14 @@ h6 {
             transform: translateY(50%);
         }
 
-    .dataTables_wrapper .table thead .sorting_desc {
+    .dataTables_wrapper .table thead .sorting_desc,
+    .dataTables_wrapper .table tbody tr.header-row .sorting_desc {
         background-image: none;
         position: relative;
     }
 
-        .dataTables_wrapper .table thead .sorting_desc:after {
+        .dataTables_wrapper .table thead .sorting_desc:after,
+        .dataTables_wrapper .table tbody tr.header-row .sorting_desc:after {
             content: "\f0d7";
             font-family: "Font Awesome 5 Free";
             font-size: 14px;
@@ -1060,7 +1067,8 @@ h6 {
             transform: translateY(50%);
         }
 
-    .dataTables_wrapper .table thead tr th {
+    .dataTables_wrapper .table thead tr th,
+    .dataTables_wrapper .table tbody tr.header-row th {
         border-bottom: 2px solid #e1e1e1;
         border-top: none;
         font-size: 16px;

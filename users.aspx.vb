@@ -162,9 +162,9 @@ Partial Class ControlPanel_users
 
             ' add sorting Arrows.
             If strSortExpression(1) = "ASC" Then
-                gvUsers.HeaderRow.Cells(PublicFunctions.GetColumnIndex(gvUsers, e.SortExpression)).CssClass = "faDown"
+                gvUsers.HeaderRow.Cells(PublicFunctions.GetColumnIndex(gvUsers, e.SortExpression)).CssClass = "sorting_asc"
             Else
-                gvUsers.HeaderRow.Cells(PublicFunctions.GetColumnIndex(gvUsers, e.SortExpression)).CssClass = "faUp"
+                gvUsers.HeaderRow.Cells(PublicFunctions.GetColumnIndex(gvUsers, e.SortExpression)).CssClass = "sorting_desc"
             End If
         Catch ex As Exception
             clsMessages.ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
@@ -614,8 +614,8 @@ Partial Class ControlPanel_users
             If HiddenIcon.Text IsNot Nothing And HiddenIcon.Text <> "" Then
                 imgIcon.ImageUrl = HiddenIcon.Text
             Else
-                HiddenIcon.Text = "~/images/user.jpg"
-                imgIcon.ImageUrl = "~/images/user.jpg"
+                HiddenIcon.Text = "~/img/figure/Photo.jpg"
+                imgIcon.ImageUrl = "~/img/figure/Photo.jpg"
             End If
 
         Catch ex As Exception
