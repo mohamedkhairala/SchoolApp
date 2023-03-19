@@ -29,7 +29,7 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 <body>
-    <form id="form1" runat="server" autocomplete="off">
+    <form id="form1" runat="server" autocomplete="off" defaultbutton="lbResetPassword">
         <!-- Preloader Start Here -->
         <div id="preloader"></div>
         <!-- Preloader End Here -->
@@ -42,12 +42,13 @@
                     </div>
                     <div class="login-form">
                         <div class="form-group">
+                            <asp:Label ID="lblRes" CssClass="res-label-info" runat="server"></asp:Label>
                             <label>Email</label>
                             <asp:TextBox ID="txtEmail" runat="server" placeholder="Enter Email" CssClass="form-control"></asp:TextBox>
                             <i class="fas fa-envelope"></i>
                         </div>
                         <div class="form-group">
-                            <asp:LinkButton ID="lbResetPassword" runat="server" CssClass="login-btn">Reset Password</asp:LinkButton>
+                            <asp:LinkButton ID="lbResetPassword" runat="server" CssClass="login-btn" OnClick ="SendEmail">Reset Password</asp:LinkButton>
                         </div>
                         <div class="form-group">
                             <a href="Login.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark w-100 text-center text-white">Back To Login</a>

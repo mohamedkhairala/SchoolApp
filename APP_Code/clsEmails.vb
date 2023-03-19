@@ -23,6 +23,35 @@ Public Class clsEmails
 
 #Region "Class Methods"
 
+    ''' <summary>
+    ''' Send Notification Email
+    ''' </summary>
+    Shared Function SendEmail(ByVal MailSubject As String, ByVal MailTo As String, ByVal MailBody As String, ByVal MailHTMLBody As Boolean, Optional BccMail As String = "") As Boolean
+        Try
+            Dim ToEmail = MailTo
+            Dim Smtp_Server As New SmtpClient
+            Dim e_mail As New MailMessage()
+            Smtp_Server.UseDefaultCredentials = False
+            Smtp_Server.Credentials = New Net.NetworkCredential(CompanyEmail, CompanyPassword)
+            Smtp_Server.Port = 587
+            Smtp_Server.EnableSsl = True
+            Smtp_Server.Host = "smtp.gmail.com"
+
+            e_mail = New MailMessage()
+            e_mail.From = New MailAddress(CompanyEmail)
+            e_mail.To.Add(MailTo)
+            e_mail.Subject = MailSubject
+            e_mail.IsBodyHtml = MailHTMLBody
+            e_mail.Body = MailBody
+            Smtp_Server.Send(e_mail)
+
+            Return True
+        Catch ex As Exception
+
+            Return False
+        End Try
+    End Function
+
     Public Shared Function SendExceptionMessage(ByRef ex As Exception) As Boolean
         Try
             'WriteInFile(ex)

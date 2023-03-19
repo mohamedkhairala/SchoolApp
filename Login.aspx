@@ -29,7 +29,7 @@
     <script src="js/modernizr-3.6.0.min.js"></script>
 </head>
 <body>
-    <form id="form1" runat="server" autocomplete="off">
+    <form id="form1" runat="server" autocomplete="off" defaultbutton="lbLogin">
         <!-- Preloader Start Here -->
         <div id="preloader"></div>
         <!-- Preloader End Here -->
@@ -41,9 +41,10 @@
                         <img src="img/logo2.png" alt="logo" />
                     </div>
                     <div class="login-form">
+                        <asp:Label ID="lblRes" CssClass="res-label-info" runat="server"></asp:Label>
                         <div class="form-group">
                             <label>Username</label>
-                            <asp:TextBox ID="txtUsername" runat="server" placeholder="Enter usrename" CssClass="form-control"></asp:TextBox>
+                            <asp:TextBox ID="txtUsername" runat="server" placeholder="Enter usrename" CssClass="form-control" AutoPostBack ="true" OnTextChanged ="SetPassword"></asp:TextBox>
                             <i class="far fa-envelope"></i>
                         </div>
                         <div class="form-group">
@@ -58,7 +59,7 @@
                             <a href="Forgot_Password.aspx" class="forgot-btn">Forgot Password?</a>
                         </div>
                         <div class="form-group">
-                            <asp:LinkButton ID="lbLogin" runat="server" CssClass="login-btn">Login</asp:LinkButton>
+                            <asp:LinkButton ID="lbLogin" runat="server" CssClass="login-btn" OnClick ="CheckLogin">Login</asp:LinkButton>
                         </div>
                     </div>
                     <div class="login-social">
