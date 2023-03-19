@@ -124,9 +124,12 @@
                                                         <span class="flaticon-more-button-of-three-dots"></span>
                                                     </a>
                                                     <div class="dropdown-menu dropdown-menu-right">
-                                                        <asp:LinkButton ID="lbPermission" CssClass="dropdown-item" CommandArgument='<%#Eval("UserID")%>' runat="server" ToolTip="Permissions" OnClick="ShowPermission" Visible='<%# IIf(Eval("UserName").ToString = "system", False, True) %>'><i class="fas fa-user-lock text-blue"></i>User Permissions</asp:LinkButton>
+                                                        <asp:LinkButton ID="lbPermission" CssClass="dropdown-item" CommandArgument='<%#Eval("UserID")%>' runat="server" ToolTip="Permissions" OnClick="ShowPermission" Visible='<%# False %>'><i class="fas fa-user-lock text-blue"></i>User Permissions</asp:LinkButton>
                                                         <asp:LinkButton ID="lbUpdate" CssClass="dropdown-item" OnClick="Edit" ToolTip="Edit" runat="server" CommandArgument='<%#Eval("UserID")%>' Visible='<%# IIf(Eval("UserName").ToString = "system", False, True) %>'><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
-                                                        <a href="#" id="hrefDelete" class="dropdown-item" title="Delete" style='<%# IIf(Eval("UserName").ToString = "system", "display:none;", "") %>'
+                                                        <asp:LinkButton ID="lbDelete" CssClass="dropdown-item" OnClick="Delete" ToolTip="Delete" runat="server" CommandArgument='<%#Eval("UserID")%>' Visible='<%# IIf(Eval("UserName").ToString = "system", False, True) %>'><i class="fas fa-times text-orange-red"></i>Delete</asp:LinkButton>
+                                                       
+                                                        
+                                                       <%-- <a href="#" id="hrefDelete" class="dropdown-item" title="Delete" style='<%# IIf(Eval("UserName").ToString = "system", "display:none;", "") %>'
                                                             onclick="ShowConfirmPopup('<%# CType(Container, GridViewRow).FindControl("mpConfirmDelete").ClientID.ToString%>','<%# CType(Container, GridViewRow).FindControl("pnlConfirmExtenderDelete").ClientID.ToString%>');return false;"><i class="fas fa-times text-orange-red"></i>Delete</a>
                                                         <asp:HiddenField ID="hfDelete" runat="server" />
                                                         <asp:ModalPopupExtender ID="mpConfirmDelete" runat="server" PopupControlID="pnlConfirmExtenderDelete" TargetControlID="hfDelete"
@@ -152,7 +155,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </asp:Panel>
+                                                        </asp:Panel>--%>
                                                     </div>
                                                 </div>
                                             </ItemTemplate>
@@ -199,7 +202,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-CssClass="gvPermissionCheckBox">
                                                         <HeaderTemplate>
-                                                            <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);" />
+                                                            <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);"  />
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chkAccess" onclick="Select(this);" ClientIDMode="Static" Text=" " runat="server" Checked='<%#Eval("PAccess")%>' />
@@ -398,7 +401,7 @@
                                                                 </asp:TemplateField>
                                                                 <asp:TemplateField HeaderStyle-CssClass="gvPermissionCheckBox">
                                                                     <HeaderTemplate>
-                                                                        <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);" />
+                                                                        <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);"  />
                                                                     </HeaderTemplate>
                                                                     <ItemTemplate>
                                                                         <asp:CheckBox ID="chkAccess" onclick="Select(this);" ClientIDMode="Static" Text=" " runat="server" Checked='<%#Eval("PAccess")%>' />
@@ -469,15 +472,16 @@
                     <asp:Panel ID="pnlConfirm" runat="server" Visible="false" CssClass="form-group">
                         <asp:LinkButton ID="btnSave" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white" ValidationGroup="Main" OnClick="Save" UseSubmitBehavior="false" OnClientClick="SaveClick(this,'Main');" ToolTip="Save">Save</asp:LinkButton>
                         <asp:Panel runat="server" ID="pnlCancel" CssClass="d-inline-block ml-3">
-                            <a href="#" title="Cancel" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" data-toggle="modal" data-placement="bottom" data-original-title="Cancel"
+                            <asp:LinkButton ID="lbYesCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel" CausesValidation="false">Cancel</asp:LinkButton>
+                            <%--<a href="#" title="Cancel" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" data-toggle="modal" data-placement="bottom" data-original-title="Cancel"
                                 onclick="ShowConfirmPopup('mpConfirmCancel','pnlConfirmExtenderCancel');return false;">Cancel</a>
                             <asp:HiddenField ID="hfCancel" runat="server" />
                             <asp:ModalPopupExtender ID="mpConfirmCancel" ClientIDMode="Static" runat="server" PopupControlID="pnlConfirmExtenderCancel" TargetControlID="hfCancel"
                                 CancelControlID="lbNoCancel" BackgroundCssClass="modalBackground">
-                            </asp:ModalPopupExtender>
+                            </asp:ModalPopupExtender>--%>
                         </asp:Panel>
 
-                        <asp:Panel ID="pnlConfirmExtenderCancel" runat="server" ClientIDMode="Static" CssClass="rodal rodal-fade-enter" align="center" Style="display: none">
+                      <%--  <asp:Panel ID="pnlConfirmExtenderCancel" runat="server" ClientIDMode="Static" CssClass="rodal rodal-fade-enter" align="center" Style="display: none">
                             <div class="rodal-mask"></div>
                             <div class="rodal-dialog rodal-slideUp-enter" style="width: 300px;">
                                 <div class="card">
@@ -497,7 +501,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </asp:Panel>
+                        </asp:Panel>--%>
                     </asp:Panel>
 
                     <!--============================ Page-content =============================-->
@@ -527,7 +531,7 @@
     <script src="js/UploadPhoto.js"></script>
     <!-- Data Table Js -->
     <script src="js/jquery.dataTables.min.js"></script>
-
+    <script src="js/Users.js"></script>
     <%--<script>
         $('#tblTeachers').DataTable({
             bLengthChange: false,
