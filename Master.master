@@ -219,10 +219,18 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="flaticon-money"></i><span>Accounts</span>
                                 </a>
+                                <ul id="Accounts" class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a id="ReceiptVoucher" lang="Accounts" href="ReceiptVoucher.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Receipt Voucher</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="Add_ReceiptVoucher" lang="Accounts" href="Add_ReceiptVoucher.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add Receipt Voucher</a>
+                                    </li>
+                                </ul>
                             </li>
                             <!--<li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link"><i class="flaticon-shopping-list"></i><span>Exam</span></a>
