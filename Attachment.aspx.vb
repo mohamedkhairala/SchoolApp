@@ -1,8 +1,6 @@
 ﻿#Region "Import"
 Imports System.Data
 Imports System.Data.SqlClient
-Imports AjaxControlToolkit
-Imports AjaxControlToolkit.HTMLEditor
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
 Imports PublicFunctions
@@ -12,7 +10,7 @@ Partial Class Course
     Inherits System.Web.UI.Page
 #Region "Global Variable"
 
-    Dim UserID As String = "1"
+    Dim UserID As String = "3"
     Dim School_Id As String = "1"
     Dim FormQry As String = "Select * from vw_Courses "
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
@@ -40,7 +38,7 @@ Partial Class Course
     End Sub
 
     Private Function GetUserRole(userID As String) As String
-        Return "Teacher"
+        Return "Student"
     End Function
 
     Private Sub FillDDL()
@@ -107,11 +105,11 @@ Partial Class Course
         Try
             Dim dt As DataTable = DBContext.Getdatatable("Select * from TblAttachments where " & CollectConditions())
             Dim dv As New DataView(dt)
-            dv.RowFilter = "OwnerType='T' and CreatedBy='" & UserID & "'"
+            dv.RowFilter = "OwnerType='T' " 'and CreatedBy='" & UserID & "'"
             gvTeacherFiles.DataSource = dv
             gvTeacherFiles.DataBind()
 
-            dv.RowFilter = "OwnerType='S' and CreatedBy='" & UserID & "'"
+            dv.RowFilter = "OwnerType='S' " 'and CreatedBy='" & UserID & "'"
             gvStudentFiles.DataSource = dv
             gvStudentFiles.DataBind()
 
@@ -173,7 +171,7 @@ Partial Class Course
                     qry &= " and OwnerType='T'"
                     gvFills = gvTeacherFiles
                 Case "Student"
-                    qry &= " and OwnerType='ST'"
+                    qry &= " and OwnerType='S'"
                     gvFills = gvStudentFiles
             End Select
             ExecuteQuery.ExecuteAlCommands(_sqltrans, _sqlconn, New SqlCommand(qry))
@@ -193,8 +191,7 @@ Partial Class Course
                 dt.CourseId = Val(ddlCourse.SelectedValue)
                 dt.GroupId = Val(ddlGroup.SelectedValue)
                 dt.SessionId = Val(ddlSession.SelectedValue)
-                'dt.TeacherId = TeacherId
-                'dt.StudentId = StudentId
+                dt.OwnerType = UserRole.Chars(0)
                 dt.UpdatedBy = UserID
                 dt.UpdatedDate = DateTime.Now
                 dt.CreatedBy = UserID
@@ -305,7 +302,7 @@ Partial Class Course
         Try
             Dim Attachments As DataTable
             Dim gvFiles As GridView
-            Dim isTeacher As Boolean = False
+            Dim isTeacher As Boolean = lblUserRole.Text.StartsWith("T")
             If isTeacher Then
                 Attachments = GetTeacherUploadedFilesDT()
                 gvFiles = gvTeacherFiles

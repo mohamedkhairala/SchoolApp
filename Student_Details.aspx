@@ -44,7 +44,7 @@
                                             <asp:LinkButton ID="lbPrint" CssClass="action-blue" runat="server"><i class="fas fa-print"></i></asp:LinkButton>
                                         </li>
                                         <li>
-                                            <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server"><i class="far fa-trash-alt"></i></asp:LinkButton>
+                                            <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete"><i class="far fa-trash-alt"></i></asp:LinkButton>
                                         </li>
                                     </ul>
                                 </div>
@@ -65,7 +65,7 @@
                                         </tr>
                                         <tr>
                                             <td>Gender:</td>
-                                            <td class="font-medium text-dark-medium"><%# Eval("Gender")%></td>
+                                            <td class="font-medium text-dark-medium"><%# Eval("FullGender")%></td>
                                         </tr>
                                         <tr>
                                             <td>Parent Name:</td>
@@ -74,7 +74,7 @@
 
                                         <tr>
                                             <td>Date Of Birth:</td>
-                                            <td class="font-medium text-dark-medium"><%#  Eval("DateOfBirth")%></td>
+                                            <td class="font-medium text-dark-medium"><%#  PublicFunctions.DateFormat(Eval("DateOfBirth"), "dd/MM/yyyy")%></td>
                                         </tr>
 
                                         <tr>
@@ -87,15 +87,24 @@
                                         </tr>
                                         <tr>
                                             <td>Group:</td>
-                                            <td class="font-medium text-dark-medium"><%# Eval("GroupName")%></td>
+                                            <td class="font-medium text-dark-medium">
+                                                <asp:Repeater runat="server" ID="rpGroups">
+                                                    <ItemTemplate></ItemTemplate>
+                                                </asp:Repeater>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Address:</td>
                                             <td class="font-medium text-dark-medium"><%# Eval("Address")%></td>
                                         </tr>
                                         <tr>
+                                            <td>Mobile:</td>
+                                            <td><i class="fa-telegram"></i><a href="tel:<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
+                                            <td><i class="fa-whatsapp"></i><a target="_blank" href="https://wa.me/<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
+                                         </tr>
+                                        <tr>
                                             <td>Phone:</td>
-                                            <td class="font-medium text-dark-medium"><%# Eval("Tel")%></td>
+                                            <td class="font-medium text-dark-medium"><a href="tel:<%# Eval("Tel")%>"><%# Eval("Tel")%></a></td>
                                         </tr>
                                     </tbody>
                                 </table>

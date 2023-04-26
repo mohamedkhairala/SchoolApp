@@ -28,6 +28,7 @@ Partial Class Parent
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 divActions.Visible = False
+                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Parent)
                 View()
             End If
             FillIcon()

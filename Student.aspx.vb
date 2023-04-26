@@ -28,6 +28,7 @@ Partial Class Add_Student
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 divActions.Visible = False
+                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Student)
                 FillDDL()
                 View()
             End If
@@ -50,6 +51,8 @@ Partial Class Add_Student
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
+
+
 #End Region
 
 #Region "Validation"

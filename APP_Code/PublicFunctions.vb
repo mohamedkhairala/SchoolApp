@@ -10,7 +10,15 @@ Imports clsMessages
 
 Public Class PublicFunctions
 
-
+    Public Enum Stackholders
+        Student
+        Teacher
+        Parent
+        Supervisor
+        Course
+        Group
+        Session
+    End Enum
 #Region "Global Functions"
     Public Shared Function ServerURL() As String
         Dim URL As String = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & HttpContext.Current.Request.ApplicationPath
@@ -108,7 +116,7 @@ Public Class PublicFunctions
     End Function
     Public Shared Function DateFormat(ByVal Value As Object, ByVal Format As String, Optional lang As String = "EN") As Object
         Try
-            If Value = "" OrElse Value Is Nothing OrElse Value = vbNullString Then
+            If Not IsDate(Value) Then
                 Return String.Empty
             Else
                 Select Case lang

@@ -18,6 +18,7 @@
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
+            <li><a href="StudentsList.aspx"> Students List</a></li>
             <li>Student</li>
         </ul>
     </div>
@@ -30,17 +31,17 @@
                     <h3>
                         <asp:Label Text="" runat="server" ID="lblTitle" /></h3>
 
-                    
+
                     <asp:Label Text="" ID="lblRes" runat="server" />
                 </div>
-                <asp:Panel CssClass="dropdown" runat="server" id="divActions">
+                <asp:Panel CssClass="dropdown" runat="server" ID="divActions">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                         aria-expanded="false">...</a>
 
                     <div class="dropdown-menu dropdown-menu-right">
-                       
-                       <asp:LinkButton ID="lbEdit" CssClass="dropdown-item" runat="server" OnClick="Edit"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
-                        
+
+                        <asp:LinkButton ID="lbEdit" CssClass="dropdown-item" runat="server" OnClick="Edit"><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
+
                     </div>
                 </asp:Panel>
             </div>
@@ -71,8 +72,8 @@
 
                             <div class="row">
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label>Code *</label>
-                                    <asp:TextBox ID="txtCode" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+                                    <label>Code </label>
+                                    <asp:TextBox ID="txtCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>
                                 </div>
@@ -109,8 +110,9 @@
                                     <asp:TextBox ID="txtMobile" runat="server" CssClass="form-control" MaxLength="20"></asp:TextBox>
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator5" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtMobile" Display="Dynamic" Text="Required Mobile"></asp:RequiredFieldValidator>
+                                    <asp:FilteredTextBoxExtender runat="server" ID="ftmobile" TargetControlID="txtMobile" ValidChars="+0123456789"></asp:FilteredTextBoxExtender>
                                 </div>
-                                
+
                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label>E-Mail *</label>
                                     <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
@@ -124,13 +126,15 @@
                                     <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" MaxLength="20"></asp:TextBox>
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator4" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtPhone" Display="Dynamic" Text="Required Phone"></asp:RequiredFieldValidator>
+                                                                    <asp:FilteredTextBoxExtender runat="server" ID="FilteredTextBoxExtender1" TargetControlID="txtPhone" ValidChars="+0123456789"></asp:FilteredTextBoxExtender>
+
                                 </div>
-                                 <div class="col-xl-8 col-lg-6 col-12 form-group">
+                                <div class="col-xl-8 col-lg-6 col-12 form-group">
                                     <label>Address</label>
                                     <asp:TextBox ID="txtAddress" runat="server" CssClass="form-control" MaxLength="500"></asp:TextBox>
-                                   
+
                                 </div>
-                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
+                                <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Parent</label>
                                     <asp:DropDownList ID="ddlParent" runat="server" CssClass="select2">
                                         <asp:ListItem Value="0">Select Parent</asp:ListItem>

@@ -26,6 +26,7 @@ Partial Class Supervisor
             'UserId = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
+                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Supervisor)
                 View()
             End If
             FillIcon()

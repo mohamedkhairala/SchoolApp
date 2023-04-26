@@ -27,6 +27,7 @@ Partial Class Add_Student
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 lbEdit.Visible = False
+                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Teacher)
                 View()
             End If
             FillIcon()
