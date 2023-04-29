@@ -1,10 +1,14 @@
 ﻿#Region "Import"
 Imports System.Data
 Imports System.Data.SqlClient
+Imports System.Net
+Imports System.Reflection
 Imports AjaxControlToolkit
 Imports AjaxControlToolkit.HTMLEditor
+Imports AjaxControlToolkit.HTMLEditor.ToolbarButton
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
+Imports Microsoft.Web.Services3.Addressing
 #End Region
 Partial Class Add_Student
     Inherits System.Web.UI.Page
@@ -82,6 +86,13 @@ Partial Class Add_Student
                 _sqltrans = _sqlconn.BeginTransaction()
 
                 If Not da.InsertTrans(dt, _sqlconn, _sqltrans) Then
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                    _sqltrans.Rollback()
+                    _sqlconn.Close()
+                    Exit Sub
+                End If
+                ' insert Student user
+                If Not StudentService.InsertUser(dt, _sqlconn, _sqltrans) Then
                     clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     _sqltrans.Rollback()
                     _sqlconn.Close()
@@ -166,6 +177,41 @@ Partial Class Add_Student
         End Try
     End Function
 
+
+    ''' <summary>
+    ''' Fill User Object
+    ''' </summary>
+    Protected Function FillUserDt(ByRef dtUsers As TblUsers, ByRef dtStudent As TblStudents) As Boolean
+        Try
+            dtUsers.OwnerType = "S"
+            dtUsers.OwnerId = dtStudent.Id
+            dtUsers.FullName = dtStudent.Name
+            dtUsers.UserName = dtStudent.Email
+            dtUsers.Email = Nothing
+            dtUsers.Active = True
+            dtUsers.UserType = "User"
+            dtUsers.Password = PublicFunctions.Encrypt("")
+
+            dtUsers.MobileNo = dtStudent.Mobile
+
+
+            dtUsers.Photo = dtStudent.Photo
+
+            dtUsers.CreatedBy = UserID
+            dtUsers.CreatedDate = DateTime.Now
+
+            dtUsers.ModifiedBy = UserID
+            dtUsers.ModifiedDate = DateTime.Now
+
+            dtUsers.IsDeleted = False
+
+            Return True
+        Catch ex As Exception
+            clsMessages.ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
+
+            Return False
+        End Try
+    End Function
     Private Function SaveStudentGroup(dtStudent As TblStudents, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
         Try
             Dim da As New TblStudentsGroupsFactory
