@@ -81,9 +81,7 @@ Partial Class Teachers
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
             Dim TeacherId = Val(CType(sender.parent.FindControl("lblTeacherId"), Label).Text)
-            Dim str As String = "Update TblTeachers Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & TeacherId & ";"
-
-            If DBContext.ExcuteQuery(str) < 1 Then
+            If Not TeacherService.DeleteTeacher(TeacherId) Then
                 ShowErrorMessgage(lblRes, "حدث خطأ", Me)
                 Exit Sub
             End If

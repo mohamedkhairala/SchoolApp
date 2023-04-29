@@ -81,8 +81,7 @@ Partial Class Parents
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
             Dim ParentId = Val(CType(sender.parent.FindControl("lblParentId"), Label).Text)
-            Dim str As String = "Update TblParents Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & ParentId & ";"
-            If DBContext.ExcuteQuery(str) < 1 Then
+            If Not ParentService.DeleteParent(ParentId) Then
                 ShowErrorMessgage(lblRes, "حدث خطأ", Me)
                 Exit Sub
             End If

@@ -184,7 +184,7 @@ Partial Class Add_Student
 #End Region
 #Region "Cancel"
     Protected Sub Cancel(sender As Object, e As EventArgs)
-        Response.Redirect("Dashboard.aspx")
+        Response.Redirect("~/Dashboard.aspx")
     End Sub
     Protected Sub Edit(sender As Object, e As EventArgs)
         pnlForm.Enabled = True

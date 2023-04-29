@@ -9,7 +9,7 @@ Partial Class Student_Details
 #Region "Global Variable"
     Dim SchoolId As String = "1"
     Dim UserID As String = "0"
-    Dim FormQuery As String = "Select * from vw_Teachers"
+    Dim FormQuery As String = "Select * from vw_Parents"
 
 
 #End Region
@@ -44,8 +44,8 @@ Partial Class Student_Details
         Try
             If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
                 Dim rbGroups As GridView = DirectCast(e.Item.FindControl("rpGroups"), GridView)
-                Dim TeacherID = Request.QueryString("ID")
-                rbGroups.DataSource = DBContext.Getdatatable("Select Name,SupervisorName,CourseName from vw_Groups where TeacherId=" & TeacherID)
+                Dim ParentID = Request.QueryString("ID")
+                rbGroups.DataSource = DBContext.Getdatatable("Select Code,Name from vw_Students where ParentId=" & ParentID)
                 rbGroups.DataBind()
             End If
 
@@ -61,9 +61,9 @@ Partial Class Student_Details
     ''' </summary>
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
-            Dim TeacherID = Request.QueryString("ID")
+            Dim ParentID = Request.QueryString("ID")
 
-            If Not TeacherService.DeleteTeacher(TeacherID) Then
+            If Not ParentService.DeleteParent(ParentID) Then
                 ShowErrorMessgage(lblRes, "حدث خطأ", Me)
                 Exit Sub
             End If
@@ -75,7 +75,7 @@ Partial Class Student_Details
             '    Exit Sub
             'End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
-            Response.Redirect("TeachersList.aspx")
+            Response.Redirect("ParentsList.aspx")
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Student Details" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Teacher_Details.aspx.vb" Inherits="Student_Details" %>
+<%@ Page Title="Up Skills | StuParentdent Details" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Parent_Details.aspx.vb" Inherits="Student_Details" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -6,12 +6,12 @@
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Student Details</h3>
+        <h3>Parent Details</h3>
         <ul>
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
-            <li>Student Details</li>
+            <li>Parent Details</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
@@ -38,7 +38,7 @@
                                 <div class="header-actions">
                                     <ul>
                                         <li>
-                                            <a id="lbEdit" class="action-green" runat="server" href='<%# "../Teachers/Teacher.aspx?Mode=Edit&ID=" & Eval("Id")%>'><i class="far fa-edit"></i></a>
+                                            <a id="lbEdit" class="action-green" runat="server" href='<%# "Parent.aspx?Mode=Edit&ID=" & Eval("Id")%>'><i class="far fa-edit"></i></a>
                                         </li>
                                         <li>
                                             <asp:LinkButton ID="lbPrint" CssClass="action-blue" runat="server"><i class="fas fa-print"></i></asp:LinkButton>
@@ -68,21 +68,21 @@
                                             <td class="font-medium text-dark-medium"><%# Eval("FullGender")%></td>
                                         </tr>
 
-                                        <tr>
+                                       <%-- <tr>
                                             <td>Date Of Birth:</td>
                                             <td class="font-medium text-dark-medium"><%#  PublicFunctions.DateFormat(Eval("DateOfBirth"), "dd/MM/yyyy")%></td>
-                                        </tr>
+                                        </tr>--%>
 
                                         <tr>
                                             <td>E-mail:</td>
                                             <td class="font-medium text-dark-medium"><%# Eval("Email")%></td>
                                         </tr>
-                                        <tr>
+                                       <%-- <tr>
                                             <td>Admission Date:</td>
                                             <td class="font-medium text-dark-medium"><%# Eval("CreatedDate")%></td>
-                                        </tr>
+                                        </tr>--%>
                                         <tr>
-                                            <td>Group:</td>
+                                            <td>Children:</td>
                                             <td><asp:GridView runat="server" ID="rpGroups" ClientIDMode="AutoID">
                                             </asp:GridView></td>
                                             

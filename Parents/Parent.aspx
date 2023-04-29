@@ -4,11 +4,11 @@
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
+    <link rel="stylesheet" href="../css/select2.min.css">
     <!-- Date Picker CSS -->
-    <link rel="stylesheet" href="css/datepicker.min.css">
+    <link rel="stylesheet" href="../css/datepicker.min.css">
     <!-- Upload Photo CSS -->
-    <link rel="stylesheet" href="css/upload-photo.css" />
+    <link rel="stylesheet" href="../css/upload-photo.css" />
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <!-- Breadcubs Area Start Here -->
@@ -17,6 +17,9 @@
         <ul>
             <li>
                 <a href="Dashboard.aspx">Home</a>
+            </li>
+             <li>
+                <a href="ParentsList.aspx">Parents List</a>
             </li>
             <li>Parents</li>
         </ul>
@@ -141,9 +144,9 @@
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
+    <script src="../js/select2.min.js"></script>
     <!-- Date Picker Js -->
-    <script src="js/datepicker.min.js"></script>
+    <script src="../js/datepicker.min.js"></script>
     <!-- Upload Photo Js -->
-    <script src="js/UploadPhoto.js"></script>
+    <script src="../js/UploadPhoto.js"></script>
 </asp:Content>

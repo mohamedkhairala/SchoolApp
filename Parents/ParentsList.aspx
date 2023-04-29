@@ -56,6 +56,8 @@
             </div>
 
             <div class="table-responsive">
+                                <a href="Parent.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
+
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
@@ -89,7 +91,7 @@
                                 <img class="img-thumbnail" src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="Parent">
                             </td>                           
                             <td>
-                                <a href='<%# "Parent.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
+                                <a href='<%# "Parent_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
                             <td><%# Eval("Address")%></td>
@@ -106,7 +108,8 @@
                                         <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Parent.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick="Delete">
+                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
+                                          OnClientClick="return confirm('Confirm Delete?')"  OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 

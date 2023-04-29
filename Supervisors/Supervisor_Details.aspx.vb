@@ -9,7 +9,7 @@ Partial Class Student_Details
 #Region "Global Variable"
     Dim SchoolId As String = "1"
     Dim UserID As String = "0"
-    Dim FormQuery As String = "Select * from vw_Teachers"
+    Dim FormQuery As String = "Select * from vw_Supervisors"
 
 
 #End Region
@@ -44,8 +44,8 @@ Partial Class Student_Details
         Try
             If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
                 Dim rbGroups As GridView = DirectCast(e.Item.FindControl("rpGroups"), GridView)
-                Dim TeacherID = Request.QueryString("ID")
-                rbGroups.DataSource = DBContext.Getdatatable("Select Name,SupervisorName,CourseName from vw_Groups where TeacherId=" & TeacherID)
+                Dim SupervisorId = Request.QueryString("ID")
+                rbGroups.DataSource = DBContext.Getdatatable("Select Name,TeacherName,CourseName from vw_Groups where SupervisorId=" & SupervisorId)
                 rbGroups.DataBind()
             End If
 
