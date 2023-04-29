@@ -37,8 +37,6 @@ Public Class StudentService
         Try
             'Insert Case
 
-            _sqlconn.Open()
-            _sqltrans = _sqlconn.BeginTransaction()
             If Not daUsers.InsertTrans(dtUsers, _sqlconn, _sqltrans) Then
                 _sqltrans.Rollback()
                 _sqlconn.Close()
@@ -46,14 +44,12 @@ Public Class StudentService
             End If
             'Save User Permissions
             Dim newUserId As String = dtUsers.UserID
-            If Not SaveUserPermission(newUserId) Then
+            If Not SaveUserPermission(newUserId, _sqlconn, _sqltrans) Then
                 _sqltrans.Rollback()
                 _sqlconn.Close()
                 Return False
             End If
 
-            _sqltrans.Commit()
-            _sqlconn.Close()
             Return True
             'lblUserId.Text = String.Empty
             'HiddenIcon.Text = String.Empty
@@ -67,7 +63,7 @@ Public Class StudentService
     End Function
 
 
-    Private Shared Function SaveUserPermission(ObjId As String) As Boolean
+    Private Shared Function SaveUserPermission(ObjId As String, _sqlconn As SqlConnection, _sqltrans As SqlTransaction) As Boolean
         Try
             Dim UPObj As New TblUserPermissions
             Dim UPDa As New TblUserPermissionsFactory()
