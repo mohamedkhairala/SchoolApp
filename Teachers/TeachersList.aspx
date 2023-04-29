@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | All Students" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="StudentsList.aspx.vb" Inherits="Students" %>
+<%@ Page Title="Up Skills | All Teachers" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="TeachersList.aspx.vb" Inherits="Teachers" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -10,21 +10,21 @@
     <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>All Students</h3>
+        <h3>All Teachers</h3>
         <ul>
             <li>
                 <a href="Dashboard.aspx">Home</a>
             </li>
-            <li>All Students</li>
+            <li>All Teachers</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->
-    <!-- Student Table Area Start Here -->
+    <!-- Teacher Table Area Start Here -->
     <div class="card height-auto">
         <div class="card-body">
             <div class="heading-layout1">
                 <div class="item-title">
-                    <h3>All Students Data</h3>
+                    <h3>All Teachers Data</h3>
                 </div>
                 <!--<div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -42,12 +42,12 @@
                     </div>
                 </div>-->
             </div>
-            <div class="mg-b-20" id="divSearch" runat="server" visible="false">
+            <div class="mg-b-20" id="divSearch" runat="server" visible ="false" >
                 <div class="row gutters-8">
                     <div class="col-6-xxxl col-xl-6 col-lg-4 col-12 form-group">
                     </div>
                     <div class="col-4-xxxl col-xl-4 col-lg-5 col-12 form-group">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by Code, Name or Group ..." AutoPostBack="true" OnTextChanged="FillGrid"></asp:TextBox>
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by Code, Name or Group ..." AutoPostBack="true" OnTextChanged ="FillGrid"></asp:TextBox>
                     </div>
                     <div class="col-2-xxxl col-xl-2 col-lg-3 col-12 form-group">
                         <asp:LinkButton ID="lbSearch" runat="server" CssClass="fw-btn-fill btn-gradient-yellow text-white text-center" OnClick="FillGrid"><i class="fas fa-search mr-3"></i>SEARCH</asp:LinkButton>
@@ -56,24 +56,24 @@
             </div>
 
             <div class="table-responsive">
-                <a href="Student.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
+                                <a href="Teacher.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
+
                 <asp:HiddenField ID="SortExpression" runat="server" />
-                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
+                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID"  >
                     <LayoutTemplate>
-                        <table class="table display data-table text-nowrap">
+                        <table id="tblTeachers" class="table display data-table text-nowrap">
                             <thead>
                                 <tr>
                                     <th>Code</th>
                                     <th>Photo</th>
                                     <th>Name</th>
                                     <th>Gender</th>
-                                    <%--<th>Group</th>--%>
-                                    <th>Parents</th>
                                     <th>Address</th>
                                     <th>Date Of Birth</th>
                                     <th>Phone</th>
                                     <th>E-mail</th>
-                                    <th></th>
+                                    <th>Salary</th>
+                                    <th style="width: 50px;"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,23 +86,19 @@
 
                         <tr>
                             <td>#<%# Eval("Code")%>
-                                <asp:Label ID="lblStudentId" runat="server" Visible="false" Text='<%# Eval("Id")%>'></asp:Label>
-                                <asp:Label ID="lblParentId" runat="server" Visible="false" Text='<%# Eval("ParentId")%>'></asp:Label>
+                                <asp:Label ID="lblTeacherId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
                             </td>
                             <td class="text-center">
-                                <img class="img-thumbnail" src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="student"></td>
+                                <img class="img-thumbnail" src='<%#   Eval("Photo").ToString.Replace("~", "")%>' alt="Teacher"></td>
                             <td>
-                                <%--<a href="#Details_modal"  data-toggle="modal" data-url='<%# "Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>'><%# Eval("Name")%></a>--%>
-                                <a href='<%# "Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
+                                <a href='<%# "Teacher_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
-
-                            <%--<td><%# Eval("GroupName")%></td>--%>
-                            <td><%# Eval("ParentName")%> </td>
                             <td><%# Eval("Address")%></td>
                             <td><%# PublicFunctions.DateFormat(Eval("DateOfBirth"), "dd/MM/yyyy")%></td>
                             <td><%# Eval("Mobile")%></td>
                             <td><%# Eval("Email")%></td>
+                            <td><%# PublicFunctions.DecimalFormat(Eval("Salary"))%></td>
                             <td>
                                 <div class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -110,10 +106,11 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
 
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Teacher.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" 
+                                           OnClientClick="return confirm('Confirm Delete?')" OnClick ="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 
@@ -133,15 +130,28 @@
                         </table>
                     </EmptyDataTemplate>
                 </asp:ListView>
-                 
+         
             </div>
-             
         </div>
     </div>
-    <!-- Student Table Area End Here -->
- 
+    <!-- Teacher Table Area End Here -->
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
     <script src="js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $('#tblTeachers').DataTable({
+            bLengthChange: false,
+            language: {
+                searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
+                
+            },
+            columnDefs: [
+                { orderable: false, targets: -1 }
+            ]
+        });
+
+        $.fn.dataTable.ext.errMode = 'none';
+    </script>
 </asp:Content>

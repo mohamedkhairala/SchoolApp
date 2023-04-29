@@ -5,7 +5,7 @@ Imports AjaxControlToolkit
 Imports BusinessLayer.BusinessLayer
 Imports clsMessages
 #End Region
-Partial Class Students
+Partial Class StudentsList
     Inherits System.Web.UI.Page
 #Region "Global Variable"
     Dim SchoolId As String = "1"

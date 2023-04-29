@@ -30,7 +30,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css" />
     <!-- Modernize js -->
-    <script src="js/modernizr-3.6.0.min.js"></script>
+    <script src="../js/modernizr-3.6.0.min.js"></script>
 </head>
 <body>
     <form id="form1" runat="server" autocomplete="off">
@@ -48,7 +48,7 @@
                 <div class="nav-bar-header-one">
                     <div class="header-logo">
                         <a href="Dashboard.aspx">
-                            <img src="img/logo.png" alt="logo">
+                            <img src="../img/logo.png" alt="logo">
                         </a>
                     </div>
                     <div class="toggle-button sidebar-toggle">
@@ -90,7 +90,7 @@
                                     <span>Admin</span>
                                 </div>
                                 <div class="admin-img">
-                                    <img src="img/figure/admin.jpg" alt="Admin">
+                                    <img src="../img/figure/admin.jpg" alt="Admin">
                                 </div>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
@@ -116,7 +116,7 @@
                     <div class="mobile-sidebar-header d-md-none">
                         <div class="header-logo">
                             <a href="Dashboard.aspx">
-                                <img src="img/logo1.png" alt="logo"></a>
+                                <img src="../img/logo1.png" alt="logo"></a>
                         </div>
                     </div>
                     <div class="sidebar-menu-content">
@@ -139,13 +139,13 @@
                                 <a href="#" class="nav-link"><i class="flaticon-multiple-users-silhouette"></i><span>Teachers</span></a>
                                 <ul id="Teachers" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="TeachersList" lang="Teachers" href="TeachersList.aspx" class="nav-link">
+                                        <a id="TeachersList" lang="Teachers" href="~/Teachers/TeachersList.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>All
                                         Teachers
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Teacher" lang="Teachers" href="Teacher.aspx" class="nav-link">
+                                        <a id="Teacher" lang="Teachers" href="~/Teachers/Teacher.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Add
                                         Teacher
                                         </a>
@@ -156,13 +156,13 @@
                                 <a href="#" class="nav-link"><i class="flaticon-user"></i><span>Supervisors</span></a>
                                 <ul id="Supervisors" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="SupervisorsList" lang="Supervisors" href="SupervisorsList.aspx" class="nav-link">
+                                        <a id="SupervisorsList" lang="Supervisors" href="~/Supervisors/SupervisorsList.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>All
                                         Supervisors
                                         </a>
                                     </li>
                                     <li id="Supervisor" class="nav-item">
-                                        <a href="Supervisor.aspx" lang="Supervisors" class="nav-link">
+                                        <a href="~/Supervisors/Supervisor.aspx" lang="Supervisors" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Add
                                         Supervisor
                                         </a>
@@ -173,10 +173,10 @@
                                 <a href="#" class="nav-link"><i class="flaticon-books"></i><span>Parents</span></a>
                                 <ul id="Parents" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="ParentsList" lang="Parents" href="ParentsList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
+                                        <a id="ParentsList" lang="Parents" href="~/Parents/ParentsList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Parents</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Parent" lang="Parents" href="Parent.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Parent</a>
+                                        <a id="Parent" lang="Parents" href="~/Parents/Parent.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Parent</a>
                                     </li>
                                 </ul>
                             </li>
@@ -186,10 +186,10 @@
                                 </a>
                                 <ul id="AllGroups" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="Groups" lang="AllGroups" href="Groups.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Groups</a>
+                                        <a id="Groups" lang="AllGroups" href="~/Groups/Groups.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Groups</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Add_Group" lang="AllGroups" href="Add_Group.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Group</a>
+                                        <a id="Add_Group" lang="AllGroups" href="~/Groups/Add_Group.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Group</a>
                                     </li>
                                 </ul>
                             </li>
@@ -281,28 +281,28 @@
     </form>
 </body>
 <!-- jquery-->
-<script src="js/jquery-3.3.1.min.js"></script>
+<script src="../js/jquery-3.3.1.min.js"></script>
 <!-- Plugins js -->
-<script src="js/plugins.js"></script>
+<script src="../js/plugins.js"></script>
 <!-- Popper js -->
-<script src="js/popper.min.js"></script>
+<script src="../js/popper.min.js"></script>
 <!-- Bootstrap js -->
-<script src="js/bootstrap.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 <!-- Counterup Js -->
-<script src="js/jquery.counterup.min.js"></script>
+<script src="../js/jquery.counterup.min.js"></script>
 <!-- Moment Js -->
-<script src="js/moment.min.js"></script>
+<script src="../js/moment.min.js"></script>
 <!-- Waypoints Js -->
-<script src="js/jquery.waypoints.min.js"></script>
+<script src="../js/jquery.waypoints.min.js"></script>
 <!-- Scroll Up Js -->
-<script src="js/jquery.scrollUp.min.js"></script>
+<script src="../js/jquery.scrollUp.min.js"></script>
 <!-- Full Calender Js -->
-<script src="js/fullcalendar.min.js"></script>
+<script src="../js/fullcalendar.min.js"></script>
 <!-- Chart Js -->
-<script src="js/Chart.min.js"></script>
+<script src="../js/Chart.min.js"></script>
 <!-- Custom Js -->
-<script src="js/main.js"></script>
+<script src="../js/main.js"></script>
 <!-- Menu Js -->
-<script src="js/jsMaster.js"></script>
+<script src="../js/jsMaster.js"></script>
 <asp:ContentPlaceHolder ID="Footer" runat="server"></asp:ContentPlaceHolder>
 </html>
