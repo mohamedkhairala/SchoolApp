@@ -193,10 +193,18 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="flaticon-open-book"></i><span>Courses</span>
                                 </a>
+                                <ul id="Courses" class="nav sub-group-menu">
+                                    <li class="nav-item">
+                                        <a id="CourseList" lang="Courses" href="../Courses/CourseList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Courses</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a id="Course" lang="Courses" href="../Courses/Course.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Course</a>
+                                    </li>
+                                </ul>
                             </li>
                             <!--<li class="nav-item">
                                 <a href="class-routine.html" class="nav-link">
@@ -212,10 +220,10 @@
                                 </a>
                                 <ul id="Attendances" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="Attendance" lang="Attendances" href="Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
+                                        <a id="Attendance" lang="Attendances" href="../Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Add_Attendance" lang="Attendances" href="Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
+                                        <a id="Add_Attendance" lang="Attendances" href="../Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
                                     </li>
                                 </ul>
                             </li>
@@ -225,10 +233,10 @@
                                 </a>
                                 <ul id="Accounts" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="ReceiptVoucher" lang="Accounts" href="ReceiptVoucher.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Receipt Voucher</a>
+                                        <a id="ReceiptVoucher" lang="Accounts" href="../ReceiptVoucher.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Receipt Voucher</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Add_ReceiptVoucher" lang="Accounts" href="Add_ReceiptVoucher.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add Receipt Voucher</a>
+                                        <a id="Add_ReceiptVoucher" lang="Accounts" href="../Add_ReceiptVoucher.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add Receipt Voucher</a>
                                     </li>
                                 </ul>
                             </li>
@@ -244,7 +252,7 @@
                                 </ul>
                             </li>-->
                             <li class="nav-item">
-                                <a id="Message" href="Message.aspx" class="nav-link">
+                                <a id="Message" href="../Message.aspx" class="nav-link">
                                     <i class="flaticon-script"></i><span>Messages</span>
                                 </a>
                             </li>
@@ -252,7 +260,7 @@
                                 <a href="#" class="nav-link"><i class="flaticon-settings"></i><span>Settings</span></a>
                                 <ul id="Settings" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="users" lang="Settings" href="users.aspx" class="nav-link">
+                                        <a id="users" lang="Settings" href="../users.aspx" class="nav-link">
                                             <i class="fas fa-angle-right"></i>Users Permissions
                                         </a>
                                     </li>

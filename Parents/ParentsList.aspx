@@ -4,7 +4,7 @@
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
@@ -13,7 +13,7 @@
         <h3>All Parents</h3>
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
             </li>
             <li>All Parents</li>
         </ul>
@@ -54,10 +54,13 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 px-0 text-right">
+                <div class="d-inline-flex mb-3">
+                    <a href="Parent.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>
+                </div>
+            </div>
 
             <div class="table-responsive">
-                                <a href="Parent.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
-
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
@@ -89,7 +92,7 @@
                             </td>
                             <td class="text-center">
                                 <img class="img-thumbnail" src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="Parent">
-                            </td>                           
+                            </td>
                             <td>
                                 <a href='<%# "Parent_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
@@ -109,7 +112,7 @@
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
                                         <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
-                                          OnClientClick="return confirm('Confirm Delete?')"  OnClick="Delete">
+                                            OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 
@@ -1146,14 +1149,14 @@
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
 
     <script>
         $('#tblParents').DataTable({
             bLengthChange: false,
             language: {
                 searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
-                
+
             },
             columnDefs: [
                 { orderable: false, targets: -1 }

@@ -13,7 +13,7 @@
         <h3>All Students</h3>
         <ul>
             <li>
-                <a href="~/Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
             </li>
             <li>All Students</li>
         </ul>
@@ -54,9 +54,13 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 px-0 text-right">
+                <div class="d-inline-flex mb-3">
+                    <a href="../Students/Student.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>
+                </div>
+            </div>
 
             <div class="table-responsive">
-                <a href="Students/Student.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
@@ -133,13 +137,13 @@
                         </table>
                     </EmptyDataTemplate>
                 </asp:ListView>
-                 
+
             </div>
-             
+
         </div>
     </div>
     <!-- Student Table Area End Here -->
- 
+
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->

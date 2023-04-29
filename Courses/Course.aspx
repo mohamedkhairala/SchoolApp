@@ -4,11 +4,11 @@
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Select 2 CSS -->
-    <link rel="stylesheet" href="css/select2.min.css">
+    <link rel="stylesheet" href="../css/select2.min.css">
     <!-- Date Picker CSS -->
-    <link rel="stylesheet" href="css/datepicker.min.css">
+    <link rel="stylesheet" href="../css/datepicker.min.css">
     <!-- Upload Photo CSS -->
-    <link rel="stylesheet" href="css/upload-photo.css" />
+    <link rel="stylesheet" href="../css/upload-photo.css" />
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <!-- Breadcubs Area Start Here -->
@@ -16,7 +16,10 @@
 
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
+            </li>
+            <li>
+                <a href="CourseList.aspx">Courses List</a>
             </li>
             <li>Course</li>
         </ul>
@@ -53,8 +56,8 @@
 
                             <div class="row">
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label>Code *</label>
-                                    <asp:TextBox ID="txtCode" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+                                    <label>Code</label>
+                                    <asp:TextBox ID="txtCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
                                     <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>
                                 </div>
@@ -108,9 +111,9 @@
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Select 2 Js -->
-    <script src="js/select2.min.js"></script>
+    <script src="../js/select2.min.js"></script>
     <!-- Date Picker Js -->
-    <script src="js/datepicker.min.js"></script>
+    <script src="../js/datepicker.min.js"></script>
     <!-- Upload Photo Js -->
-    <script src="js/UploadPhoto.js"></script>
+    <script src="../js/UploadPhoto.js"></script>
 </asp:Content>

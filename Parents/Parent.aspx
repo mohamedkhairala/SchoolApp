@@ -16,9 +16,9 @@
 
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
             </li>
-             <li>
+            <li>
                 <a href="ParentsList.aspx">Parents List</a>
             </li>
             <li>Parents</li>

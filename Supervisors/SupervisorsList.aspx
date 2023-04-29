@@ -4,7 +4,7 @@
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
@@ -13,7 +13,7 @@
         <h3>All Supervisors</h3>
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
             </li>
             <li>All Supervisors</li>
         </ul>
@@ -42,24 +42,27 @@
                     </div>
                 </div>-->
             </div>
-            <div class="mg-b-20" id="divSearch" runat="server" visible ="false" >
+            <div class="mg-b-20" id="divSearch" runat="server" visible="false">
                 <div class="row gutters-8">
                     <div class="col-6-xxxl col-xl-6 col-lg-4 col-12 form-group">
                     </div>
                     <div class="col-4-xxxl col-xl-4 col-lg-5 col-12 form-group">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by Code, Name or Group ..." AutoPostBack="true" OnTextChanged ="FillGrid"></asp:TextBox>
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by Code, Name or Group ..." AutoPostBack="true" OnTextChanged="FillGrid"></asp:TextBox>
                     </div>
                     <div class="col-2-xxxl col-xl-2 col-lg-3 col-12 form-group">
                         <asp:LinkButton ID="lbSearch" runat="server" CssClass="fw-btn-fill btn-gradient-yellow text-white text-center" OnClick="FillGrid"><i class="fas fa-search mr-3"></i>SEARCH</asp:LinkButton>
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 px-0 text-right">
+                <div class="d-inline-flex mb-3">
+                    <a href="Supervisor.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>
+                </div>
+            </div>
 
             <div class="table-responsive">
-                                <a href="Supervisor.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
-
                 <asp:HiddenField ID="SortExpression" runat="server" />
-                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID"  >
+                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
                         <table id="tblSupervisors" class="table display data-table text-nowrap">
                             <thead>
@@ -86,7 +89,7 @@
 
                         <tr>
                             <td>#<%# Eval("Code")%>
-                                <asp:Label ID="lblSupervisorId" runat="server" Visible ="false" Text ='<%# Eval("Id")%>'></asp:Label>
+                                <asp:Label ID="lblSupervisorId" runat="server" Visible="false" Text='<%# Eval("Id")%>'></asp:Label>
                             </td>
                             <td class="text-center">
                                 <img class="img-thumbnail" src='<%# PublicFunctions.ServerURL & Eval("Photo")%>' alt="Supervisor"></td>
@@ -109,7 +112,7 @@
                                         <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Supervisor.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick ="Delete">
+                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 
@@ -129,7 +132,7 @@
                         </table>
                     </EmptyDataTemplate>
                 </asp:ListView>
-        
+
             </div>
         </div>
     </div>
@@ -137,14 +140,14 @@
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
 
     <script>
         $('#tblSupervisors').DataTable({
             bLengthChange: false,
             language: {
                 searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
-                
+
             },
             columnDefs: [
                 { orderable: false, targets: -1 }

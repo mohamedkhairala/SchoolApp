@@ -2,14 +2,20 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server"></asp:Content>
+<asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
+    <!-- Data Table CSS -->
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
+</asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
         <h3>Parent Details</h3>
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
+            </li>
+            <li>
+                <a href="ParentsList.aspx">Parents List</a>
             </li>
             <li>Parent Details</li>
         </ul>
@@ -111,4 +117,7 @@
     </div>
     <!-- Student Details Area End Here -->
 </asp:Content>
-<asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server"></asp:Content>
+<asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
+    <!-- Data Table Js -->
+    <script src="../js/jquery.dataTables.min.js"></script>
+</asp:Content>

@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Student Details" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Teacher_Details.aspx.vb" Inherits="Student_Details" %>
+<%@ Page Title="Up Skills | Teacher Details" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Teacher_Details.aspx.vb" Inherits="Student_Details" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -6,12 +6,15 @@
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <!-- Breadcubs Area Start Here -->
     <div class="breadcrumbs-area">
-        <h3>Student Details</h3>
+        <h3>Teacher Details</h3>
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
             </li>
-            <li>Student Details</li>
+            <li>
+                <a href="TeachersList.aspx">Teachers List</a>
+            </li>
+            <li>Teacher Details</li>
         </ul>
     </div>
     <!-- Breadcubs Area End Here -->

@@ -4,7 +4,7 @@
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
@@ -13,7 +13,7 @@
         <h3>All Courses</h3>
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="../Dashboard.aspx">Home</a>
             </li>
             <li>All Courses</li>
         </ul>
@@ -54,6 +54,11 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12 px-0 text-right">
+                <div class="d-inline-flex mb-3">
+                    <a href="Course.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>
+                </div>
+            </div>
 
             <div class="table-responsive">
                 <asp:HiddenField ID="SortExpression" runat="server" />
@@ -83,9 +88,9 @@
                             <td>#<%# Eval("Code")%>
                                 <asp:Label ID="lblCourseId" runat="server" Visible="false" Text='<%# Eval("Id")%>'></asp:Label>
                             </td>
-                                               
+
                             <td>
-                                <a href='<%# "Course.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
+                                <a href='<%# "Course_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("NoOfSessions")%></td>
                             <td><%# Eval("SessionRate")%></td>
@@ -102,7 +107,8 @@
                                         <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Course.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick="Delete">
+                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
+                                            OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 
@@ -1139,14 +1145,14 @@
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
 
     <script>
         $('#tblCourses').DataTable({
             bLengthChange: false,
             language: {
                 searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
-                
+
             },
             columnDefs: [
                 { orderable: false, targets: -1 }
