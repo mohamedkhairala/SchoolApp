@@ -69,6 +69,14 @@ Partial Class Supervisor
                     Exit Sub
                 End If
 
+                ' insert user for Supervisor
+                If Not StudentService.InsertUser(dt, "U", _sqlconn, _sqltrans) Then
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                    _sqltrans.Rollback()
+                    _sqlconn.Close()
+                    Exit Sub
+                End If
+
                 _sqltrans.Commit()
                 _sqlconn.Close()
                 Clear()

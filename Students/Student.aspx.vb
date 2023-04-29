@@ -92,12 +92,8 @@ Partial Class Add_Student
                     _sqlconn.Close()
                     Exit Sub
                 End If
-                ' insert Student user
-                If Not FillUserDt(dtUser, dt) Then
-                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
-                    Exit Sub
-                End If
-                If Not StudentService.InsertUser(dtUser, _sqlconn, _sqltrans) Then
+                ' insert user for student
+                If Not StudentService.InsertUser(dt, "S", _sqlconn, _sqltrans) Then
                     clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                     _sqltrans.Rollback()
                     _sqlconn.Close()
@@ -183,85 +179,7 @@ Partial Class Add_Student
     End Function
 
 
-    ''' <summary>
-    ''' Fill User Object
-    ''' </summary>
-    Protected Function FillUserDt(ByRef dtUsers As TblUsers, ByRef dtStudent As TblStudents) As Boolean
-        Try
-            dtUsers.OwnerType = "S"
-            dtUsers.OwnerId = dtStudent.Id
-            dtUsers.FullName = dtStudent.Name
-            dtUsers.UserName = dtStudent.Email
-            dtUsers.Email = dtStudent.Email
-            dtUsers.Active = True
-            dtUsers.UserType = "User"
-            dtUsers.Password = PublicFunctions.Encrypt(GetPassword)
 
-            dtUsers.MobileNo = dtStudent.Mobile
-
-
-            dtUsers.Photo = dtStudent.Photo
-
-            dtUsers.CreatedBy = UserID
-            dtUsers.CreatedDate = DateTime.Now
-
-            dtUsers.ModifiedBy = UserID
-            dtUsers.ModifiedDate = DateTime.Now
-
-            dtUsers.IsDeleted = False
-
-            Return True
-        Catch ex As Exception
-            clsMessages.ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
-
-            Return False
-        End Try
-    End Function
-    Function GetPassword() As String
-        Try
-            ''Dim s As String = "a0!1LMbNOPQ@2#3GHdIJ$4%UVWlmneXYZ5^f6CDEF&gh7*8(9)Aijk_B+KRowxyzST"
-            'Dim s As String = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+abcdefghijklmnopqrstuwxyz"
-            'Dim r As New Random
-            'Dim sb As New StringBuilder
-            'For i As Integer = 1 To 8
-            '    Dim idx As Integer = r.Next(0, 73)
-            '    sb.Append(s.Substring(idx, 1))
-            'Next
-            'Return sb.ToString
-
-            Dim Letters As New List(Of Integer)
-            For i As Integer = 32 To 47
-                Letters.Add(i)
-            Next
-            'add ASCII codes for numbers & special chars
-            For i As Integer = 48 To 57
-                Letters.Add(i)
-            Next
-            'lowercase letters
-            For i As Integer = 97 To 122
-                Letters.Add(i)
-            Next
-            'uppercase letters
-            For i As Integer = 65 To 90
-                Letters.Add(i)
-            Next
-            'select 8 random integers from number of items in Letters
-            'then convert those random integers to characters and
-            'add each to a string and display in Textbox
-            Dim Rnd As New Random
-            Dim SB As New System.Text.StringBuilder
-            Dim Temp As Integer
-            For count As Integer = 1 To 8
-                Temp = Rnd.Next(0, Letters.Count)
-                SB.Append(Chr(Letters(Temp)))
-            Next
-
-            Return SB.ToString
-        Catch ex As Exception
-            clsMessages.ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
-            Return String.Empty
-        End Try
-    End Function
     Private Function SaveStudentGroup(dtStudent As TblStudents, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
         Try
             Dim da As New TblStudentsGroupsFactory

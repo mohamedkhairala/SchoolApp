@@ -71,6 +71,13 @@ Partial Class Parent
                     _sqlconn.Close()
                     Exit Sub
                 End If
+                ' insert user for Parent
+                If Not StudentService.InsertUser(dt, "P", _sqlconn, _sqltrans) Then
+                    clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                    _sqltrans.Rollback()
+                    _sqlconn.Close()
+                    Exit Sub
+                End If
                 _sqltrans.Commit()
                 _sqlconn.Close()
                 Clear()
