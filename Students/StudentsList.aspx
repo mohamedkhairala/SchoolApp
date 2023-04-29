@@ -1,10 +1,10 @@
-<%@ Page Title="Up Skills | All Students" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="StudentsList.aspx.vb" Inherits="Students" %>
+<%@ Page Title="Up Skills | All Students" Language="VB" MasterPageFile="../Master.master" AutoEventWireup="false" CodeFile="~/Students/StudentsList.aspx.vb" Inherits="StudentsList" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
@@ -13,7 +13,7 @@
         <h3>All Students</h3>
         <ul>
             <li>
-                <a href="Dashboard.aspx">Home</a>
+                <a href="~/Dashboard.aspx">Home</a>
             </li>
             <li>All Students</li>
         </ul>
@@ -56,7 +56,7 @@
             </div>
 
             <div class="table-responsive">
-                <a href="Student.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
+                <a href="Students/Student.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
@@ -90,10 +90,10 @@
                                 <asp:Label ID="lblParentId" runat="server" Visible="false" Text='<%# Eval("ParentId")%>'></asp:Label>
                             </td>
                             <td class="text-center">
-                                <img class="img-thumbnail" src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="student"></td>
+                                <img class="img-thumbnail" src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "../img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="student"></td>
                             <td>
                                 <%--<a href="#Details_modal"  data-toggle="modal" data-url='<%# "Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>'><%# Eval("Name")%></a>--%>
-                                <a href='<%# "Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
+                                <a href='<%# "../Students/Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
 
@@ -110,7 +110,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
 
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Students/Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
                                         <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
@@ -143,5 +143,5 @@
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
 </asp:Content>

@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Student Details" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Student_Details.aspx.vb" Inherits="Student_Details" %>
+<%@ Page Title="Up Skills | Student Details" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Teacher_Details.aspx.vb" Inherits="Student_Details" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
