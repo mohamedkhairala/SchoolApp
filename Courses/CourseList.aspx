@@ -56,6 +56,8 @@
             </div>
 
             <div class="table-responsive">
+                                <a href="Course.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
+
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
@@ -85,7 +87,7 @@
                             </td>
                                                
                             <td>
-                                <a href='<%# "Course.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
+                                <a href='<%# "Course_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("NoOfSessions")%></td>
                             <td><%# Eval("SessionRate")%></td>
@@ -102,7 +104,8 @@
                                         <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Course.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick="Delete">
+                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
+                                           OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 

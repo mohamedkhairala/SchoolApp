@@ -28,6 +28,7 @@ Partial Class Course
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 divActions.Visible = False
+                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Course)
                 View()
             End If
         Catch ex As Exception
@@ -151,7 +152,7 @@ Partial Class Course
 #End Region
 #Region "Cancel"
     Protected Sub Cancel(sender As Object, e As EventArgs)
-        Response.Redirect("Dashboard.aspx")
+        Response.Redirect("~/Dashboard.aspx")
     End Sub
     Protected Sub Edit(sender As Object, e As EventArgs)
         pnlForm.Enabled = True

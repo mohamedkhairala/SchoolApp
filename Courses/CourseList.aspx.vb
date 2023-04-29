@@ -81,9 +81,8 @@ Partial Class CourseList
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
             Dim CourseId = Val(CType(sender.parent.FindControl("lblCourseId"), Label).Text)
-            Dim str As String = "Update TblCourses Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & CourseId & ";"
 
-            If DBContext.ExcuteQuery(str) < 1 Then
+            If Not CourseService.DeleteCourse(CourseId) Then
                 ShowErrorMessgage(lblRes, "حدث خطأ", Me)
                 Exit Sub
             End If
