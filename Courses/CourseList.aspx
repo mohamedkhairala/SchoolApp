@@ -108,7 +108,15 @@
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
                                         <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
+<<<<<<< HEAD
                                             OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+=======
+<<<<<<< HEAD
+                                            OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+=======
+                                           OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+>>>>>>> e8f610f2df4758bf129bdf1f5fac09366b6e89fa
+>>>>>>> f8bbe18d64422fb5f2b05344246c26fd86825360
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 
