@@ -21,6 +21,9 @@
             <li>
                 <a href="CourseList.aspx">Courses List</a>
             </li>
+            <li>
+                <a href="CourseList.aspx">Courses List</a>
+            </li>
             <li>Course</li>
         </ul>
     </div>

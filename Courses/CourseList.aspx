@@ -61,6 +61,8 @@
             </div>
 
             <div class="table-responsive">
+                                <a href="Course.aspx" class="btn btn-success">   <i class="fa fa-plus" ></i>Add</a>
+
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
@@ -108,7 +110,11 @@
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                         </asp:LinkButton>
                                         <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
+<<<<<<< HEAD
                                             OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+=======
+                                           OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+>>>>>>> e8f610f2df4758bf129bdf1f5fac09366b6e89fa
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                         </asp:LinkButton>
 

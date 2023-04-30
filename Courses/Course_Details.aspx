@@ -9,7 +9,11 @@
         <h3>Course Details</h3>
         <ul>
             <li>
+<<<<<<< HEAD
                 <a href="../Dashboard.aspx">Home</a>
+=======
+                <a href="Dashboard.aspx">Home</a>
+>>>>>>> e8f610f2df4758bf129bdf1f5fac09366b6e89fa
             </li>
              <li>
                 <a href="CourseList.aspx">Courses List</a>
