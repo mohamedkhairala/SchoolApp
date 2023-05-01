@@ -530,7 +530,7 @@
     <!-- Upload Photo Js -->
     <script src="js/UploadPhoto.js"></script>
     <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
+    <%--<script src="js/jquery.dataTables.min.js"></script>--%>
     <script src="js/Users.js"></script>
     <%--<script>
         $('#tblTeachers').DataTable({
