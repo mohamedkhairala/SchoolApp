@@ -71,7 +71,7 @@ Partial Class Message
             _sqltrans.Commit()
             _sqlconn.Close()
             Clear()
-            ShowMessage(lblRes, "Sent Successfully!", Me.Page)
+            ShowSuccessMessgage(lblRes, "Sent Successfully!", Me.Page)
 
         Catch ex As Exception
             _sqltrans.Rollback()
@@ -88,9 +88,9 @@ Partial Class Message
             Dim Condition As String = IIf(Val(ddlSupervisors.SelectedValue) = 0, "1=1", "Id=" & Val(ddlSupervisors.SelectedValue))
             Dim da As New TblMessagesFactory
             'Send To All Group Students Or selected Student
-            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_Supervisors where SchoolId='" & School_Id & "' And " & Condition)
-            For Each STD As DataRow In dtGroupStudent.Rows
-                Dim SupervisorUserId = STD("SupervisorUserId")
+            Dim dtGroupStudent As DataTable = ExecuteQuery.ExecuteQueryAndReturnDataTable("Select * from vw_Supervisors where SchoolId='" & School_Id & "' And " & Condition, _sqlconn, _sqltrans)
+            For Each dr As DataRow In dtGroupStudent.Rows
+                Dim SupervisorUserId = Val(dr("SupervisorUserId").ToString)
                 Dim msg As New TblMessages
                 msg.MessageTitle = txtMessageTitle.Text.Trim
                 msg.MessageBody = txtDescription.Text
@@ -114,9 +114,9 @@ Partial Class Message
             Dim Condition As String = IIf(Val(ddlTeachers.SelectedValue) = 0, "1=1", "Id=" & Val(ddlTeachers.SelectedValue))
             Dim da As New TblMessagesFactory
             'Send To All Group Students Or selected Student
-            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_Teachers where SchoolId='" & School_Id & "' And " & Condition)
-            For Each STD As DataRow In dtGroupStudent.Rows
-                Dim TeacherUserID = STD("TeacherUserID")
+            Dim dtGroupStudent As DataTable = ExecuteQuery.ExecuteQueryAndReturnDataTable("Select * from vw_Teachers where SchoolId='" & School_Id & "' And " & Condition, _sqlconn, _sqltrans)
+            For Each dr As DataRow In dtGroupStudent.Rows
+                Dim TeacherUserID = Val(dr("TeacherUserID").ToString)
                 Dim msg As New TblMessages
                 msg.MessageTitle = txtMessageTitle.Text.Trim
                 msg.MessageBody = txtDescription.Text
@@ -140,9 +140,9 @@ Partial Class Message
             Dim Condition As String = IIf(Val(ddlStudent.SelectedValue) = 0, "1=1", "StudentID=" & Val(ddlStudent.SelectedValue))
             Dim da As New TblMessagesFactory
             'Send To All Group Students Or selected Student
-            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_StudentsGroups where SchoolId='" & School_Id & "' And " & Condition)
-            For Each STD As DataRow In dtGroupStudent.Rows
-                Dim StudentUserID = PublicFunctions.IntFormat(STD("StudentUserID").ToString)
+            Dim dtGroupStudent As DataTable = ExecuteQuery.ExecuteQueryAndReturnDataTable("Select * from vw_StudentsGroups where SchoolId='" & School_Id & "' And " & Condition, _sqlconn, _sqltrans)
+            For Each dr As DataRow In dtGroupStudent.Rows
+                Dim StudentUserID = PublicFunctions.IntFormat(dr("StudentUserID").ToString)
                 Dim msg As New TblMessages
                 msg.MessageTitle = txtMessageTitle.Text.Trim
                 msg.MessageBody = txtDescription.Text
@@ -249,8 +249,8 @@ Partial Class Message
             End If
 
             'Fill Students
-            Dim dt = DBContext.Getdatatable("Select ID,FirstName + ' ' + LastName as Name from vw_Students where GroupId=" & ddlGroups.SelectedValue.ToString & " and SchoolId='" & School_Id & "'")
-            ddlStudent.DataValueField = "ID"
+            Dim dt = DBContext.Getdatatable("Select StudentID,  Name from vw_StudentsGroups where GroupId=" & ddlGroups.SelectedValue.ToString & " and SchoolId='" & School_Id & "'")
+            ddlStudent.DataValueField = "StudentID"
             ddlStudent.DataTextField = "Name"
             ddlStudent.DataSource = dt
             ddlStudent.DataBind()
