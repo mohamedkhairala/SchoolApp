@@ -220,10 +220,10 @@
                                 </a>
                                 <ul id="Attendances" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="Attendance" lang="Attendances" href="../Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
+                                        <a id="Attendance" lang="Attendances" href="../Attendance/Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Add_Attendance" lang="Attendances" href="../Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
+                                        <a id="Add_Attendance" lang="Attendances" href="../Attendance/Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
                                     </li>
                                 </ul>
                             </li>
