@@ -44,8 +44,12 @@ Partial Class Forgot_Password
                 Dim CPUserId As String = dtUserCheck.Rows(0).Item("UserId").ToString
                 Dim Password As String = PublicFunctions.Decrypt(dtUserCheck.Rows(0).Item("Password"))
                 Dim Body As String = "Your Password : " + Password + ""
-                clsEmails.SendEmail("Forget Password", dtUserCheck.Rows(0).Item("Email"), Body, True)
-                clsMessages.ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "Email has been sent successfully")
+                If clsEmails.SendEmail("Forget Password", dtUserCheck.Rows(0).Item("Email"), Body, True) Then
+                    clsMessages.ShowMessage(lblRes, MessageTypesEnum.CUSTOMSuccess, Me, Nothing, "Email has been sent successfully")
+                Else
+                    clsMessages.ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "Email Not Sent")
+                End If
+
 
             Else
                 clsMessages.ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "Invalid Username")

@@ -896,7 +896,7 @@ Optional ByVal MinNumber As Integer = 0) As Integer
             End If
 
         Catch ex As Exception
-            RemoveCPCookie()
+            RemoveCookie()
             Return "0"
         End Try
         Return "0"
@@ -905,21 +905,21 @@ Optional ByVal MinNumber As Integer = 0) As Integer
     Public Shared Function GetUserId(ByVal page As Page) As String
         Try
             If HttpContext.Current.Request.Cookies.Get("UpSkillsSchool") IsNot Nothing Then
-                Dim UserId As String = HttpContext.Current.Request.Cookies("UpSkillsSchool")("UserId")
+                Dim UserId As String = Decrypt(HttpContext.Current.Request.Cookies("UpSkillsSchool")("UserId"))
                 Return UserId
             Else
-                RemoveCPCookie()
-                page.Response.Redirect("Login.aspx", True)
+                RemoveCookie()
+                page.Response.Redirect("~/Login.aspx", True)
                 Return "0"
             End If
         Catch ex As Exception
-            RemoveCPCookie()
-            page.Response.Redirect("Login.aspx", True)
+            RemoveCookie()
+            page.Response.Redirect("~/Login.aspx", True)
             Return "0"
         End Try
     End Function
 
-    Public Shared Function RemoveCPCookie() As Boolean
+    Public Shared Function RemoveCookie() As Boolean
         Try
             Dim UELPDCookies As New HttpCookie("UpSkillsSchool")
             UELPDCookies.Expires = DateTime.Now.AddDays(-1D)
@@ -965,14 +965,14 @@ Optional ByVal MinNumber As Integer = 0) As Integer
             If HttpContext.Current.Request.Cookies.Get("UpSkillsSchool") Is Nothing Then
                 Return False
             End If
-            Dim CPUserId As String = HttpContext.Current.Request.Cookies("UpSkillsSchool")("UserId")
-            Dim CPUsername As String = HttpContext.Current.Request.Cookies("UpSkillsSchool")("Username")
+            Dim CPUserId As String = Decrypt(HttpContext.Current.Request.Cookies("UpSkillsSchool")("UserId"))
+            Dim CPUsername As String = Decrypt(HttpContext.Current.Request.Cookies("UpSkillsSchool")("Username"))
 
             If CPUserId <> String.Empty Then
                 Return True
             Else
                 'remove that cookies
-                RemoveCPCookie()
+                RemoveCookie()
                 Return False
             End If
             Return False
