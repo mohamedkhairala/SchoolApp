@@ -317,8 +317,8 @@
                                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="200" onkeypress="return isString(event);" onkeyup="ValidateChars(this);"></asp:TextBox>
                                         <asp:RequiredFieldValidator ID="rfvEmail" runat="server" CssClass="valid-inp" ValidationGroup="Main" ControlToValidate="txtEmail"
                                             ErrorMessage="Enter E-mail" Display="Dynamic"></asp:RequiredFieldValidator>
-                                        <asp:CustomValidator ID="cvEmail" runat="server" ValidationGroup="Main" Display="Dynamic" ControlToValidate="txtEmail" ErrorMessage="Email already exist" EnableViewState="false" ValidateEmptyText="true"
-                                            EnableClientScript="true" Enabled="true" ClientValidationFunction="CheckEmail"></asp:CustomValidator>
+                                        <%--<asp:CustomValidator ID="cvEmail" runat="server" ValidationGroup="Main" Display="Dynamic" ControlToValidate="txtEmail" ErrorMessage="Email already exist" EnableViewState="false" ValidateEmptyText="true"
+                                            EnableClientScript="true" Enabled="true" ClientValidationFunction="CheckEmail"></asp:CustomValidator>--%>
                                         <asp:RegularExpressionValidator ID="revEmail" ValidationGroup="Main" CssClass="valid-inp" runat="server" ControlToValidate="txtEmail"
                                             ErrorMessage="Invalid Email" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
                                     </div>
@@ -328,8 +328,8 @@
                                         <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" MaxLength="20" onkeypress="return isString(event);" onkeyup="ValidateChars(this);"></asp:TextBox>
                                         <asp:RequiredFieldValidator ID="rfvUserName" runat="server" CssClass="valid-inp" ValidationGroup="Main" ControlToValidate="txtUsername"
                                             ErrorMessage="Enter Username" Display="Dynamic"></asp:RequiredFieldValidator>
-                                        <asp:CustomValidator ID="cvUserName" runat="server" ValidationGroup="Main" Display="Dynamic" ControlToValidate="txtUsername" ErrorMessage="Username already exist" EnableViewState="false" ValidateEmptyText="true"
-                                            EnableClientScript="true" Enabled="true" ClientValidationFunction="CheckUserName"></asp:CustomValidator>
+                                       <%-- <asp:CustomValidator ID="cvUserName" runat="server" ValidationGroup="Main" Display="Dynamic" ControlToValidate="txtUsername" ErrorMessage="Username already exist" EnableViewState="false" ValidateEmptyText="true"
+                                            EnableClientScript="true" Enabled="true" ClientValidationFunction="CheckUserName"></asp:CustomValidator>--%>
                                         <asp:RegularExpressionValidator ID="valtxtUsername" runat="server" CssClass="valid-inp"
                                             ControlToValidate="txtUsername" ErrorMessage="Minimum UserName length is 5" ValidationExpression=".{5}.*" />
                                     </div>
@@ -528,7 +528,7 @@
     <!-- Date Picker Js -->
     <script src="js/datepicker.min.js"></script>
     <!-- Upload Photo Js -->
-    <script src="js/UploadPhoto.js"></script>
+    <script src="js/uploaduserimg.js"></script>
     <!-- Data Table Js -->
     <%--<script src="js/jquery.dataTables.min.js"></script>--%>
     <script src="js/Users.js"></script>

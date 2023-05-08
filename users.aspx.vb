@@ -29,7 +29,7 @@ Partial Class ControlPanel_users
     ''' </summary>
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         lblRes.Visible = False
-        UserID = 1 'PublicFunctions.GetUserId(Page)
+        UserID = PublicFunctions.GetUserId(Page)
         Try
             If Page.IsPostBack = False Then
                 '  Permissions.CheckPermisions(gvUsers, lbAdd, txtSearch, lbSearchIcon, Me.Page, UserID)
@@ -569,7 +569,7 @@ Partial Class ControlPanel_users
             ' Check that there is a file
             If fuPhoto.PostedFile IsNot Nothing Then
 
-                Dim filePath As String = "~/CPUsers_Photos/" & fuPhoto.FileName
+                Dim filePath As String = "~/Users_Photos/" & fuPhoto.FileName
 
                 ' Check file size (mustn’t be 0)
                 Dim myFile As HttpPostedFile = fuPhoto.PostedFile

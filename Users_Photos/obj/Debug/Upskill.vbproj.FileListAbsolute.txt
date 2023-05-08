@@ -1,4 +1,0 @@
-E:\Mohamed\Freelance\Up_Skills_School\obj\Debug\Upskill.vbproj.AssemblyReference.cache
-E:\Mohamed\Freelance\Up_Skills_School\obj\Debug\Upskill.Resources.resources
-E:\Mohamed\Freelance\Up_Skills_School\obj\Debug\Upskill.vbproj.GenerateResource.cache
-E:\Mohamed\Freelance\Up_Skills_School\obj\Debug\Upskill.vbproj.CoreCompileInputs.cache

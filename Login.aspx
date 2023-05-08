@@ -44,7 +44,7 @@
                         <asp:Label ID="lblRes" CssClass="res-label-info" runat="server"></asp:Label>
                         <div class="form-group">
                             <label>Username</label>
-                            <asp:TextBox ID="txtUsername" runat="server" placeholder="Enter usrename" CssClass="form-control" AutoPostBack ="true" OnTextChanged ="SetPassword"></asp:TextBox>
+                            <asp:TextBox ID="txtUsername" runat="server" placeholder="Enter usrename" CssClass="form-control" ></asp:TextBox>
                             <i class="far fa-envelope"></i>
                         </div>
                         <div class="form-group">
