@@ -16,6 +16,9 @@ Public Class GenerateCode
                     qry = "SELECT ('PNT'+FORMAT(Max(Id)+1, '000000')) FROM TblParents"
                 Case PublicFunctions.Stackholders.Course
                     qry = "SELECT ('CRS'+FORMAT(Max(Id)+1, '000000')) FROM TblCourses"
+                Case PublicFunctions.Stackholders.Messages
+                    qry = "SELECT Max(Id)+1 FROM TblMessages"
+
             End Select
             If qry = "" Then
                 Return ""

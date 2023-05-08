@@ -18,6 +18,7 @@ Public Class PublicFunctions
         Course
         Group
         Session
+        Messages
     End Enum
 #Region "Global Functions"
     Public Shared Function ServerURL() As String

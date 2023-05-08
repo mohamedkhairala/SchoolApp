@@ -71,6 +71,8 @@
                                 <asp:DropDownList ID="ddlGroups" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="FillGroupStudent">
                                     <asp:ListItem Value="0">Select Group</asp:ListItem>
                                 </asp:DropDownList>
+                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqddlGroups" InitialValue="0" runat="server" ValidationGroup="vUsers"
+                                ControlToValidate="ddlGroups" Display="Dynamic" Text="Required Group"></asp:RequiredFieldValidator>
                             </div>
                             <div class="col-xl-4 col-lg-4 col-4 form-group">
                                 <label>Students</label>

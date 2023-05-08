@@ -12,10 +12,10 @@ Partial Class Message
 
     Dim UserID As String = "0"
     Dim School_Id As String = "1"
-    Dim FormQry As String = "Select * from vw_Courses "
+    Dim FormQry As String = "Select * from vw_Messages "
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
     Dim _sqltrans As SqlTransaction
-
+    Dim da As New TblMessagesFactory
 #End Region
 #Region "Page load"
     ''' <summary>
@@ -24,7 +24,7 @@ Partial Class Message
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
-            'UserId = PublicFunctions.GetUserId(Page)
+            UserID = 15 ' PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 divActions.Visible = False
@@ -71,27 +71,33 @@ Partial Class Message
             _sqltrans.Commit()
             _sqlconn.Close()
             Clear()
-            ShowMessage(lblRes, "Sent Successfully!", Me.Page)
+            clsMessages.ShowSuccessMessgage(lblRes, "Sent Successfully!", Me.Page)
 
         Catch ex As Exception
-            _sqltrans.Rollback()
-            _sqlconn.Close()
             Throw ex
         End Try
 
     End Sub
 
 
-
+    Private Function GenerateMessageCode() As Integer
+        Try
+            Return Val(GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Messages))
+        Catch ex As Exception
+            Throw ex
+        End Try
+    End Function
     Private Function MessageSupervisors() As Boolean
         Try
             Dim Condition As String = IIf(Val(ddlSupervisors.SelectedValue) = 0, "1=1", "Id=" & Val(ddlSupervisors.SelectedValue))
-            Dim da As New TblMessagesFactory
+
             'Send To All Group Students Or selected Student
-            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_Supervisors where SchoolId='" & School_Id & "' And " & Condition)
-            For Each STD As DataRow In dtGroupStudent.Rows
-                Dim SupervisorUserId = STD("SupervisorUserId")
+            Dim dtSupervisors As DataTable = DBContext.Getdatatable("Select * from vw_Supervisors where SchoolId='" & School_Id & "' And " & Condition)
+            Dim MessageCode = GenerateMessageCode()
+            For Each dr As DataRow In dtSupervisors.Rows
+                Dim SupervisorUserId = dr("SupervisorUserId")
                 Dim msg As New TblMessages
+                msg.MsgNo = MessageCode
                 msg.MessageTitle = txtMessageTitle.Text.Trim
                 msg.MessageBody = txtDescription.Text
                 msg.SenderId = UserID
@@ -114,10 +120,13 @@ Partial Class Message
             Dim Condition As String = IIf(Val(ddlTeachers.SelectedValue) = 0, "1=1", "Id=" & Val(ddlTeachers.SelectedValue))
             Dim da As New TblMessagesFactory
             'Send To All Group Students Or selected Student
-            Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_Teachers where SchoolId='" & School_Id & "' And " & Condition)
-            For Each STD As DataRow In dtGroupStudent.Rows
-                Dim TeacherUserID = STD("TeacherUserID")
+            Dim dtTeachers As DataTable = DBContext.Getdatatable("Select * from vw_Teachers where SchoolId='" & School_Id & "' And " & Condition)
+            Dim MessageCode = GenerateMessageCode()
+
+            For Each dr As DataRow In dtTeachers.Rows
+                Dim TeacherUserID = dr("TeacherUserID")
                 Dim msg As New TblMessages
+                msg.MsgNo = MessageCode
                 msg.MessageTitle = txtMessageTitle.Text.Trim
                 msg.MessageBody = txtDescription.Text
                 msg.SenderId = UserID
@@ -137,13 +146,15 @@ Partial Class Message
 
     Private Function MessageStudents() As Boolean
         Try
-            Dim Condition As String = IIf(Val(ddlStudent.SelectedValue) = 0, "1=1", "StudentID=" & Val(ddlStudent.SelectedValue))
+            Dim Condition As String = IIf(Val(ddlStudent.SelectedValue) = 0, "GroupId='" & Val(ddlGroups.SelectedValue) & "'", "StudentID=" & Val(ddlStudent.SelectedValue))
             Dim da As New TblMessagesFactory
             'Send To All Group Students Or selected Student
             Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_StudentsGroups where SchoolId='" & School_Id & "' And " & Condition)
+            Dim MessageCode = GenerateMessageCode()
             For Each STD As DataRow In dtGroupStudent.Rows
                 Dim StudentUserID = PublicFunctions.IntFormat(STD("StudentUserID").ToString)
                 Dim msg As New TblMessages
+                msg.MsgNo = MessageCode
                 msg.MessageTitle = txtMessageTitle.Text.Trim
                 msg.MessageBody = txtDescription.Text
                 msg.SenderId = UserID
@@ -161,47 +172,7 @@ Partial Class Message
         End Try
     End Function
 #End Region
-#Region "View"
-    Protected Sub View()
-        Try
-            Dim Mode As String = Request.QueryString("Mode")
-            Dim ID As String = Request.QueryString("ID")
-            If (Mode = "View" Or Mode = "Edit") And IsNumeric(ID) Then
-                Dim dt As DataTable = DBContext.Getdatatable(FormQry & "Where ID='" & ID & "' And SchoolId='" & School_Id & "'")
-                If dt.Rows.Count = 0 Then
-                    Exit Sub
-                End If
-                txtMessageTitle.Text = dt.Rows(0).Item("Name").ToString
-                txtDescription.Text = dt.Rows(0).Item("NoOfSessions").ToString
 
-                lbSave.CommandArgument = "Edit"
-                pnlForm.Enabled = Mode = "Edit"
-                divActions.Visible = Mode = "View"
-            End If
-
-            lblTitle.Text = IIf(String.IsNullOrEmpty(Mode), "Add New Message", Mode & " Message")
-        Catch ex As Exception
-            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
-        End Try
-    End Sub
-#End Region
-#Region "Cancel"
-    Protected Sub Cancel(sender As Object, e As EventArgs)
-        Response.Redirect("Dashboard.aspx")
-    End Sub
-    Protected Sub Edit(sender As Object, e As EventArgs)
-        pnlForm.Enabled = True
-        sender.visible = False
-        lbSave.CommandArgument = "Edit"
-        lblTitle.Text = "Edit Message"
-        divActions.Visible = False
-    End Sub
-
-    Protected Sub Clear()
-        txtMessageTitle.Text = String.Empty
-        txtDescription.Text = String.Empty
-    End Sub
-#End Region
 
 #Region "Types"
     Protected Sub SelectType(sender As Object, e As EventArgs)
@@ -249,9 +220,10 @@ Partial Class Message
             End If
 
             'Fill Students
-            Dim dt = DBContext.Getdatatable("Select ID,FirstName + ' ' + LastName as Name from vw_Students where GroupId=" & ddlGroups.SelectedValue.ToString & " and SchoolId='" & School_Id & "'")
-            ddlStudent.DataValueField = "ID"
+            Dim dt = DBContext.Getdatatable("Select StudentID, Name from vw_StudentsGroups where GroupId=" & ddlGroups.SelectedValue.ToString & " and SchoolId='" & School_Id & "'")
+            ddlStudent.DataValueField = "StudentID"
             ddlStudent.DataTextField = "Name"
+            ddlStudent.AppendDataBoundItems = True
             ddlStudent.DataSource = dt
             ddlStudent.DataBind()
         Catch ex As Exception
@@ -287,4 +259,47 @@ Partial Class Message
     End Sub
 #End Region
 
+
+#Region "View"
+    Protected Sub View()
+        Try
+            Dim Mode As String = Request.QueryString("Mode")
+            Dim MsgID As String = Request.QueryString("ID")
+            If (Mode = "View" Or Mode = "Edit") And IsNumeric(ID) Then
+                Dim dt As DataTable = DBContext.Getdatatable(FormQry & "Where MsgID='" & MsgID & "' And SchoolId='" & School_Id & "'")
+                If dt.Rows.Count = 0 Then
+                    Exit Sub
+                End If
+                txtMessageTitle.Text = dt.Rows(0).Item("MessageTitle").ToString
+                txtDescription.Text = dt.Rows(0).Item("MessageBody").ToString
+
+                lbSave.CommandArgument = "Edit"
+                pnlForm.Enabled = Mode = "Edit"
+                divActions.Visible = Mode = "View"
+            End If
+
+            lblTitle.Text = IIf(String.IsNullOrEmpty(Mode), "Add New Message", Mode & " Message")
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
+
+#Region "Cancel"
+    Protected Sub Cancel(sender As Object, e As EventArgs)
+        Response.Redirect("~/Dashboard.aspx")
+    End Sub
+    Protected Sub Edit(sender As Object, e As EventArgs)
+        pnlForm.Enabled = True
+        sender.visible = False
+        lbSave.CommandArgument = "Edit"
+        lblTitle.Text = "Edit Message"
+        divActions.Visible = False
+    End Sub
+
+    Protected Sub Clear()
+        txtMessageTitle.Text = String.Empty
+        txtDescription.Text = String.Empty
+    End Sub
+#End Region
 End Class
