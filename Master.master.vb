@@ -8,7 +8,6 @@ Partial Class Master
     Inherits System.Web.UI.MasterPage
 #Region "Global Variables"
     Dim UserId As String = "0"
-    Dim Client_Id As String = "1001"
 #End Region
 
 #Region "Page Load"
@@ -33,13 +32,12 @@ Partial Class Master
     Private Sub LoadUserData()
         Try
 
-            Dim dtUsers As DataTable = DBContext.Getdatatable("select FullName,Photo from tblUsers where isnull(isDeleted,0)=0 and UserId='" + UserId + "'")
+            Dim dtUsers As DataTable = DBContext.Getdatatable("select FullName,Photo,username from tblUsers where isnull(isDeleted,0)=0 and UserId='" + UserId + "'")
             If dtUsers.Rows.Count > 0 Then
-                'lblFullName.Text = dtUsers.Rows(0).Item("FullName").ToString
-                'lblFullName2.Text = dtUsers.Rows(0).Item("FullName").ToString
-                'ImgUser.Src = dtUsers.Rows(0).Item("Photo").ToString
-                'ImgUser2.Src = dtUsers.Rows(0).Item("Photo").ToString
-                'lblUserGroup.Text = dtUsers.Rows(0).Item("GroupId").ToString
+                h5Name.InnerHtml = dtUsers.Rows(0).Item("FullName").ToString
+                h6Name.InnerHtml = dtUsers.Rows(0).Item("FullName").ToString
+                spUsername.InnerHtml = dtUsers.Rows(0).Item("username").ToString
+                imgUser.Src = dtUsers.Rows(0).Item("Photo").ToString
             End If
         Catch ex As Exception
             ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
@@ -261,6 +259,26 @@ Partial Class Master
             Return Nothing
         End Try
     End Function
+
+#End Region
+
+#Region "Logout"
+    ''' <summary>
+    ''' Handle Logout event.
+    ''' </summary>
+    Protected Sub Logout(ByVal sender As Object, ByVal e As System.EventArgs)
+        Try
+            If Request.Cookies("UpSkillsSchool") IsNot Nothing Then
+                Dim C As HttpCookie = Request.Cookies("UpSkillsSchool")
+                C.Expires = Now.Date.AddDays(-10)
+                Response.Cookies.Add(C)
+            End If
+        Catch ex As Exception
+            ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
+        End Try
+        'Redirect to login
+        Response.Redirect("login.aspx")
+    End Sub
 
 #End Region
 End Class
