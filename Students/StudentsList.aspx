@@ -56,7 +56,8 @@
             </div>
             <div class="col-md-12 px-0 text-right">
                 <div class="d-inline-flex mb-3">
-                    <a href="../Students/Student.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>
+                    <asp:LinkButton ID="lbAdd" runat ="server" href="../Students/Student.aspx" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
+                    <%--<a href="../Students/Student.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>--%>
                 </div>
             </div>
 
@@ -114,12 +115,17 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
 
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Students/Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:Panel ID="pnlEdit" runat="server">
+                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Students/Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+                                            </asp:LinkButton>
+                                        </asp:Panel>
+                                        <asp:Panel ID="pnlDelete" runat="server">
+                                            <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
-                                        </asp:LinkButton>
+                                            </asp:LinkButton>
+                                        </asp:Panel>
+                                       
 
 
                                     </div>

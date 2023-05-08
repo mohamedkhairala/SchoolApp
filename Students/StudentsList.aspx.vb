@@ -19,7 +19,10 @@ Partial Class StudentsList
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
+
+            UserID = PublicFunctions.GetUserId(Page)
             If Page.IsPostBack = False Then
+
                 FillGrid(sender, e)
             End If
         Catch ex As Exception
@@ -87,6 +90,16 @@ Partial Class StudentsList
             End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
             FillGrid(sender, e)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
+
+#Region "Permissions"
+    Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
+        Try
+            Permissions.CheckPermisions(lvMaster, lbAdd, txtSearch, lbSearch, Me.Page, UserID)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

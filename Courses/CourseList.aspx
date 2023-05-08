@@ -56,7 +56,9 @@
             </div>
             <div class="col-md-12 px-0 text-right">
                 <div class="d-inline-flex mb-3">
-                    <a href="Course.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>
+                    <%--<a href="Course.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>--%>
+                    <asp:LinkButton ID="lbAdd" runat ="server" href="Course.aspx" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
+                
                 </div>
             </div>
 

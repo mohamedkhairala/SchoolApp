@@ -2,11 +2,11 @@
 
 Public Class clsMessages
 #Region "New Way"
-    Private Const InsertMsg As String = "تم إضافة السجل بنجاح"
-    Private Const ErrorMsg As String = "حدث خطأ..الرجاء الاتصال بفريق الدعم"
-    Private Const UpdateMSG As String = "تم تعديل السجل بنجاح"
-    Private Const DeleteMSG As String = "تم حذف السجل بنجاح"
-    Private Const INFOMSG As String = "القيمة المدخلة موجودة قبل ذلك...الرجاء إدخال قيمة أخرى"
+    Private Const InsertMsg As String = "Added Successfully"
+    Private Const ErrorMsg As String = "Error ... Contact Support Team"
+    Private Const UpdateMSG As String = "Updated Successfully"
+    Private Const DeleteMSG As String = "Deleted Successfully"
+    Private Const INFOMSG As String = "Already Exist"
 
     Enum MessageTypesEnum
         Insert
