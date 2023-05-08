@@ -8,6 +8,8 @@ Imports System.IO
 Imports System.Data
 Imports System.Data.SqlClient
 Imports System.Diagnostics
+Imports Microsoft.Web.Services3.Messaging
+
 
 #End Region
 
@@ -15,7 +17,7 @@ Public Class clsEmails
 
 #Region "Class Attributes"
 
-    Private Shared CompanyName As String = "WeSynape"
+    Private Shared CompanyName As String = "Up Skills"
     Private Shared CompanyEmail As String = "elsayedhussein.website@gmail.com"
     Private Shared CompanyPassword As String = "Sayed@789123"
 
@@ -28,22 +30,45 @@ Public Class clsEmails
     ''' </summary>
     Shared Function SendEmail(ByVal MailSubject As String, ByVal MailTo As String, ByVal MailBody As String, ByVal MailHTMLBody As Boolean, Optional BccMail As String = "") As Boolean
         Try
-            Dim ToEmail = MailTo
-            Dim Smtp_Server As New SmtpClient
-            Dim e_mail As New MailMessage()
-            Smtp_Server.UseDefaultCredentials = False
-            Smtp_Server.Credentials = New Net.NetworkCredential(CompanyEmail, CompanyPassword)
-            Smtp_Server.Port = 587
-            Smtp_Server.EnableSsl = True
-            Smtp_Server.Host = "smtp.gmail.com"
+            'Dim ToEmail = MailTo
+            'Dim Smtp_Server As New SmtpClient
+            'Dim e_mail As New MailMessage()
+            'Smtp_Server.UseDefaultCredentials = False
+            'Smtp_Server.Credentials = New Net.NetworkCredential(CompanyEmail, CompanyPassword)
+            'Smtp_Server.Port = 587
+            'Smtp_Server.EnableSsl = True
+            'Smtp_Server.Host = "smtp.gmail.com"
 
-            e_mail = New MailMessage()
-            e_mail.From = New MailAddress(CompanyEmail)
-            e_mail.To.Add(MailTo)
-            e_mail.Subject = MailSubject
-            e_mail.IsBodyHtml = MailHTMLBody
-            e_mail.Body = MailBody
-            Smtp_Server.Send(e_mail)
+            'e_mail = New MailMessage()
+            'e_mail.From = New MailAddress(CompanyEmail)
+            'e_mail.To.Add(MailTo)
+            'e_mail.Subject = MailSubject
+            'e_mail.IsBodyHtml = MailHTMLBody
+            'e_mail.Body = MailBody
+            'Smtp_Server.Send(e_mail)
+
+            Dim mailId As String()
+            Dim Mail As New MailMessage
+            Mail.Subject = MailSubject
+            If MailTo.Contains(";") Then
+                mailId = MailTo.Split(";")
+                For Each tempEmail As String In mailId
+                    Mail.To.Add(tempEmail)
+                Next
+            Else
+                Mail.To.Add(MailTo)
+            End If
+
+            Dim SMTPHost As String = "smtp.gmail.com"
+            Mail.From = New MailAddress(CompanyEmail, "Up Skills")
+            Mail.Body = MailBody
+            Mail.IsBodyHtml = MailHTMLBody
+
+            Dim SMTP As New SmtpClient(SMTPHost)
+            SMTP.Credentials = New System.Net.NetworkCredential(CompanyEmail, CompanyPassword)
+            SMTP.Port = 587
+            SMTP.EnableSsl = True
+            SMTP.Send(Mail)
 
             Return True
         Catch ex As Exception

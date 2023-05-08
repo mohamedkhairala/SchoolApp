@@ -39,6 +39,7 @@
             <asp:ServiceReference Path="~/WebService.asmx" />
         </Services>--%>
         </asp:ToolkitScriptManager>
+        <asp:label ID="lblRes" runat ="server" Visible ="false"  ></asp:label>
         <!-- Preloader Start Here -->
         <div id="preloader"></div>
         <!-- Preloader End Here -->
@@ -120,9 +121,14 @@
                         </div>
                     </div>
                     <div class="sidebar-menu-content">
-                        <ul class="nav nav-sidebar-menu sidebar-toggle-view">
-                            <li class="nav-item">
+                         <ul class="nav nav-sidebar-menu sidebar-toggle-view" id="UlMenu" runat ="server" >
+                             <li class="nav-item">
                                 <a id="Dashboard" href="Dashboard.aspx" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                            </li>
+                         </ul>
+                        <ul class="nav nav-sidebar-menu sidebar-toggle-view" id="menu" runat ="server" visible="false"  >
+                            <li class="nav-item">
+                                <a id="Dashboards" href="Dashboard.aspx" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                             </li>
                             <li class="nav-item sidebar-nav-item">
                                 <a href="#" class="nav-link"><i class="flaticon-classmates"></i><span>Students</span></a>
@@ -220,10 +226,10 @@
                                 </a>
                                 <ul id="Attendances" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="Attendance" lang="Attendances" href="../Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
+                                        <a id="Attendance" lang="Attendances" href="../Attendance/Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Add_Attendance" lang="Attendances" href="../Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
+                                        <a id="Add_Attendance" lang="Attendances" href="../Attendance/Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
                                     </li>
                                 </ul>
                             </li>
