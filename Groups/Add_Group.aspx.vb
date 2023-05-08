@@ -246,7 +246,7 @@ Partial Class Add_Group
                     lvSessions.DataBind()
                 End If
                 ' students data
-                dt = DBContext.Getdatatable("select * from tblStudentsGroups where GroupID = '" & ID & "' and SchoolID = '" & School_ID & "';")
+                dt = DBContext.Getdatatable("select * from vw_StudentsGroups where GroupID = '" & ID & "' and SchoolID = '" & School_ID & "';")
                 If dt.Rows.Count > 0 Then
                     lvStudents.DataSource = dt
                     lvStudents.DataBind()
