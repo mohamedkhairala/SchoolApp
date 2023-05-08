@@ -1,4 +1,5 @@
 <%@ Page Title="Up Skills | Dashboard" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="MessagesList.aspx.vb" Inherits="Dashboard" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server"></asp:Content>
@@ -11,7 +12,7 @@
         </ul>
     </div>
     <div class="row gutters-20">
-      
+
         <div class="col-lg-12 col-xl-12 col-12-xxxl">
             <div class="card dashboard-card-six pd-b-20">
                 <div class="card-body">
@@ -19,49 +20,38 @@
                         <div class="item-title">
                             <h3>Messages</h3>
                         </div>
-                        
+                        <asp:Label Text="" ID="lblRes" runat="server" />
                     </div>
                     <div class="notice-box-wrap">
-                        <div class="notice-list">
-                            <div class="post-date bg-skyblue">16 June, 2019</div>
-                            <h6 class="notice-title">
-                                <a href="#">
-                                    Great School manag mene esom text of the
-                                    printing.
-                                </a>
-                            </h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-yellow">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-pink">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-skyblue">16 June, 2019</div>
-                            <h6 class="notice-title">
-                                <a href="#">
-                                    Great School manag mene esom text of the
-                                    printing.
-                                </a>
-                            </h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-yellow">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-pink">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
+                        <asp:TextBox runat="server" ID="txtSearch" Visible="false" />
+                        <asp:ListView runat="server" ID="rbMessages">
+                            <ItemTemplate>
+                                <div class="notice-list">
+                                    <div class="post-date  <%# clsNotifications.SetRandomColor() %>"><%# PublicFunctions.DateFormat(Eval("CreatedDate"), "dd MMM yyyy") %></div>
+                                    <h6 class="notice-title">
+                                        <a href="#">
+                                            <%# Eval("MessageTitle") %>
+                                        </a>
+                                        <p><%# Eval("MessageBody") %></p>
+                                    </h6>
+                                    <div class="entry-meta"><%# Eval("CreatedByUserName") %> / <span><%# clsNotifications.SetTimeAgo(Eval("CreatedDate"), Eval("time_ago")) %></span></div>
+                                    <div>
+                                        <asp:LinkButton Text="Delete" ID="lbDelete" CommandArgument='<%# Eval("MsgNo") %>' OnClientClick="return confirm('Confirm Delete?');" OnClick="Delete" runat="server" />
+                                    </div>
+                                    </div>
+                            </ItemTemplate>
+                           <EmptyDataTemplate>
+                        <table style="width: 100%;">
+                            <tr class="EmptyRowStyle">
+                                <td>
+                                    <div>No Messages Found.</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </EmptyDataTemplate>
+                        </asp:ListView>
+
+
                     </div>
                 </div>
             </div>
