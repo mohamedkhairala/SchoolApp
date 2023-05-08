@@ -23,9 +23,10 @@ Partial Class Add_Student
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
-            'UserId = PublicFunctions.GetUserId(Page)
+            UserID = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
+                Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 lbEdit.Visible = False
                 txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Teacher)
                 View()

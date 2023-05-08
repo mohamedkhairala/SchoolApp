@@ -28,7 +28,7 @@
                 </div>
 
             </div>
-            <asp:Repeater runat="server" ID="rpDetails">
+            <asp:ListView runat="server" ID="rpDetails">
                 <ItemTemplate>
                     <div class="single-info-details">
                         <div class="item-img">
@@ -41,13 +41,19 @@
                                 <div class="header-actions">
                                     <ul>
                                         <li>
-                                            <a id="lbEdit" class="action-green" runat="server" href='<%# "../Teachers/Teacher.aspx?Mode=Edit&ID=" & Eval("Id")%>'><i class="far fa-edit"></i></a>
+                                            <asp:Panel ID="pnlEdit" runat="server">
+                                                <a id="lbEdit" class="action-green" runat="server" href='<%# "../Teachers/Teacher.aspx?Mode=Edit&ID=" & Eval("Id")%>'><i class="far fa-edit"></i></a>
+                                            </asp:Panel>
                                         </li>
                                         <li>
-                                            <asp:LinkButton ID="lbPrint" CssClass="action-blue" runat="server"><i class="fas fa-print"></i></asp:LinkButton>
+                                            <asp:Panel ID="pnlPrint" runat="server">
+                                                <asp:LinkButton ID="lbPrint" CssClass="action-blue" runat="server"><i class="fas fa-print"></i></asp:LinkButton>
+                                            </asp:Panel>
                                         </li>
                                         <li>
-                                            <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete"><i class="far fa-trash-alt"></i></asp:LinkButton>
+                                            <asp:Panel ID="pnlDelete" runat="server">
+                                                <asp:LinkButton ID="lbDelete" CssClass="action-red" runat="server" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete"><i class="far fa-trash-alt"></i></asp:LinkButton>
+                                            </asp:Panel>
                                         </li>
                                     </ul>
                                 </div>
@@ -109,7 +115,7 @@
                         </div>
                     </div>
                 </ItemTemplate>
-            </asp:Repeater>
+            </asp:ListView>
         </div>
     </div>
     <!-- Student Details Area End Here -->

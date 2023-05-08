@@ -28,9 +28,10 @@ Partial Class Add_Attendance
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
-            'UserId = PublicFunctions.GetUserId(Page)
+            UserID = PublicFunctions.GetUserId(Page)
             'School_ID = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
+                Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 FillDDL()
                 View()
             End If

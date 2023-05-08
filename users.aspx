@@ -246,7 +246,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-CssClass="gvPermissionCheckBox">
                                                         <HeaderTemplate>
-                                                            <asp:CheckBox ID="chkAllActive" Text="Active" runat="server"
+                                                            <asp:CheckBox ID="chkAllActive" Text="Print" runat="server"
                                                                 onclick="CheckAll(this);" />
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
@@ -445,7 +445,7 @@
                                                                 </asp:TemplateField>
                                                                 <asp:TemplateField HeaderStyle-CssClass="gvPermissionCheckBox">
                                                                     <HeaderTemplate>
-                                                                        <asp:CheckBox ID="chkAllActive" Text="Active" runat="server"
+                                                                        <asp:CheckBox ID="chkAllActive" Text="Print" runat="server"
                                                                             onclick="CheckAll(this);" />
                                                                     </HeaderTemplate>
                                                                     <ItemTemplate>
