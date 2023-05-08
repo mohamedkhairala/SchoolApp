@@ -1,4 +1,5 @@
 ﻿#Region "Import"
+Imports System.Activities.Expressions
 Imports System.Data
 Imports System.Data.SqlClient
 Imports AjaxControlToolkit
@@ -19,6 +20,7 @@ Partial Class Parents
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
+            UserID = PublicFunctions.GetUserId(Page)
             If Page.IsPostBack = False Then
                 FillGrid(sender, e)
             End If
@@ -87,6 +89,16 @@ Partial Class Parents
             End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
             FillGrid(sender, e)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
+
+#Region "Permissions"
+    Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
+        Try
+            Permissions.CheckPermisions(lvMaster, lbAdd, txtSearch, lbSearch, Me.Page, UserID)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

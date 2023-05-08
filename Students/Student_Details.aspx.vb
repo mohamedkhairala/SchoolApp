@@ -18,6 +18,7 @@ Partial Class Student_Details
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
+            UserID = PublicFunctions.GetUserId(Page)
             If Page.IsPostBack = False Then
                 FillGrid(sender, e)
             End If
@@ -40,7 +41,7 @@ Partial Class Student_Details
         End Try
     End Sub
 
-    Protected Sub rp_ItemDataBound(sender As Object, e As RepeaterItemEventArgs) Handles rpStudent.ItemDataBound
+    Protected Sub rp_ItemDataBound(sender As Object, e As ListViewItemEventArgs) Handles rpStudent.ItemDataBound
         Try
             If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
                 Dim rbGroups As Repeater = DirectCast(e.Item.FindControl("rpGroups"), Repeater)
@@ -76,6 +77,16 @@ Partial Class Student_Details
             'End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
             Response.Redirect("StudentsList.aspx")
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
+
+#Region "Permissions"
+    Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles rpStudent.DataBound
+        Try
+            Permissions.CheckPermisions(rpStudent, New LinkButton, New TextBox, New LinkButton, Me.Page, "Student", UserID)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

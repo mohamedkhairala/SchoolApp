@@ -4,6 +4,8 @@ Imports System.Data
 Imports clsMessages
 Imports System.Data.SqlClient
 Imports BusinessLayer.BusinessLayer
+Imports System.Activities.Expressions
+
 
 #End Region
 
@@ -23,6 +25,7 @@ Partial Class Groups
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
+            UserID = PublicFunctions.GetUserId(Page)
             If Page.IsPostBack = False Then
                 FillGrid(sender, e)
             End If
@@ -96,4 +99,13 @@ Partial Class Groups
 
 #End Region
 
+#Region "Permissions"
+    Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
+        Try
+            Permissions.CheckPermisions(lvMaster, lbAdd, txtSearch, lbSearch, Me.Page, UserID)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
 End Class

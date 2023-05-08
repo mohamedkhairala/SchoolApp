@@ -105,14 +105,17 @@
                                         <span class="flaticon-more-button-of-three-dots"></span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-
-                                        <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Course.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                        <asp:Panel ID="pnlEdit" runat="server">
+                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Course.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
-                                        </asp:LinkButton>
-                                        <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
-                                            OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
+                                            </asp:LinkButton>
+                                        </asp:Panel>
+                                        <asp:Panel ID="pnlDelete" runat="server">
+                                            <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
+                                                OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
-                                        </asp:LinkButton>
+                                            </asp:LinkButton>
+                                        </asp:Panel>
 
 
                                     </div>
