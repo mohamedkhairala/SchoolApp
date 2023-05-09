@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Add Group" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Add_Group.aspx.vb" Inherits="Add_Group" %>
+<%@ Page Title="Up Skills | Add Group" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Group.aspx.vb" Inherits="Group" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -57,6 +57,13 @@
                         <asp:ValidationSummary ID="VSMaster" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vsMaster" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
                         <!-- Group Master Data -->
                         <asp:Panel ID="pnlGroup" runat="server" CssClass="d-contents">
+                            <!-- GroupCode -->
+                            <div id="divGroupCode" runat="server" class="col-xl-4 col-lg-6 col-12 form-group">
+                                <label id="lblGroupCode" runat="server" for="txtGroupCode">Group Code *</label>
+                                <asp:TextBox ID="txtGroupCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+                                <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqGroupCode" runat="server" ValidationGroup="vsMaster"
+                                    ControlToValidate="txtGroupCode" Display="Dynamic" Text="Required Group Code"></asp:RequiredFieldValidator>
+                            </div>
                             <!-- Name -->
                             <div id="divName" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label id="lblName" runat="server" for="txtName">Name *</label>
@@ -82,6 +89,14 @@
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTeacherID" runat="server" ValidationGroup="vsMaster"
                                     ControlToValidate="ddlTeacherID" InitialValue="" Display="Dynamic" Text="Required Teacher"></asp:RequiredFieldValidator>
                             </div>
+                            <!-- TeacherRate -->
+                            <div id="divTeacherRate" runat="server" class="col-xl-4 col-lg-6 col-3 form-group">
+                                <label id="lblTeacherRate" runat="server" for="txtTeacherRate">Teacher Rate *</label>
+                                <asp:TextBox ID="txtTeacherRate" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
+                                <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTeacherRate" runat="server" ValidationGroup="vsMaster"
+                                    ControlToValidate="txtTeacherRate" Display="Dynamic" Text="Required Teacher Rate"></asp:RequiredFieldValidator>
+                                <asp:FilteredTextBoxExtender ID="fteTeacherRate" runat="server" TargetControlID="txtTeacherRate" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                            </div>
                             <!-- SupervisorID -->
                             <div id="divSupervisorID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label id="lblSupervisorID" runat="server" for="ddlSupervisorID">Supervisor *</label>
@@ -90,6 +105,14 @@
                                 </asp:DropDownList>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqSupervisorID" runat="server" ValidationGroup="vsMaster"
                                     ControlToValidate="ddlSupervisorID" InitialValue="" Display="Dynamic" Text="Required Supervisor"></asp:RequiredFieldValidator>
+                            </div>
+                            <!-- SupervisorRate -->
+                            <div id="diSupervisorRate" runat="server" class="col-xl-4 col-lg-6 col-3 form-group">
+                                <label id="lblSupervisorRate" runat="server" for="txtSupervisorRate">Supervisor Rate *</label>
+                                <asp:TextBox ID="txtSupervisorRate" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
+                                <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqSupervisorRate" runat="server" ValidationGroup="vsMaster"
+                                    ControlToValidate="txtSupervisorRate" Display="Dynamic" Text="Required Supervisor Rate"></asp:RequiredFieldValidator>
+                                <asp:FilteredTextBoxExtender ID="fteSupervisorRate" runat="server" TargetControlID="txtSupervisorRate" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                             </div>
                         </asp:Panel>
                     </div>
@@ -109,10 +132,18 @@
                         <!-- Sessions Data -->
                         <asp:ValidationSummary ID="VSSessions" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vsSessions" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
                         <asp:Panel ID="pnlSessions" runat="server" CssClass="d-contents">
+                            <!-- SessionCode -->
+                            <div id="divSessionCode" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                <asp:HiddenField ID="hfSessionCode" runat="server" />
+                            </div>
+                            <!-- Status -->
+                            <div id="divStatus" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+                                <asp:HiddenField ID="hfStatus" runat="server" />
+                            </div>
                             <!-- Title -->
                             <div id="divTitle" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label id="lblTitle" runat="server" for="txtTitle">Title *</label>
-                                <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control"></asp:TextBox>
+                                <asp:TextBox autocomplete="off" ID="txtTitle" runat="server" CssClass="form-control"></asp:TextBox>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTitle" runat="server" ValidationGroup="vsSessions"
                                     ControlToValidate="txtTitle" Display="Dynamic" Text="Required Title"></asp:RequiredFieldValidator>
                             </div>
@@ -124,6 +155,14 @@
                                 <i class="far fa-calendar-alt"></i>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqIssueDate" runat="server" ValidationGroup="vsSessions"
                                     ControlToValidate="txtIssueDate" Display="Dynamic" Text="Required Issue Date"></asp:RequiredFieldValidator>
+                            </div>
+                            <!-- DefaultPeriodHour -->
+                            <div id="divDefaultPeriodHour" runat="server" class="col-xl-4 col-lg-6 col-3 form-group">
+                                <label id="lblDefaultPeriodHour" runat="server" for="txtDefaultPeriodHour">Period *</label>
+                                <asp:TextBox ID="txtDefaultPeriodHour" runat="server" CssClass="form-control" MaxLength="2"></asp:TextBox>
+                                <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqDefaultPeriodHour" runat="server" ValidationGroup="vsSessions"
+                                    ControlToValidate="txtDefaultPeriodHour" Display="Dynamic" Text="Required Period"></asp:RequiredFieldValidator>
+                                <asp:FilteredTextBoxExtender ID="fteDefaultPeriodHour" runat="server" TargetControlID="txtDefaultPeriodHour" ValidChars="0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                             </div>
                             <!-- Remarks -->
                             <div id="divRemarks" runat="server" class="col-lg-12 col-12 form-group">
@@ -142,8 +181,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th>No.</th>
+                                                        <th>Code</th>
                                                         <th>Title</th>
                                                         <th>Issue Date</th>
+                                                        <th>Period</th>
                                                         <th>Remarks</th>
                                                         <th style="width: 50px;"></th>
                                                     </tr>
@@ -163,13 +204,25 @@
                                                     <asp:Label ID="lblStatus" runat="server" Visible="false" Text='<%# Eval("Status")%>'></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:Label ID="lblTitle" runat="server" Text='<%# Eval("Title")%>'></asp:Label>
+                                                    <asp:Label ID="lblCode" runat="server" Text='<%# Eval("Code")%>'></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:Label ID="lblIssueDate" runat="server" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate").ToString)%>'></asp:Label>
+                                                    <asp:TextBox autocomplete="off" ID="txtTitle" runat="server" Text='<%# Eval("Title")%>'></asp:TextBox>
+                                                    <%--<asp:Label ID="lblTitle" runat="server" Text='<%# Eval("Title")%>'></asp:Label>--%>
                                                 </td>
                                                 <td>
-                                                    <asp:Label ID="lblRemarks" runat="server" Text='<%# Eval("Remarks")%>'></asp:Label>
+                                                    <asp:TextBox ID="txtIssueDate" runat="server" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate").ToString)%>' placeholder="dd/mm/yyyy" CssClass="air-datepicker"
+                                                        data-position='bottom right'></asp:TextBox>
+                                                    <i class="far fa-calendar-alt"></i>
+                                                    <%--<asp:Label ID="lblIssueDate" runat="server" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate").ToString)%>'></asp:Label>--%>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtDefaultPeriodHour" runat="server" Text='<%# PublicFunctions.DecimalFormat(Eval("DefaultPeriodHour").ToString)%>' TextMode="Number" MaxLength="2"></asp:TextBox>
+                                                    <%--<asp:Label ID="lblDefaultPeriodHour" runat="server" Text='<%# PublicFunctions.DecimalFormat(Eval("DefaultPeriodHour").ToString)%>'></asp:Label>--%>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtRemarks" runat="server" Text='<%# Eval("Remarks")%>' TextMode="MultiLine" CssClass="textarea" name="message" Rows="2"></asp:TextBox>
+                                                    <%--<asp:Label ID="lblRemarks" runat="server" Text='<%# Eval("Remarks")%>'></asp:Label>--%>
                                                 </td>
                                                 <td>
                                                     <div class="dropdown">

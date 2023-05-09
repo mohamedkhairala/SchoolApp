@@ -2579,6 +2579,10 @@ ul {
                     padding: 10px 0;
                 }
 
+                    .sidebar-menu-one .sidebar-menu-content .nav-sidebar-menu > .nav-item .sub-group-menu.menu-open {
+                        display: block;
+                    }
+
                     .sidebar-menu-one .sidebar-menu-content .nav-sidebar-menu > .nav-item .sub-group-menu > .nav-item .nav-link {
                         font-size: 14px;
                         color: #a3aab3;

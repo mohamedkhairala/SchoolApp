@@ -90,7 +90,7 @@ Partial Class Master
                     Else
                         'menu that have sub menu
                         ''''''''''''''''''''''' V Menu''''''''''''''''''''''
-                        Dim liMenu As New LiteralControl("<li class='nav-item sidebar-nav-item'><a href='#' class='nav-link'> <i class='" + MenuIcon + "'></i> <span>" + MenuName + "</span></a> <ul id='" + MenuName + "' class='nav sub-group-menu'>")
+                        Dim liMenu As New LiteralControl("<li class='nav-item sidebar-nav-item'><a href='#' class='nav-link'><i class='" + MenuIcon + "'></i><span>" + MenuName + "</span></a><ul id='" + MenuName + "' class='nav sub-group-menu'>")
                         UlMenu.Controls.Add(liMenu)
                         ''''''''''''''''''''''' End ''''''''''''''''''''''
 
@@ -133,7 +133,7 @@ Partial Class Master
                 If dvSubMenu.Count > 1 Then
                     If dvForms.Count > 1 Then
                         ''''''''''''''''''''''' V Menu''''''''''''''''''''''
-                        Dim liSubMenu As New LiteralControl("<li class='nav-item'><a class='nav-link'> <i class='" + SubMenuIcon + "'></i> " + SubMenuName + " </a> <ul>")
+                        Dim liSubMenu As New LiteralControl("<li class='nav-item'><a class='nav-link'><i class='" + SubMenuIcon + "'></i><span>" + SubMenuName + "</span></a><ul>")
                         UlMenu.Controls.Add(liSubMenu)
                         ''''''''''''''''''''''' End''''''''''''''''''''''
 
@@ -177,7 +177,7 @@ Partial Class Master
                 UlMenu.Controls.Add(liForm)
                 Dim lb As New HyperLink
                 lb.ID = Formname
-                Dim spanName As New LiteralControl("<i class='" + FormIcon + " ' ></i> " + FormTitle + " ")
+                Dim spanName As New LiteralControl("<i class='" + FormIcon + " ' ></i><span>" + FormTitle + "</span>")
                 lb.Controls.Add(spanName)
                 lb.Attributes.Add("class", "nav-link")
 
