@@ -122,7 +122,7 @@
                                         ErrorMessage="InValidEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*">*</asp:RegularExpressionValidator>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                    <label>Phone *</label>
+                                    <label>Phone</label>
                                     <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" MaxLength="20"></asp:TextBox>
                                     <%--<asp:RequiredFieldValidator CssClass="valid-inp" ID="RequiredFieldValidator4" runat="server" ValidationGroup="vUsers"
                                         ControlToValidate="txtPhone" Display="Dynamic" Text="Required Phone"></asp:RequiredFieldValidator>--%>

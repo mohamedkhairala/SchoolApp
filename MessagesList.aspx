@@ -23,7 +23,7 @@
                         <asp:Label Text="" ID="lblRes" runat="server" />
                     </div>
                     <div class="notice-box-wrap">
-                        <asp:TextBox runat="server" ID="txtSearch" Visible="false" />
+                        <asp:TextBox runat="server" ID="txtSearch"  />
                         <asp:ListView runat="server" ID="rbMessages">
                             <ItemTemplate>
                                 <div class="notice-list">

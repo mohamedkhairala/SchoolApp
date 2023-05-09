@@ -100,7 +100,7 @@
                             </td>
                             <td><%# Eval("FullGender")%></td>
                             <td><%# Eval("Address")%></td>
-                            <td><%# Eval("DOB")%></td>
+                            <td><%# PublicFunctions.DateFormat(Eval("DOB"), "dd/MM/yyyy")%></td>
                             <td><%# Eval("Mobile")%></td>
                             <td><%# Eval("Email")%></td>
                             <td>
