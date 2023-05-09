@@ -464,3 +464,19 @@
     });
 
 })(jQuery);
+
+//MR: Open confirmation modal (new theme)
+function ShowConfirmModal(popup, pnl) {
+    try {
+        var modal = $find(popup);
+        if (modal != null) {
+            modal.show();
+            $("div[id*=" + popup + "]").removeAttr('style');
+            $("#" + pnl).removeAttr('style');
+            $("#" + pnl).show();
+        }
+    }
+    catch (err) {
+        alert(err);
+    }
+}

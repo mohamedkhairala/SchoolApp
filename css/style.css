@@ -85,6 +85,13 @@ body {
     background-color: #f0f1f3;
 }
 
+    body > form,
+    .wrapper,
+    .dashboard-page-one,
+    .dashboard-content-one {
+        height: 100%;
+    }
+
 p {
     margin: 0 0 20px 0;
     color: #646464;
@@ -6260,7 +6267,7 @@ a.text-red:hover {
         margin-right: 0;
     }
 
-    .header-actions ul li a {
+    .header-actions ul li a:not(.footer-btn) {
         display: block;
         background-color: #f0f1f3;
         border-radius: 4px;
@@ -6274,7 +6281,7 @@ a.text-red:hover {
         transition: all 0.3s ease-out;
     }
 
-        .header-actions ul li a:hover {
+        .header-actions ul li a:not(.footer-btn):hover {
             background-color: #ff9d01;
             color: #fff;
         }
