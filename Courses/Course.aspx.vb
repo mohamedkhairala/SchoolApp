@@ -29,7 +29,7 @@ Partial Class Course
             If Page.IsPostBack = False Then
                 Permissions.CheckPermisions(New GridView, New LinkButton , New TextBox, New LinkButton, Me.Page, UserID)
                 divActions.Visible = False
-                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Course)
+                'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Course)
                 View()
             End If
         Catch ex As Exception
@@ -114,6 +114,7 @@ Partial Class Course
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
             If Mode = "Add" Then
+                dt.Code = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Course)
                 dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
             End If

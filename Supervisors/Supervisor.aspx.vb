@@ -27,7 +27,7 @@ Partial Class Supervisor
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
-                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Supervisor)
+                'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Supervisor)
                 View()
             End If
             FillIcon()
@@ -138,6 +138,7 @@ Partial Class Supervisor
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
             If Mode = "Add" Then
+                dt.Code = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Supervisor)
                 dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
             End If
