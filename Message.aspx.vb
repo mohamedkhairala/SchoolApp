@@ -29,7 +29,7 @@ Partial Class Message
             If Page.IsPostBack = False Then
                 divActions.Visible = False
                 FillGroups()
-                View()
+                'View()
             End If
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
@@ -63,7 +63,7 @@ Partial Class Message
                     isOKay = MessageSupervisors()
             End Select
             If Not isOKay Then
-                clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
+                'clsMessages.ShowErrorMessgage(lblRes, "Error", Me)
                 _sqltrans.Rollback()
                 _sqlconn.Close()
                 Exit Sub
@@ -82,7 +82,7 @@ Partial Class Message
 
     Private Function GenerateMessageCode() As Integer
         Try
-            Return Val(GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Messages))
+            Return Val(GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Messages, _sqlconn, _sqltrans))
         Catch ex As Exception
             Throw ex
         End Try
@@ -93,6 +93,11 @@ Partial Class Message
 
             'Send To All Group Students Or selected Student
             Dim dtSupervisors As DataTable = DBContext.Getdatatable("Select * from vw_Supervisors where SchoolId='" & School_Id & "' And " & Condition)
+            If dtSupervisors.Rows.Count = 0 Then
+                ShowInfoMessgage(lblRes, "No users available to message!", Me)
+                Return False
+            End If
+
             Dim MessageCode = GenerateMessageCode()
             For Each dr As DataRow In dtSupervisors.Rows
                 Dim SupervisorUserId = dr("SupervisorUserId")
@@ -121,6 +126,10 @@ Partial Class Message
             Dim da As New TblMessagesFactory
             'Send To All Group Students Or selected Student
             Dim dtTeachers As DataTable = DBContext.Getdatatable("Select * from vw_Teachers where SchoolId='" & School_Id & "' And " & Condition)
+            If dtTeachers.Rows.Count = 0 Then
+                ShowInfoMessgage(lblRes, "No users available to message!", Me)
+                Return False
+            End If
             Dim MessageCode = GenerateMessageCode()
 
             For Each dr As DataRow In dtTeachers.Rows
@@ -150,6 +159,10 @@ Partial Class Message
             Dim da As New TblMessagesFactory
             'Send To All Group Students Or selected Student
             Dim dtGroupStudent As DataTable = DBContext.Getdatatable("Select * from vw_StudentsGroups where SchoolId='" & School_Id & "' And " & Condition)
+            If dtGroupStudent.Rows.Count = 0 Then
+                ShowInfoMessgage(lblRes, "No users available to message!", Me)
+                Return False
+            End If
             Dim MessageCode = GenerateMessageCode()
             For Each STD As DataRow In dtGroupStudent.Rows
                 Dim StudentUserID = PublicFunctions.IntFormat(STD("StudentUserID").ToString)
