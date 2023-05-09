@@ -59,8 +59,8 @@
                                     <asp:DropDownList ID="ddlCourse" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectCourse">
                                         <asp:ListItem Value="">Please Select Course</asp:ListItem>
                                     </asp:DropDownList>
-                                    <%--<asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCourseID" runat="server" ValidationGroup="vsMaster"
-                                    ControlToValidate="ddlCourseID" InitialValue="" Display="Dynamic" Text="Required Course"></asp:RequiredFieldValidator>--%>
+                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCourseID" runat="server" ValidationGroup="vUsers"
+                                    ControlToValidate="ddlCourse" InitialValue="" Display="Dynamic" Text="Required Course"></asp:RequiredFieldValidator>
                                 </div>
                                 <!-- Group -->
                                 <div id="divGroupID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
