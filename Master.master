@@ -197,10 +197,10 @@
                                 </a>
                                 <ul id="AllGroups" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="Groups" lang="AllGroups" href="../Groups/Groups.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Groups</a>
+                                        <a id="Groups" lang="AllGroups" href="../Groups/GroupsList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Groups</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Add_Group" lang="AllGroups" href="../Groups/Add_Group.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Group</a>
+                                        <a id="Add_Group" lang="AllGroups" href="../Groups/Group.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Group</a>
                                     </li>
                                 </ul>
                             </li>
@@ -231,10 +231,10 @@
                                 </a>
                                 <ul id="Attendances" class="nav sub-group-menu">
                                     <li class="nav-item">
-                                        <a id="Attendance" lang="Attendances" href="../Attendance/Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
+                                        <a id="Attendance" lang="Attendances" href="../Attendance/AttendancesList.aspx" class="nav-link"><i class="fas fa-angle-right"></i>All Attendance</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a id="Add_Attendance" lang="Attendances" href="../Attendance/Add_Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
+                                        <a id="Add_Attendance" lang="Attendances" href="../Attendance/Attendance.aspx" class="nav-link"><i class="fas fa-angle-right"></i>Add New Attendance</a>
                                     </li>
                                 </ul>
                             </li>
