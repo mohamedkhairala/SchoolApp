@@ -19,7 +19,7 @@ Public Class clsNotifications
             If H > 0 AndAlso H < 23 Then
                 Return H & " hours ago"
             End If
-            Return PublicFunctions.DateFormat("HH:MM:SS")
+            Return PublicFunctions.DateFormat(CreatedDate, "dd MMM yyyy HH:MM:ss")
         Catch ex As Exception
             Return ""
         End Try
