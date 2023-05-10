@@ -25,7 +25,8 @@ Partial Class SessionsList
         Try
             lblRes.Visible = False
             If Page.IsPostBack = False Then
-                FillGrid(sender, e)
+                clsBindDDL.BindCustomDDLs("Select Id,CourseName + ' - ' + Code + ' - ' + Name as groupCodeName from vw_Groups", "groupCodeName", "ID", ddlGroups, True)
+                'FillGrid(sender, e)
             End If
         Catch ex As Exception
             Throw ex
@@ -67,7 +68,8 @@ Partial Class SessionsList
         Dim result As String = "1 = 1"
         Try
             Dim Search As String = IIf(txtSearch.Text = "", "1 = 1", " (Name like '%" & txtSearch.Text & "%' or CourseCode Like '%" & txtSearch.Text & "%' or CourseName Like '%" & txtSearch.Text & "%' or TeacherCode Like '%" & txtSearch.Text & "%' or TeacherName Like '%" & txtSearch.Text & "%' or SupervisorCode Like '%" & txtSearch.Text & "%' or SupervisorName Like '%" & txtSearch.Text & "%')")
-            Return Search
+            Dim Group As String = IIf(ddlGroups.SelectedValue = "0", "1=1", "GroupId='" & ddlGroups.SelectedValue & "'")
+            Return Search & " and " & Group
         Catch ex As Exception
             Throw ex
         End Try

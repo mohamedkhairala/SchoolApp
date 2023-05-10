@@ -53,11 +53,13 @@
                     </div>
                 </div>
             </div>
-           <%-- <div class="col-md-12 px-0 text-right">
+            <div class="col-md-12 px-0 text-right">
                 <div class="d-inline-flex mb-3">
-                    <a href="Group.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>
-                </div>
-            </div>--%>
+                    <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" AutoPostBack="true" OnSelectedIndexChanged="FillGrid">
+                        
+                    </asp:DropDownList>
+                 </div>
+            </div>
 
             <div class="table-responsive">
                 <asp:HiddenField ID="SortExpression" runat="server" />
