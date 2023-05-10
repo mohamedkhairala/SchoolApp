@@ -38,4 +38,39 @@ Public Class GenerateCode
         End Try
     End Function
 
+    Public Shared Function GenerateCodeFor(type As PublicFunctions.Stackholders, new_id As Integer, Optional _sqlconn As SqlConnection = Nothing, Optional _sqltrans As SqlTransaction = Nothing) As String
+        Try
+            Dim query = ""
+            Select Case type
+                Case PublicFunctions.Stackholders.Student
+                    query = "select ('STD' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Teacher
+                    query = "select ('TCH' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Supervisor
+                    query = "select ('SUP' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Parent
+                    query = "select ('PNT' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Course
+                    query = "select ('CRS' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Group
+                    query = "select ('GRP' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Session
+                    query = "select ('SEN' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Messages
+                    query = "select " & new_id & ""
+            End Select
+            If String.IsNullOrEmpty(query) Then
+                Return String.Empty
+            End If
+            If _sqlconn Is Nothing AndAlso _sqltrans Is Nothing Then
+                Return DBContext.Getdatatable(query).Rows(0).Item(0).ToString
+            Else
+                Return DBContext.GetdatatableTrans(query, _sqlconn, _sqltrans).Rows(0).Item(0).ToString
+            End If
+        Catch ex As Exception
+            Throw ex
+            Return String.Empty
+        End Try
+    End Function
+
 End Class
