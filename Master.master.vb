@@ -187,6 +187,7 @@ Partial Class Master
                 lb.ClientIDMode = UI.ClientIDMode.Static
                 lb.NavigateUrl = "~/" & FormUrl
                 'lb.Attributes.Add("href", FormUrl)
+                'add class active by Rabie
                 'lb.Attributes.Add("onclick", "LoadFrame(this);return false;")
 
                 UlMenu.Controls.Add(lb)
