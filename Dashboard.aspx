@@ -119,11 +119,11 @@
                             <ItemTemplate>
                                 <div class="student-count pseudo-bg-blue">
                                     <h4 class="item-title">Female Students</h4>
-                                    <div class="item-number"><%# Eval("FemaleStudentsCount") %></div>
+                                    <div class="item-number" id="divFemaleCount" ><%# Eval("FemaleStudentsCount") %></div>
                                 </div>
                                 <div class="student-count pseudo-bg-yellow">
                                     <h4 class="item-title">Male Students</h4>
-                                    <div class="item-number"><%# Eval("MaleStudentsCount") %></div>
+                                    <div class="item-number" id="divMaleCount"><%# Eval("MaleStudentsCount") %></div>
                                 </div>
                             </ItemTemplate>
                         </asp:Repeater>

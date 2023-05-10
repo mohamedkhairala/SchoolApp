@@ -2,6 +2,7 @@
 #Region "Imports"
 
 Imports System.Data
+Imports AjaxControlToolkit.HTMLEditor.ToolbarButton
 Imports BusinessLayer.BusinessLayer
 
 #End Region
@@ -9,7 +10,7 @@ Public Class clsBindDDL
     ''' <summary>
     ''' bind ddl controls for lookup Types
     ''' </summary>
-    Public Shared Function BindLookupDDLs(ByVal DataType As String, ByRef ddlList As DropDownList, ByVal SelectOption As Boolean, Optional SelectOptionText As String = "-- Select --", Optional Sort As String = "ASC", Optional RelatedIdValue As Integer = 0) As Boolean
+    Public Shared Function BindLookupDDLs(ByVal DataType As String, ByRef ddlList As DropDownList, ByVal SelectOption As Boolean, Optional SelectOptionText As String = "-- Select --", Optional Sort As String = "ASC", Optional RelatedIdValue As Integer = 0, Optional Selected As String = "") As Boolean
         Try
             ddlList.Items.Clear()
             ddlList.AppendDataBoundItems = True
@@ -29,12 +30,16 @@ Public Class clsBindDDL
                 ddlList.DataValueField = "Id"
                 ddlList.DataBind()
             End If
+
+            If Selected <> "" Then
+                SetDDLValue(ddlList, Selected)
+            End If
             Return True
         Catch ex As Exception
             Return False
         End Try
     End Function
-    Public Shared Function BindLookupDDLs(ByVal DataType As String, ByRef ddlList As RadioButtonList, ByVal SelectOption As Boolean, Optional SelectOptionText As String = "-- Select --", Optional Sort As String = "ASC") As Boolean
+    Public Shared Function BindLookupDDLs(ByVal DataType As String, ByRef ddlList As RadioButtonList, ByVal SelectOption As Boolean, Optional SelectOptionText As String = "-- Select --", Optional Sort As String = "ASC", Optional Selected As String = "") As Boolean
         Try
             ddlList.Items.Clear()
             ddlList.AppendDataBoundItems = True
@@ -52,6 +57,9 @@ Public Class clsBindDDL
                 ddlList.DataTextField = "Value"
                 ddlList.DataValueField = "Id"
                 ddlList.DataBind()
+            End If
+            If Selected <> "" Then
+                SetDDLValue(ddlList, Selected)
             End If
             Return True
         Catch ex As Exception
@@ -115,6 +123,14 @@ Public Class clsBindDDL
     End Function
 
     Public Shared Sub SetDDLValue(ByRef ddl As DropDownList, ByVal value As String)
+        If ddl.Items.FindByValue(value) IsNot Nothing Then
+            ddl.SelectedValue = value
+        Else
+            ddl.SelectedIndex = -1
+        End If
+    End Sub
+
+    Public Shared Sub SetDDLValue(ByRef ddl As RadioButtonList, ByVal value As String)
         If ddl.Items.FindByValue(value) IsNot Nothing Then
             ddl.SelectedValue = value
         Else
