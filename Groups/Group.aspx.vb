@@ -33,8 +33,6 @@ Partial Class Group
             UserID = PublicFunctions.GetUserId(Page)
             'School_ID = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
-                'Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
-                txtGroupCode.Text = GenerateCode.GenerateCodeFor(Stackholders.Group)
                 FillDDL()
                 View()
             End If
@@ -90,6 +88,10 @@ Partial Class Group
             Dim dt As New TblGroups
             If Not FillDT(dt, "Add") Then
                 ShowInfoMessgage(lblRes, "Error", Me)
+                Exit Sub
+            End If
+            If Not IsCodeUnique("tblGroups", "Code", Val(dt.Id), dt.Code, School_ID) Then
+                ShowInfoMessgage(lblRes, "Code is not unique", Me)
                 Exit Sub
             End If
             _sqlconn.Open()
@@ -176,11 +178,13 @@ Partial Class Group
             dt.SupervisorRate = GetDecimalValue(txtSupervisorRate.Text)
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
+            dt.IsDeleted = False
+            dt.SchoolId = School_ID
             If Mode = "Add" Then
+                dt.Code = GenerateCode.GenerateCodeFor(Stackholders.Group)
                 dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
             End If
-            dt.SchoolId = School_ID
             Return True
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
@@ -190,23 +194,31 @@ Partial Class Group
 
     Private Function SaveSessions(id As String, sqlconn As SqlConnection, sqltrans As SqlTransaction) As Boolean
         Try
+            Dim new_session_id As Integer = 0
+            Dim dt As DataTable = DBContext.GetdatatableTrans("select (max(ID) + 1) as NewID from tblSessions;", sqlconn, sqltrans)
+            If dt.Rows.Count > 0 Then
+                new_session_id = IntFormat(dt.Rows(0).Item("NewID").ToString)
+            End If
             Dim dtDetails As New TblSessions
             Dim daDetails As New TblSessionsFactory
             For Each item As ListViewItem In lvSessions.Items
                 dtDetails.GroupId = id
-                dtDetails.Code = String.Empty
+                dtDetails.Code = GenerateCode.GenerateCodeFor(Stackholders.Session, new_session_id, sqlconn, _sqltrans)
                 dtDetails.Title = CType(item.FindControl("txtTitle"), TextBox).Text
                 dtDetails.IssueDate = CType(item.FindControl("txtIssueDate"), TextBox).Text
                 dtDetails.DefaultPeriodHour = GetDecimalValue(CType(item.FindControl("txtDefaultPeriodHour"), TextBox).Text)
                 dtDetails.Remarks = CType(item.FindControl("txtRemarks"), TextBox).Text
                 dtDetails.Status = IntFormat(CType(item.FindControl("lblStatus"), Label).Text)
+                dtDetails.StatusRemarks = CType(item.FindControl("lblStatusRemarks"), Label).Text
                 dtDetails.CreatedDate = DateTime.Now
                 dtDetails.CreatedBy = UserID
+                dtDetails.IsDeleted = False
                 dtDetails.SchoolId = School_ID
                 If Not daDetails.InsertTrans(dtDetails, sqlconn, sqltrans) Then
                     ShowErrorMessgage(lblRes, "Insert Error", Me)
                     Return False
                 End If
+                new_session_id += 1
             Next
             Return True
         Catch ex As Exception
@@ -219,8 +231,8 @@ Partial Class Group
             Dim dtDetails As New TblStudentsGroups
             Dim daDetails As New TblStudentsGroupsFactory
             For Each item As ListViewItem In lvStudents.Items
-                dtDetails.StudentId = CType(item.FindControl("lblStudentID"), Label).Text
                 dtDetails.GroupId = id
+                dtDetails.StudentId = CType(item.FindControl("lblStudentID"), Label).Text
                 dtDetails.CreatedDate = DateTime.Now
                 dtDetails.CreatedBy = UserID
                 dtDetails.SchoolId = School_ID
@@ -326,7 +338,7 @@ Partial Class Group
             For index = 1 To IntFormat(dt.Rows(0).Item("NoOfSessions").ToString)
                 session = New TblSessions With {
                     .GroupId = group_id,
-                    .Code = GenerateCode.GenerateCodeFor(Stackholders.Session),
+                    .Code = String.Empty,
                     .Title = "Session No. " & index,
                     .IssueDate = Date.Now.AddDays(index - 1),
                     .DefaultPeriodHour = 2,
@@ -362,15 +374,15 @@ Partial Class Group
     Function GetSessionsDT() As List(Of TblSessions)
         Try
             For Each item As ListViewItem In lvSessions.Items
-                Dim dtDetails As New TblSessions With {
-                    .GroupId = IntFormat(CType(item.FindControl("lblGroupID"), Label).Text),
-                    .Code = CType(item.FindControl("lblCode"), Label).Text,
-                    .Title = CType(item.FindControl("txtTitle"), TextBox).Text,
-                    .IssueDate = CType(item.FindControl("txtIssueDate"), TextBox).Text,
-                    .DefaultPeriodHour = GetDecimalValue(CType(item.FindControl("txtDefaultPeriodHour"), TextBox).Text),
-                    .Remarks = CType(item.FindControl("txtRemarks"), TextBox).Text,
-                    .Status = IntFormat(CType(item.FindControl("lblStatus"), Label).Text)
-                }
+                Dim dtDetails As New TblSessions
+                dtDetails.GroupId = IntFormat(CType(item.FindControl("lblGroupID"), Label).Text)
+                dtDetails.Code = CType(item.FindControl("lblCode"), Label).Text
+                dtDetails.Title = CType(item.FindControl("txtTitle"), TextBox).Text
+                dtDetails.IssueDate = CDate(CType(item.FindControl("txtIssueDate"), TextBox).Text)
+                dtDetails.DefaultPeriodHour = GetDecimalValue(CType(item.FindControl("txtDefaultPeriodHour"), TextBox).Text)
+                dtDetails.Remarks = CType(item.FindControl("txtRemarks"), TextBox).Text
+                dtDetails.Status = IntFormat(CType(item.FindControl("lblStatus"), Label).Text)
+                dtDetails.StatusRemarks = CType(item.FindControl("lblStatusRemarks"), Label).Text
                 lstSessions.Add(dtDetails)
             Next
             Return lstSessions
@@ -401,28 +413,28 @@ Partial Class Group
     Private Function FillSessionDT(ByRef dtDetails As TblSessions, Operation As String) As Boolean
         Try
             If String.IsNullOrEmpty(txtTitle.Text) Then
-                ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "يجب ادخار عنوان المحاضرة")
+                ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "Session title is empty")
                 Return False
             End If
             If Not IsDate(txtIssueDate.Text) Then
-                ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "تاريخ المحاضرة غير صحيح")
+                ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "Session date is invalid")
                 Return False
             End If
             Dim group_id As Integer = IntFormat(Request.QueryString("ID"))
-            dtDetails.Code = hfSessionCode.Value
+            dtDetails.Code = txtSessionCode.Text
             dtDetails.Title = txtTitle.Text
             dtDetails.IssueDate = txtIssueDate.Text
             dtDetails.DefaultPeriodHour = GetDecimalValue(txtDefaultPeriodHour.Text)
             dtDetails.GroupId = group_id
             dtDetails.Remarks = txtRemarks.Text
-            dtDetails.Status = hfStatus.Value
+            dtDetails.Status = IntFormat(hfStatus.Value)
+            dtDetails.StatusRemarks = hfStatusRemarks.Value
             dtDetails.CreatedBy = UserID
             dtDetails.CreatedDate = DateTime.Now
             dtDetails.IsDeleted = 0
             Dim index As Integer = Val(hfSessionIndex.Value)
             Select Case Operation.ToLower
                 Case "insert"
-                    dtDetails.Code = GenerateCode.GenerateCodeFor(Stackholders.Session)
                     dtDetails.Status = GetLookupID("SessionStatus", "Pending", School_ID)
                     lstSessions.Add(dtDetails)
                 Case "update"
@@ -441,6 +453,7 @@ Partial Class Group
 
     Protected Sub CancelSession(Sender As Object, e As EventArgs)
         Try
+            txtSessionCode.Text = String.Empty
             txtTitle.Text = String.Empty
             txtIssueDate.Text = String.Empty
             txtDefaultPeriodHour.Text = String.Empty
@@ -467,13 +480,14 @@ Partial Class Group
     Protected Sub EditSession(ByVal Sender As Object, ByVal e As EventArgs)
         Try
             Dim parent As Object = Sender.parent
-            hfSessionCode.Value = CType(parent.FindControl("lblCode"), Label).Text
+            hfSessionIndex.Value = (CType(parent.FindControl("lblSerialNo"), Label).Text) - 1
+            txtSessionCode.Text = CType(parent.FindControl("lblCode"), Label).Text
             txtTitle.Text = CType(parent.FindControl("txtTitle"), TextBox).Text
             txtIssueDate.Text = CType(parent.FindControl("txtIssueDate"), TextBox).Text
             txtDefaultPeriodHour.Text = DecimalFormat(CType(parent.FindControl("txtDefaultPeriodHour"), TextBox).Text)
             txtRemarks.Text = CType(parent.FindControl("txtRemarks"), TextBox).Text
-            hfSessionIndex.Value = (CType(parent.FindControl("lblSerialNo"), Label).Text) - 1
             hfStatus.Value = CType(parent.FindControl("lblStatus"), Label).Text
+            hfStatusRemarks.Value = CType(parent.FindControl("lblStatusRemarks"), Label).Text
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -513,10 +527,9 @@ Partial Class Group
     Function GetStudentsDT() As List(Of TblStudentsGroups)
         Try
             For Each item As ListViewItem In lvStudents.Items
-                Dim dtDetails As New TblStudentsGroups With {
-                    .StudentId = CType(item.FindControl("lblStudentID"), Label).Text,
-                    .GroupId = IntFormat(CType(item.FindControl("lblGroupID"), Label).Text)
-                }
+                Dim dtDetails As New TblStudentsGroups
+                dtDetails.StudentId = CType(item.FindControl("lblStudentID"), Label).Text
+                dtDetails.GroupId = IntFormat(CType(item.FindControl("lblGroupID"), Label).Text)
                 lstStudents.Add(dtDetails)
             Next
             Return lstStudents
@@ -547,7 +560,7 @@ Partial Class Group
     Private Function FillStudentDT(ByRef dtDetails As TblStudentsGroups, Operation As String) As Boolean
         Try
             If IntFormat(ddlStudentID.SelectedValue) = 0 Then
-                ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "يجب اختيار طالب")
+                ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "Select student first")
                 Return False
             End If
             Dim group_id As Integer = IntFormat(Request.QueryString("ID"))
