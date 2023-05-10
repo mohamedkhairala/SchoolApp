@@ -394,12 +394,13 @@
               Doughnut Chart 
           -------------------------------------*/
         if ($("#student-doughnut-chart").length) {
-
+            const m = document.getElementById("divMaleCount").innerText || 0;
+            const f = document.getElementById("divFemaleCount").innerText || 0;
             var doughnutChartData = {
                 labels: ["Female Students", "Male Students"],
                 datasets: [{
                     backgroundColor: ["#304ffe", "#ffa601"],
-                    data: [45000, 105000],
+                    data: [f, m],
                     label: "Total Students"
                 }, ]
             };
@@ -464,3 +465,19 @@
     });
 
 })(jQuery);
+
+//MR: Open confirmation modal (new theme)
+function ShowConfirmModal(popup, pnl) {
+    try {
+        var modal = $find(popup);
+        if (modal != null) {
+            modal.show();
+            $("div[id*=" + popup + "]").removeAttr('style');
+            $("#" + pnl).removeAttr('style');
+            $("#" + pnl).show();
+        }
+    }
+    catch (err) {
+        alert(err);
+    }
+}

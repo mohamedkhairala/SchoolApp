@@ -85,6 +85,13 @@ body {
     background-color: #f0f1f3;
 }
 
+    body > form,
+    .wrapper,
+    .dashboard-page-one,
+    .dashboard-content-one {
+        height: 100%;
+    }
+
 p {
     margin: 0 0 20px 0;
     color: #646464;
@@ -2578,6 +2585,10 @@ ul {
                     background-color: #051f3e;
                     padding: 10px 0;
                 }
+
+                    .sidebar-menu-one .sidebar-menu-content .nav-sidebar-menu > .nav-item .sub-group-menu.menu-open {
+                        display: block;
+                    }
 
                     .sidebar-menu-one .sidebar-menu-content .nav-sidebar-menu > .nav-item .sub-group-menu > .nav-item .nav-link {
                         font-size: 14px;
@@ -6256,7 +6267,7 @@ a.text-red:hover {
         margin-right: 0;
     }
 
-    .header-actions ul li a {
+    .header-actions ul li a:not(.footer-btn) {
         display: block;
         background-color: #f0f1f3;
         border-radius: 4px;
@@ -6270,7 +6281,7 @@ a.text-red:hover {
         transition: all 0.3s ease-out;
     }
 
-        .header-actions ul li a:hover {
+        .header-actions ul li a:not(.footer-btn):hover {
             background-color: #ff9d01;
             color: #fff;
         }

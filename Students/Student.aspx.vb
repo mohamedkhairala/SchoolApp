@@ -34,7 +34,7 @@ Partial Class Add_Student
             If Page.IsPostBack = False Then
                 Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 divActions.Visible = False
-                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Student)
+                'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Student)
                 FillDDL()
                 View()
             End If
@@ -170,6 +170,7 @@ Partial Class Add_Student
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
             If Mode = "Add" Then
+                dt.Code = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Student)
                 dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
             End If

@@ -1,4 +1,5 @@
 <%@ Page Title="Up Skills | Dashboard" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Dashboard.aspx.vb" Inherits="Dashboard" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server"></asp:Content>
@@ -13,74 +14,79 @@
     <!-- Breadcubs Area End Here -->
     <!-- Dashboard summery Start Here -->
     <div class="row gutters-20">
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="dashboard-summery-one mg-b-20">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="item-icon bg-light-green ">
-                            <i class="flaticon-classmates text-green"></i>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="item-content">
-                            <div class="item-title">Students</div>
-                            <div class="item-number"><span class="counter" data-num="150000">1,50,000</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="dashboard-summery-one mg-b-20">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="item-icon bg-light-blue">
-                            <i class="flaticon-multiple-users-silhouette text-blue"></i>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="item-content">
-                            <div class="item-title">Teachers</div>
-                            <div class="item-number"><span class="counter" data-num="2250">2,250</span></div>
+        <asp:Label Text="" ID="lblRes" runat="server" />
+        <asp:Repeater runat="server" ID="rpCounters">
+            <ItemTemplate>
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="dashboard-summery-one mg-b-20">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="item-icon bg-light-green ">
+                                    <i class="flaticon-classmates text-green"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="item-content">
+                                    <div class="item-title">Students</div>
+                                    <div class="item-number"><span class="counter" data-num='<%# Eval("StudentsCount") %>'><%# Eval("StudentsCount") %></span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="dashboard-summery-one mg-b-20">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="item-icon bg-light-yellow">
-                            <i class="flaticon-couple text-orange"></i>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="item-content">
-                            <div class="item-title">Parents</div>
-                            <div class="item-number"><span class="counter" data-num="5690">5,690</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-            <div class="dashboard-summery-one mg-b-20">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="item-icon bg-light-red">
-                            <i class="flaticon-user text-red"></i>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="item-content">
-                            <div class="item-title">Supervisors</div>
-                            <div class="item-number"><span class="counter" data-num="1200">1200</span></div>
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="dashboard-summery-one mg-b-20">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="item-icon bg-light-blue">
+                                    <i class="flaticon-multiple-users-silhouette text-blue"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="item-content">
+                                    <div class="item-title">Teachers</div>
+                                    <div class="item-number"><span class="counter" data-num='<%# Eval("TeachersCount") %>'><%# Eval("TeachersCount") %></span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="dashboard-summery-one mg-b-20">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="item-icon bg-light-yellow">
+                                    <i class="flaticon-couple text-orange"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="item-content">
+                                    <div class="item-title">Group</div>
+                                    <div class="item-number"><span class="counter" data-num='<%# Eval("GroupsCount") %>'><%# Eval("GroupsCount") %></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-sm-6 col-12">
+                    <div class="dashboard-summery-one mg-b-20">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="item-icon bg-light-red">
+                                    <i class="flaticon-user text-red"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="item-content">
+                                    <div class="item-title">Supervisors</div>
+                                    <div class="item-number"><span class="counter" data-num='<%# Eval("SupervisorsCount") %>'><%# Eval("SupervisorsCount") %></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ItemTemplate>
+        </asp:Repeater>
     </div>
     <!-- Dashboard summery End Here -->
     <!-- Dashboard Content Start Here -->
@@ -109,14 +115,18 @@
                         <canvas id="student-doughnut-chart" width="100" height="300"></canvas>
                     </div>
                     <div class="student-report">
-                        <div class="student-count pseudo-bg-blue">
-                            <h4 class="item-title">Female Students</h4>
-                            <div class="item-number">45,000</div>
-                        </div>
-                        <div class="student-count pseudo-bg-yellow">
-                            <h4 class="item-title">Male Students</h4>
-                            <div class="item-number">1,05,000</div>
-                        </div>
+                        <asp:Repeater runat="server" ID="rpGenderChart">
+                            <ItemTemplate>
+                                <div class="student-count pseudo-bg-blue">
+                                    <h4 class="item-title">Female Students</h4>
+                                    <div class="item-number" id="divFemaleCount" ><%# Eval("FemaleStudentsCount") %></div>
+                                </div>
+                                <div class="student-count pseudo-bg-yellow">
+                                    <h4 class="item-title">Male Students</h4>
+                                    <div class="item-number" id="divMaleCount"><%# Eval("MaleStudentsCount") %></div>
+                                </div>
+                            </ItemTemplate>
+                        </asp:Repeater>
                     </div>
                 </div>
             </div>
@@ -203,46 +213,32 @@
                         </div>-->
                     </div>
                     <div class="notice-box-wrap">
-                        <div class="notice-list">
-                            <div class="post-date bg-skyblue">16 June, 2019</div>
-                            <h6 class="notice-title">
-                                <a href="#">
-                                    Great School manag mene esom text of the
-                                    printing.
-                                </a>
-                            </h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-yellow">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-pink">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-skyblue">16 June, 2019</div>
-                            <h6 class="notice-title">
-                                <a href="#">
-                                    Great School manag mene esom text of the
-                                    printing.
-                                </a>
-                            </h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-yellow">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag printing.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
-                        <div class="notice-list">
-                            <div class="post-date bg-pink">16 June, 2019</div>
-                            <h6 class="notice-title"><a href="#">Great School manag meneesom.</a></h6>
-                            <div class="entry-meta"> Jennyfar Lopez / <span>5 min ago</span></div>
-                        </div>
+                        <asp:ListView runat="server" ID="rpMessages">
+                            <ItemTemplate>
+                                <div class="notice-list">
+                                    <div class="post-date  <%# clsNotifications.SetRandomColor() %>"><%# PublicFunctions.DateFormat(Eval("CreatedDate"), "dd MMM yyyy") %></div>
+                                    <h6 class="notice-title">
+                                        <a href="#">
+                                            <%# Eval("MessageTitle") %>
+                                        </a>
+                                        <p><%# Eval("MessageBody") %></p>
+                                    </h6>
+                                    <div class="entry-meta"><%# Eval("CreatedByUserName") %> / <span><%# clsNotifications.SetTimeAgo(Eval("CreatedDate"), Eval("time_ago")) %></span></div>
+                                     
+                                </div>
+                            </ItemTemplate>
+                            <EmptyDataTemplate>
+                                <table style="width: 100%;">
+                                    <tr class="EmptyRowStyle">
+                                        <td>
+                                            <div>No Messages Found.</div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </EmptyDataTemplate>
+                        </asp:ListView>
+
+                        <a href="MessagesList.aspx">See more</a>
                     </div>
                 </div>
             </div>

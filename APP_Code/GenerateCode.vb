@@ -1,8 +1,9 @@
-﻿Imports BusinessLayer.BusinessLayer
+﻿Imports System.Data.SqlClient
+Imports BusinessLayer.BusinessLayer
 
 Public Class GenerateCode
 
-    Public Shared Function GenerateCodeFor(type As PublicFunctions.Stackholders) As String
+    Public Shared Function GenerateCodeFor(type As PublicFunctions.Stackholders, Optional _sqlconn As SqlConnection = Nothing, Optional _sqltrans As SqlTransaction = Nothing) As String
         Try
             Dim query = ""
             Select Case type
@@ -26,7 +27,11 @@ Public Class GenerateCode
             If String.IsNullOrEmpty(query) Then
                 Return String.Empty
             End If
-            Return DBContext.Getdatatable(query).Rows(0).Item(0).ToString
+            If _sqlconn Is Nothing AndAlso _sqltrans Is Nothing Then
+                Return DBContext.Getdatatable(query).Rows(0).Item(0).ToString
+            Else
+                Return DBContext.GetdatatableTrans(query, _sqlconn, _sqltrans).Rows(0).Item(0).ToString
+            End If
         Catch ex As Exception
             Throw ex
             Return String.Empty

@@ -1,4 +1,5 @@
-﻿Imports BusinessLayer.BusinessLayer
+﻿Imports System.Data.SqlClient
+Imports BusinessLayer.BusinessLayer
 Imports Microsoft.VisualBasic
 
 Public Class clsNotifications
@@ -19,7 +20,7 @@ Public Class clsNotifications
             If H > 0 AndAlso H < 23 Then
                 Return H & " hours ago"
             End If
-            Return PublicFunctions.DateFormat("HH:MM:SS")
+            Return PublicFunctions.DateFormat(CreatedDate, "dd MMM yyyy HH:MM:ss")
         Catch ex As Exception
             Return ""
         End Try
@@ -38,11 +39,17 @@ Public Class clsNotifications
     End Function
 
 
-    Public Shared Function SendMessage(ByVal SenderId As Integer, ByVal ReceiverId As Integer, ByVal Title As String, ByVal Body As String) As Boolean
+    Public Shared Function SendMessage(ByVal SenderId As Integer, ByVal ReceiverId As Integer, ByVal Title As String, ByVal Body As String, Optional _sqlconn As SqlConnection = Nothing, Optional _sqltrans As SqlTransaction = Nothing) As Boolean
         Try
             Dim daMessage As New TblMessagesFactory
+            Dim msgNo = ""
+            If _sqlconn Is Nothing AndAlso _sqltrans Is Nothing Then
+                msgNo = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Messages)
+            Else
+                msgNo = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Messages, _sqlconn, _sqltrans)
+            End If
             Dim dt As New TblMessages With {
-            .MsgNo = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Messages),
+            .MsgNo = msgNo,
             .SenderId = SenderId,
             .ReceiverId = ReceiverId,
             .MessageTitle = Title,
@@ -51,7 +58,11 @@ Public Class clsNotifications
             .CreatedDate = DateTime.Now,
             .SchoolId = SchoolId
             }
-            Return daMessage.Insert(dt)
+            If _sqlconn Is Nothing AndAlso _sqltrans Is Nothing Then
+                Return daMessage.Insert(dt)
+            Else
+                Return daMessage.InsertTrans(dt, _sqlconn, _sqltrans)
+            End If
         Catch ex As Exception
             Throw ex
         End Try

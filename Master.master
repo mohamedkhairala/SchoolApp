@@ -128,7 +128,7 @@
                     <div class="sidebar-menu-content">
                          <ul class="nav nav-sidebar-menu sidebar-toggle-view" id="UlMenu" runat ="server" >
                              <li class="nav-item">
-                                <a id="Dashboard" href="Dashboard.aspx" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
+                                <a id="Dashboard" href="../Dashboard.aspx" class="nav-link"><i class="flaticon-dashboard"></i><span>Dashboard</span></a>
                             </li>
                          </ul>
                         <ul class="nav nav-sidebar-menu sidebar-toggle-view" id="menu" runat ="server" visible="false"  >

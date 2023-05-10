@@ -24,7 +24,7 @@ Partial Class Course
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
-            'UserId = PublicFunctions.GetUserId(Page)
+            UserID = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 divActions.Visible = False
@@ -133,13 +133,19 @@ Partial Class Course
 #End Region
 #Region "Validation"
     Private Function isValidForm() As Boolean
-
+        If Not fuAttachments.HasFile Then
+            ShowInfoMessgage(lblRes, "Please Upload Files", Me)
+            Return False
+        End If
         Return True
     End Function
 #End Region
 #Region "Save"
     Protected Sub Save()
         Try
+            If Not isValidForm() Then
+                Exit Sub
+            End If
             _sqlconn.Open()
             _sqltrans = _sqlconn.BeginTransaction()
             If Not SaveAttachmentDetails(_sqlconn, _sqltrans) Then

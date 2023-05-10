@@ -29,7 +29,7 @@ Partial Class Parent
             If Page.IsPostBack = False Then
                 Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 divActions.Visible = False
-                txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Parent)
+                'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Parent)
                 View()
             End If
             FillIcon()
@@ -131,6 +131,7 @@ Partial Class Parent
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
             If Mode = "Add" Then
+                dt.Code = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Parent)
                 dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
             End If
