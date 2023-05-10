@@ -3,6 +3,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
+    <!-- Date Picker CSS -->
+    <link rel="stylesheet" href="../css/datepicker.min.css">
     <!-- Data Table CSS -->
     <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
 </asp:Content>
@@ -103,7 +105,7 @@
                             <td><%# PublicFunctions.DecimalFormat(Eval("TeacherHourRate").ToString) %> / H </td>
                             <td><%# Eval("SupervisorCode") + " - " + Eval("SupervisorName") %></td>
                              <td>
-                                <asp:TextBox runat="server" ID="txtIssueDate" TextMode="DateTime" Text='<%# Eval("IssueDate")%>' />
+                                <asp:TextBox runat="server" ID="txtIssueDate" CssClass="air-datepicker" TextMode="DateTime" Text='<%# Eval("IssueDate")%>' data-position='bottom right'></asp:TextBox>
                             </td>
                            <td>
                                 <asp:TextBox runat="server" ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
@@ -138,6 +140,8 @@
     <!-- Groups Table Area End Here -->
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
+    <!-- Date Picker Js -->
+    <script src="../js/datepicker.min.js"></script>
     <!-- Data Table Js -->
     <script src="../js/jquery.dataTables.min.js"></script>
 

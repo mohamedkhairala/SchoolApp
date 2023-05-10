@@ -23,8 +23,8 @@ Partial Class Master
                     Response.Redirect("~/Login.aspx")
                 End If
                 LoadUserData()
-                FillMenu()
             End If
+            FillMenu()
         Catch ex As Exception
             ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -187,6 +187,7 @@ Partial Class Master
                 lb.ClientIDMode = UI.ClientIDMode.Static
                 lb.NavigateUrl = "~/" & FormUrl
                 'lb.Attributes.Add("href", FormUrl)
+                'add class active by Rabie
                 'lb.Attributes.Add("onclick", "LoadFrame(this);return false;")
 
                 UlMenu.Controls.Add(lb)
