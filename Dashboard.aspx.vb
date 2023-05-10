@@ -38,9 +38,6 @@ Partial Class Dashboard
         'Fill Counters
         FillCounters()
 
-        'Fill Gender Chart
-        FillGenderChart()
-
         'Fill Messages
         FillMessages()
     End Sub
@@ -49,10 +46,7 @@ Partial Class Dashboard
         Dim dt = DBContext.Getdatatable("Select * from vw_Counters")
         rpCounters.DataSource = dt
         rpCounters.DataBind()
-    End Sub
 
-    Private Sub FillGenderChart()
-        Dim dt = DBContext.Getdatatable("Select * from vw_Counters")
         rpGenderChart.DataSource = dt
         rpGenderChart.DataBind()
     End Sub

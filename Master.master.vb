@@ -23,8 +23,8 @@ Partial Class Master
                     Response.Redirect("~/Login.aspx")
                 End If
                 LoadUserData()
-                FillMenu()
             End If
+            FillMenu()
         Catch ex As Exception
             ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
         End Try
