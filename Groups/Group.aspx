@@ -75,6 +75,7 @@
                                 </asp:DropDownList>
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCourseID" runat="server" ValidationGroup="vsMaster"
                                     ControlToValidate="ddlCourseID" InitialValue="" Display="Dynamic" Text="Required Course"></asp:RequiredFieldValidator>
+                                <asp:HiddenField ID="hfCourseFees" runat="server" />
                             </div>
                             <!-- TeacherID -->
                             <div id="divTeacherID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
