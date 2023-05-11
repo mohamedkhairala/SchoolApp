@@ -2,10 +2,9 @@
 
 Imports System.Data
 Imports clsMessages
+Imports PublicFunctions
 Imports System.Data.SqlClient
 Imports BusinessLayer.BusinessLayer
-Imports System.Activities.Expressions
-
 
 #End Region
 
@@ -83,10 +82,13 @@ Partial Class AttendancesList
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
             Dim attendance_id = Val(CType(sender.parent.FindControl("lblAttendance"), Label).Text)
+            Dim session_id = getValue("SessionID", "tblAttendance", attendance_id)
+            Dim status_id As Integer = GetLookupID("SessionStatus", "Pending", School_ID)
             Dim str As String = "update TblAttendance set IsDeleted = 1, DeletedBy = '" & UserID & "', DeletedDate = getdate() where ID = " & attendance_id & ";"
             str &= "update TblAttendanceDetails set IsDeleted = 1, DeletedBy = '" & UserID & "', DeletedDate = getdate() where AttendanceID = " & attendance_id & ";"
+            str &= "update TblSessions set Status = " & status_id & " where ID = " & session_id & ";"
             If DBContext.ExcuteQuery(str) < 1 Then
-                ShowErrorMessgage(lblRes, "حدث خطأ", Me)
+                ShowErrorMessgage(lblRes, "Error", Me)
                 Exit Sub
             End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
@@ -99,6 +101,7 @@ Partial Class AttendancesList
 #End Region
 
 #Region "Permissions"
+
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
         Try
             Permissions.CheckPermisions(lvMaster, lbAdd, txtSearch, lbSearch, Me.Page, UserID)
@@ -106,5 +109,7 @@ Partial Class AttendancesList
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
+
 #End Region
+
 End Class

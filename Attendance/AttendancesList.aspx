@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="Up Skills | All Attendance" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="AttendancesList.aspx.vb" Inherits="AttendancesList" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Data Table CSS -->
     <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
@@ -55,12 +54,10 @@
             </div>
             <div class="col-md-12 px-0 text-right">
                 <div class="d-inline-flex mb-3">
-                    <%--<a href="Add_Attendance.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>--%>
-                <asp:LinkButton ID="lbAdd" runat ="server" href="Add_Attendance.aspx" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
-                
+                    <%--<a href="Attendance.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>--%>
+                    <asp:LinkButton ID="lbAdd" runat="server" href="Attendance.aspx" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
                 </div>
             </div>
-
             <div class="table-responsive">
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
@@ -68,6 +65,7 @@
                         <table id="DataTables" class="table display data-table text-nowrap">
                             <thead>
                                 <tr>
+                                    <th>Code</th>
                                     <th>Session</th>
                                     <th>Date</th>
                                     <th>Group</th>
@@ -87,7 +85,7 @@
                     <ItemTemplate>
                         <tr>
                             <td>
-                                <a href='<%# "Add_Attendance.aspx?Mode=View&ID=" & Eval("ID")%>'><%# Eval("Session")%></a>
+                                <a href='<%# "Attendance.aspx?Mode=View&ID=" & Eval("ID")%>'><%# Eval("Code")%></a>
                                 <asp:Label ID="lblAttendance" runat="server" Visible="false" Text='<%# Eval("ID")%>'></asp:Label>
                                 <asp:Label ID="lblCourseID" runat="server" Visible="false" Text='<%# Eval("CourseID")%>'></asp:Label>
                                 <asp:Label ID="lblGroupID" runat="server" Visible="false" Text='<%# Eval("GroupID")%>'></asp:Label>
@@ -95,6 +93,7 @@
                                 <asp:Label ID="lblTeacherID" runat="server" Visible="false" Text='<%# Eval("TeacherID")%>'></asp:Label>
                                 <asp:Label ID="lblSupervisorID" runat="server" Visible="false" Text='<%# Eval("SupervisorID")%>'></asp:Label>
                             </td>
+                            <td><%# Eval("Session")%></td>
                             <td><%# PublicFunctions.DateFormat(Eval("Date").ToString)%></td>
                             <td><%# Eval("Group")%></td>
                             <td><%# Eval("Course")%></td>
@@ -108,21 +107,20 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <asp:Panel ID="pnlView" runat="server">
-                                            <asp:LinkButton ID="lbView" runat="server" CssClass="dropdown-item" href='<%# "Add_Attendance.aspx?Mode=View&ID=" & Eval("Id")%>'>
+                                            <asp:LinkButton ID="lbView" runat="server" CssClass="dropdown-item" href='<%# "Attendance.aspx?Mode=View&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-eye text-dodger-blue"></i>View
                                             </asp:LinkButton>
                                         </asp:Panel>
                                         <asp:Panel ID="pnlEdit" runat="server">
-                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" href='<%# "Add_Attendance.aspx?Mode=Edit&ID=" & Eval("ID")%>'>
+                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" href='<%# "Attendance.aspx?Mode=Edit&ID=" & Eval("ID")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                             </asp:LinkButton>
                                         </asp:Panel>
                                         <asp:Panel ID="pnlDelete" runat="server">
-                                            <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClick="Delete">
+                                            <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item" OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                             </asp:LinkButton>
                                         </asp:Panel>
-
                                     </div>
                                 </div>
                             </td>

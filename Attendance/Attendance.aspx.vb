@@ -93,6 +93,7 @@ Partial Class Attendance
 
     Private Sub Insert(da As TblAttendanceFactory)
         Try
+            Dim status_id As Integer = GetLookupID("SessionStatus", "Completed", School_ID)
             Dim dt As New TblAttendance
             If Not FillDT(dt, "Add") Then
                 ShowInfoMessgage(lblRes, "Error", Me)
@@ -107,6 +108,14 @@ Partial Class Attendance
                 Exit Sub
             End If
             If Not SaveStudents(dt.Id, _sqlconn, _sqltrans) Then
+                ShowErrorMessgage(lblRes, "Error", Me)
+                _sqltrans.Rollback()
+                _sqlconn.Close()
+                Exit Sub
+            End If
+            ' update session status to be done
+            Dim query As String = "update TblSessions set Status = " & status_id & " where ID = " & dt.SessionId & ";"
+            If DBContext.ExcuteQuery(query, _sqlconn, _sqltrans) < 1 Then
                 ShowErrorMessgage(lblRes, "Error", Me)
                 _sqltrans.Rollback()
                 _sqlconn.Close()
@@ -160,6 +169,7 @@ Partial Class Attendance
             If Not IsValidForm() Then
                 Return False
             End If
+            dt.Code = txtCode.Text.Trim
             dt.Date = txtDate.Text
             dt.SessionId = IntFormat(ddlSessionID.SelectedValue)
             dt.TeacherId = IntFormat(ddlTeacherID.SelectedValue)
@@ -167,11 +177,13 @@ Partial Class Attendance
             dt.ActualPeriodHour = GetDecimalValue(txtActualPeriodHour.Text)
             dt.UpdatedBy = UserID
             dt.UpdatedDate = DateTime.Now
+            dt.IsDeleted = False
+            dt.SchoolId = School_ID
             If Mode = "Add" Then
-                'dt.CreatedBy = UserID
+                dt.Code = GenerateCode.GenerateCodeFor(Stackholders.Attendance)
+                dt.CreatedBy = UserID
                 dt.CreatedDate = DateTime.Now
             End If
-            dt.SchoolId = School_ID
             Return True
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
@@ -186,9 +198,9 @@ Partial Class Attendance
             For Each item As ListViewItem In lvStudents.Items
                 dtDetails.AttendanceId = IntFormat(id)
                 dtDetails.StudentId = IntFormat(CType(item.FindControl("lblStudentID"), Label).Text)
-                dtDetails.IsAbsent = CType(item.FindControl("chkIsAttend"), CheckBox).Checked
+                dtDetails.IsAbsent = Not CType(item.FindControl("chkIsAttend"), CheckBox).Checked
                 dtDetails.CreatedDate = DateTime.Now
-                'dtDetails.CreatedBy = UserID
+                dtDetails.CreatedBy = UserID
                 dtDetails.SchoolId = School_ID
                 If Not daDetails.InsertTrans(dtDetails, sqlconn, sqltrans) Then
                     ShowErrorMessgage(lblRes, "Insert Error", Me)
@@ -215,6 +227,7 @@ Partial Class Attendance
                     Exit Sub
                 End If
                 ' attendance master data
+                txtCode.Text = dt.Rows(0).Item("Code").ToString
                 txtDate.Text = CDate(dt.Rows(0).Item("Date")).ToShortDateString
                 SetDDLValue(ddlCourseID, dt.Rows(0).Item("CourseID").ToString)
                 SetDDLValue(ddlGroupID, dt.Rows(0).Item("GroupID").ToString)
@@ -296,12 +309,13 @@ Partial Class Attendance
     Protected Sub SelectSession(sender As Object, e As EventArgs)
         Try
             ' fill master data
-            Dim query As String = "select CourseID, GroupID, DefaultPeriodHour, TeacherID, SupervisorID from vw_Sessions " &
-                "where ID = " & IntFormat(ddlSessionID.SelectedValue) & " and SchoolID = " & School_ID & ";"
+            Dim query As String = "select CourseID, GroupID, DefaultPeriodHour, TeacherID, SupervisorID, IssueDate " &
+                "from vw_Sessions where ID = " & IntFormat(ddlSessionID.SelectedValue) & " and SchoolID = " & School_ID & ";"
             Dim dt As DataTable = DBContext.Getdatatable(query)
             If dt.Rows.Count = 0 Then
                 Exit Sub
             End If
+            txtDate.Text = dt.Rows(0).Item("IssueDate").ToString
             SetDDLValue(ddlCourseID, dt.Rows(0).Item("CourseID").ToString)
             SetDDLValue(ddlGroupID, dt.Rows(0).Item("GroupID").ToString)
             txtActualPeriodHour.Text = dt.Rows(0).Item("DefaultPeriodHour").ToString
