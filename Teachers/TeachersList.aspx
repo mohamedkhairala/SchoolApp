@@ -96,7 +96,7 @@
                             <td class="text-center">
                                 <img class="img-thumbnail" src='<%#   Eval("Photo").ToString.Replace("~", "")%>' alt="Teacher"></td>
                             <td>
-                                <a href='<%# "Teacher_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
+                                <a href='<%# "Teacher_Details.aspx?Mode=View&ID=" & Eval("Id")%>'><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
                             <td><%# Eval("Address")%></td>
@@ -110,8 +110,13 @@
                                         <span class="flaticon-more-button-of-three-dots"></span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
+                                        <asp:Panel ID="pnlView" runat="server">
+                                            <asp:LinkButton ID="lbView" runat="server" CssClass="dropdown-item" href='<%# "Teacher_Details.aspx?Mode=View&ID=" & Eval("Id")%>'>
+                                              <i class="fas fa-eye text-dodger-blue"></i>View
+                                            </asp:LinkButton>
+                                        </asp:Panel>
                                         <asp:Panel ID="pnlEdit" runat="server">
-                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Teacher.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" href='<%# "Teacher.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                             </asp:LinkButton>
                                         </asp:Panel>
@@ -150,10 +155,6 @@
     <script>
         $('#tblTeachers').DataTable({
             bLengthChange: false,
-            language: {
-                searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
-
-            },
             columnDefs: [
                 { orderable: false, targets: -1 }
             ]

@@ -734,26 +734,16 @@ Optional ByVal MinNumber As Integer = 0) As Integer
     End Function
 
     ' check if code is unique or not
-    Public Shared Function IsCodeUnique(table_name As String, column_name As String, id As Integer, code As String, school_id As Integer) As Boolean
+    Public Shared Function IsCodeUnique(table_name As String, column_name As String, id As Integer, code As String, school_id As Integer, Optional _sqlconn As SqlConnection = Nothing, Optional _sqltrans As SqlTransaction = Nothing) As Boolean
         Try
             Dim query As String = "select ID from " & table_name & " where " & column_name & " = '" & code & "' and " &
                 "ID <> " & id & " and isnull(IsDeleted, 0) = 0 and SchoolID = " & school_id & ";"
-            Dim dt As DataTable = DBContext.Getdatatable(query)
-            If dt.Rows.Count > 0 Then
-                Return False
+            Dim dt As New DataTable
+            If _sqlconn Is Nothing AndAlso _sqltrans Is Nothing Then
+                dt = DBContext.Getdatatable(query)
+            Else
+                dt = DBContext.GetdatatableTrans(query, _sqlconn, _sqltrans)
             End If
-            Return True
-        Catch ex As Exception
-            Return False
-        End Try
-    End Function
-
-    ' check if code is unique or not
-    Public Shared Function IsCodeUnique(table_name As String, column_name As String, id As Integer, code As String, school_id As Integer, _sqlconn As SqlConnection, _sqltrans As SqlTransaction) As Boolean
-        Try
-            Dim query As String = "select ID from " & table_name & " where " & column_name & " = '" & code & "' and " &
-                "ID <> " & id & " and isnull(IsDeleted, 0) = 0 and SchoolID = " & school_id & ";"
-            Dim dt As DataTable = DBContext.GetdatatableTrans(query, _sqlconn, _sqltrans)
             If dt.Rows.Count > 0 Then
                 Return False
             End If
