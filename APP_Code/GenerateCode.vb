@@ -21,6 +21,8 @@ Public Class GenerateCode
                     query = "select ('GRP' + format(max(ID) + 1, '000000')) from TblGroups"
                 Case PublicFunctions.Stackholders.Session
                     query = "select ('SEN' + format(max(ID) + 1, '000000')) from TblSessions"
+                Case PublicFunctions.Stackholders.Attendance
+                    query = "select ('ATD' + format(max(ID) + 1, '000000')) from TblAttendance"
                 Case PublicFunctions.Stackholders.Messages
                     query = "select max(ID) + 1 from TblMessages"
             End Select
@@ -56,6 +58,8 @@ Public Class GenerateCode
                     query = "select ('GRP' + format(" & new_id & ", '000000'))"
                 Case PublicFunctions.Stackholders.Session
                     query = "select ('SEN' + format(" & new_id & ", '000000'))"
+                Case PublicFunctions.Stackholders.Attendance
+                    query = "select ('ATD' + format(" & new_id & ", '000000'))"
                 Case PublicFunctions.Stackholders.Messages
                     query = "select " & new_id & ""
             End Select

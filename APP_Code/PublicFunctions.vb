@@ -18,7 +18,9 @@ Public Class PublicFunctions
         Group
         Session
         Messages
+        Attendance
     End Enum
+
 #Region "Global Functions"
     Public Shared Function ServerURL() As String
         Dim URL As String = HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) & HttpContext.Current.Request.ApplicationPath
