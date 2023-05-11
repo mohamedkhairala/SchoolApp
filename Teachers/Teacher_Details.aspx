@@ -24,7 +24,6 @@
             <div class="heading-layout1">
                 <div class="item-title">
                     <asp:Label Text="" ID="lblRes" runat="server" />
-                    <h3>About</h3>
                 </div>
 
             </div>
@@ -32,7 +31,7 @@
                 <ItemTemplate>
                     <div class="single-info-details">
                         <div class="item-img">
-                            <img src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="student">
+                            <img src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "../img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("../", ""))  %>' alt="student">
                         </div>
                         <div class="item-content">
                             <div class="header-inline item-header">
@@ -47,7 +46,7 @@
                                         </li>
                                         <li>
                                             <asp:Panel ID="pnlPrint" runat="server">
-                                                <asp:LinkButton ID="lbPrint" CssClass="action-blue" runat="server"><i class="fas fa-print"></i></asp:LinkButton>
+                                                <a id="lbPrint" class="action-blue" onclick="PrintDetails();"><i class="fas fa-print"></i></a>
                                             </asp:Panel>
                                         </li>
                                         <li>
@@ -102,8 +101,8 @@
                                         </tr>
                                         <tr>
                                             <td>Mobile:</td>
-                                            <td><i class="fa-telegram"></i><a href="tel:<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
-                                            <td><i class="fa-whatsapp"></i><a target="_blank" href="https://wa.me/<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
+                                            <td><i class="fa fa-mobile-alt mr-2"></i><a href="tel:<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
+                                            <td><i class="fab fa-whatsapp mr-2"></i><a target="_blank" href="https://wa.me/<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
                                         </tr>
                                         <tr>
                                             <td>Phone:</td>

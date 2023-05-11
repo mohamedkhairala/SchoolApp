@@ -24,7 +24,6 @@
             <div class="heading-layout1">
                 <div class="item-title">
                     <asp:Label Text="" ID="lblRes" runat="server" />
-                    <h3>About</h3>
                 </div>
 
             </div>
@@ -45,7 +44,7 @@
                                         </li>
                                         <li>
                                             <asp:Panel ID="pnlPrint" runat="server">
-                                                <asp:LinkButton ID="lbPrint" CssClass="action-blue" runat="server"><i class="fas fa-print"></i></asp:LinkButton>
+                                                <a id="lbPrint" class="action-blue" onclick="PrintDetails();"><i class="fas fa-print"></i></a>
                                             </asp:Panel>
                                         </li>
                                         <li>

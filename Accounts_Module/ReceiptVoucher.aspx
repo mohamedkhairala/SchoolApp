@@ -4,7 +4,7 @@
 
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Data Table CSS -->
-    <link rel="stylesheet" href="css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/jquery.dataTables.min.css">
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
     <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
@@ -95,15 +95,11 @@
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Data Table Js -->
-    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="../js/jquery.dataTables.min.js"></script>
 
     <script>
         $('#tblReceiptVoucher').DataTable({
             bLengthChange: false,
-            language: {
-                searchPlaceholder: "Search by Code, Date or Type",
-
-            },
             columnDefs: [
                 { orderable: false, targets: -1 }
             ]

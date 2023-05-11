@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="input-group form-group mb-3 d-inline-flex col-md-6 px-0 ml-3">
                                     <div class="input-group form-group">
-                                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" type="text" placeholder="Search By Name" AutoPostBack="true" OnTextChanged="FillGrid" onkeypress="return isString(event);" onkeyup="ValidateChars(this);ShowHideClearSearch(this.value);" ToolTip="Search By Name"></asp:TextBox>
+                                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" type="text" placeholder="Search" AutoPostBack="true" OnTextChanged="FillGrid" onkeypress="return isString(event);" onkeyup="ValidateChars(this);ShowHideClearSearch(this.value);" ToolTip="Search"></asp:TextBox>
 
                                         <asp:LinkButton runat="server" CssClass="clear-search" ID="cmdClear" title="Clear" OnClientClick="$('#txtSearch').val('');" Style="display: none;">&times;</asp:LinkButton>
                                         <asp:Button ID="btnSearch" runat="server" Style="display: none" ClientIDMode="Static" OnClick="FillGrid" />
@@ -532,18 +532,4 @@
     <!-- Data Table Js -->
     <%--<script src="js/jquery.dataTables.min.js"></script>--%>
     <script src="js/Users.js"></script>
-    <%--<script>
-        $('#tblTeachers').DataTable({
-            bLengthChange: false,
-            language: {
-                searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
-                
-            },
-            columnDefs: [
-                { orderable: false, targets: -1 }
-            ]
-        });
-
-        $.fn.dataTable.ext.errMode = 'none';
-    </script>--%>
 </asp:Content>

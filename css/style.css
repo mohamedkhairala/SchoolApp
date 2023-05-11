@@ -6380,3 +6380,26 @@ a.text-red:hover {
     }
 }
 /* End Radio Button */
+
+@media print {
+    .navbar,
+    .sidebar-main,
+    .breadcrumbs-area,
+    .header-actions,
+    .footer-wrap-layout1 {
+        display: none !important;
+    }
+
+    html,
+    body,
+    .dashboard-content-one,
+    .card {
+        background-color: #fff !important;
+    }
+
+    .dashboard-content-one,
+    .card-body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}

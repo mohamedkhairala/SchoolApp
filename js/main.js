@@ -481,3 +481,7 @@ function ShowConfirmModal(popup, pnl) {
         alert(err);
     }
 }
+
+function PrintDetails() {
+    window.print();
+}
