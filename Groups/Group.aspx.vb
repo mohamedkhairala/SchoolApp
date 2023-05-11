@@ -7,7 +7,6 @@ Imports PublicFunctions
 Imports System.Data.SqlClient
 Imports BusinessLayer.BusinessLayer
 
-
 #End Region
 
 Partial Class Group
@@ -33,6 +32,7 @@ Partial Class Group
             UserID = PublicFunctions.GetUserId(Page)
             'School_ID = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
+                Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 FillDDL()
                 View()
             End If
@@ -307,6 +307,7 @@ Partial Class Group
         txtGroupCode.Text = String.Empty
         txtName.Text = String.Empty
         ddlCourseID.SelectedIndex = -1
+        hfCourseFees.Value = String.Empty
         ddlTeacherID.SelectedIndex = -1
         txtTeacherRate.Text = String.Empty
         ddlSupervisorID.SelectedIndex = -1
@@ -332,11 +333,13 @@ Partial Class Group
 
     Protected Sub SelectCourse(sender As Object, e As EventArgs)
         Try
-            Dim query As String = "select NoOfSessions from vw_Courses where SchoolID = " & School_ID & " and ID = " & IntFormat(ddlCourseID.SelectedValue) & ";"
+            Dim query As String = "select NoOfSessions, Fees from vw_Courses where SchoolID = " & School_ID & " and ID = " & IntFormat(ddlCourseID.SelectedValue) & ";"
             Dim dt As DataTable = DBContext.Getdatatable(query)
             If dt.Rows.Count = 0 Then
                 Exit Sub
             End If
+            hfCourseFees.Value = GetDecimalValue(dt.Rows(0).Item("Fees").ToString)
+            txtCoursePrice.Text = hfCourseFees.Value
             lstSessions = New List(Of TblSessions)
             Dim session As New TblSessions
             Dim group_id As Integer = IntFormat(Request.QueryString("ID"))
@@ -640,7 +643,7 @@ Partial Class Group
         Try
             hfSessionIndex.Value = String.Empty
             ddlStudentID.SelectedIndex = -1
-            txtCoursePrice.Text = String.Empty
+            txtCoursePrice.Text = hfCourseFees.Value
             txtDiscountRate.Text = String.Empty
             txtDiscountAmount.Text = String.Empty
             txtNetAmount.Text = String.Empty

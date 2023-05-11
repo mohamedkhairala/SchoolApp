@@ -4,6 +4,8 @@ Imports System.Data
 Imports clsMessages
 Imports System.Data.SqlClient
 Imports BusinessLayer.BusinessLayer
+Imports System.Activities.Expressions
+
 
 #End Region
 
@@ -89,6 +91,18 @@ Partial Class GroupsList
             End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
             FillGrid(sender, e)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+
+#End Region
+
+#Region "Permissions"
+
+    Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
+        Try
+            Permissions.CheckPermisions(lvMaster, lbAdd, txtSearch, lbSearch, Me.Page, UserID)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

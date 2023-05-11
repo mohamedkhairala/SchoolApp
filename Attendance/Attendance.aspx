@@ -56,6 +56,11 @@
                         <asp:ValidationSummary ID="VSMaster" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vsMaster" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
                         <!-- Attendance Master Data -->
                         <asp:Panel ID="pnlAttendance" runat="server" CssClass="d-contents">
+                            <!-- Code -->
+                            <div id="divCode" runat="server" class="col-xl-4 col-lg-6 col-12 form-group">
+                                <label id="lblCode" runat="server" for="txtCode">Code</label>
+                                <asp:TextBox ID="txtCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+                            </div>
                             <!-- Date -->
                             <div id="divDate" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
                                 <label id="lblDate" runat="server" for="txtDate">Date *</label>
@@ -167,7 +172,7 @@
                                                     <asp:Label ID="lblGroupID" runat="server" Visible="false" Text='<%# Eval("GroupID")%>'></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:CheckBox ID="chkIsAttend" runat="server" Checked='<%# PublicFunctions.BoolFormat(Eval("IsAbsent").ToString)%>' />
+                                                    <asp:CheckBox ID="chkIsAttend" runat="server" Checked='<%# Not PublicFunctions.BoolFormat(Eval("IsAbsent").ToString)%>' />
                                                 </td>
                                                 <td>
                                                     <asp:Label ID="lblCode" runat="server" Text='<%# Eval("Code")%>'></asp:Label>
