@@ -58,9 +58,31 @@
             <div class="col-md-12 px-0 text-right">
                 <div class="d-inline-flex mb-3">
                     <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" AutoPostBack="true" OnSelectedIndexChanged="FillGrid">
-                        
                     </asp:DropDownList>
-                 </div>
+                </div>
+                <div class="d-inline-flex mb-3">
+                    From
+                    <asp:TextBox runat="server" CssClass="form-control"
+                        ID="txtFilterFromDate" TextMode="Date">
+                        
+                    </asp:TextBox>
+                </div>
+                <div class="d-inline-flex mb-3">
+                    To
+                    <asp:TextBox runat="server" CssClass="form-control"
+                        ID="txtFilterToDate" TextMode="Date">
+                        
+                    </asp:TextBox>
+                </div>
+                <div class="d-inline-flex mb-3">
+                    <asp:DropDownList runat="server" ID="ddlStatus">
+                    </asp:DropDownList>
+                </div>
+                <div class="d-inline-flex mb-3">
+
+                    <asp:LinkButton Text="Filter" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill" ID="lbFilter" OnClick="FillGrid" /><i class="fa fa-filter ml-3"></i></asp:LinkButton>
+                    <asp:LinkButton Text="Clear" runat="server" CssClass="btn-fill-sm btn-info btn-hover-bluedark text-white fw-btn-fill" ID="lbClear" OnClick="Clear" /><i class="fa fa-trash ml-3"></i></asp:LinkButton>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -81,7 +103,7 @@
                                     <th>Remarks</th>
                                     <th>Status</th>
                                     <th>Status Remarks</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,22 +126,22 @@
                             <td><%# Eval("TeacherCode") + " - " + Eval("TeacherName") %> </td>
                             <td><%# PublicFunctions.DecimalFormat(Eval("TeacherHourRate").ToString) %> / H </td>
                             <td><%# Eval("SupervisorCode") + " - " + Eval("SupervisorName") %></td>
-                             <td>
-                                <asp:TextBox runat="server" ID="txtIssueDate" CssClass="air-datepicker" TextMode="DateTime" Text='<%# Eval("IssueDate")%>' data-position='bottom right'></asp:TextBox>
+                            <td>
+                                <asp:TextBox runat="server" ID="txtIssueDate" CssClass="air-datepicker"
+                                    TextMode="DateTimeLocal" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate"), "yyyy-MM-dd") & "T" & PublicFunctions.DateFormat(Eval("IssueDate"), "HH:MM") %>' data-position='bottom right'></asp:TextBox>
                             </td>
-                           <td>
+                            <td>
                                 <asp:TextBox runat="server" ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
                             </td>
-                             <td>
+                            <td>
                                 <asp:TextBox runat="server" ID="txtRemarks" Text='<%# Eval("Remarks") %>' />
                             </td>
                             <td>
-                                <asp:Label ID="lblSessionStatus" Text='<%# Eval("Status") %>' runat="server" Visible="false"  />
+                                <asp:Label ID="lblSessionStatus" Text='<%# Eval("Status") %>' runat="server" Visible="false" />
                                 <asp:DropDownList runat="server" ID="ddlStatus">
-                                     
                                 </asp:DropDownList>
                             </td>
-                             <td>
+                            <td>
                                 <asp:TextBox runat="server" ID="txtStatusRemarks" Text='<%# Eval("StatusRemarks") %>' />
                             </td>
                         </tr>
@@ -148,10 +170,6 @@
     <script>
         $('#DataTables').DataTable({
             bLengthChange: false,
-            language: {
-                searchPlaceholder: "Search...",
-                
-            },
             columnDefs: [
                 { orderable: false, targets: -1 }
             ]

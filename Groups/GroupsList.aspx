@@ -86,7 +86,7 @@
                     <ItemTemplate>
                         <tr>
                             <td>
-                                <a href='<%# "Group.aspx?Mode=View&ID=" & Eval("ID")%>' target="_blank"><%# Eval("Code") + " - " + Eval("Name")%></a>
+                                <a href='<%# "Group.aspx?Mode=View&ID=" & Eval("ID")%>'><%# Eval("Code") + " - " + Eval("Name")%></a>
                                 <asp:Label ID="lblGroupID" runat="server" Visible="false" Text='<%# Eval("ID")%>'></asp:Label>
                                 <asp:Label ID="lblCourseID" runat="server" Visible="false" Text='<%# Eval("CourseID")%>'></asp:Label>
                                 <asp:Label ID="lblTeacherID" runat="server" Visible="false" Text='<%# Eval("TeacherID")%>'></asp:Label>
@@ -105,8 +105,13 @@
                                         <span class="flaticon-more-button-of-three-dots"></span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
+                                        <asp:Panel ID="pnlView" runat="server">
+                                            <asp:LinkButton ID="lbView" runat="server" CssClass="dropdown-item" href='<%# "Group.aspx?Mode=View&ID=" & Eval("Id")%>'>
+                                              <i class="fas fa-eye text-dodger-blue"></i>View
+                                            </asp:LinkButton>
+                                        </asp:Panel>
                                         <asp:Panel ID="pnlEdit" runat="server">
-                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Group.aspx?Mode=Edit&ID=" & Eval("ID")%>'>
+                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" href='<%# "Group.aspx?Mode=Edit&ID=" & Eval("ID")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                             </asp:LinkButton>
                                         </asp:Panel>
@@ -142,10 +147,6 @@
     <script>
         $('#DataTables').DataTable({
             bLengthChange: false,
-            language: {
-                searchPlaceholder: "Search by Group Name, Course Code, Course Name or Teahcer ...",
-                
-            },
             columnDefs: [
                 { orderable: false, targets: -1 }
             ]

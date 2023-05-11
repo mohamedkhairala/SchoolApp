@@ -5,6 +5,8 @@ Imports clsMessages
 Imports System.Data.SqlClient
 Imports BusinessLayer.BusinessLayer
 Imports System.Activities.Expressions
+Imports System.IdentityModel.Protocols.WSTrust
+
 
 
 #End Region
@@ -26,6 +28,10 @@ Partial Class SessionsList
             lblRes.Visible = False
             If Page.IsPostBack = False Then
                 clsBindDDL.BindCustomDDLs("Select Id,CourseName + ' - ' + Code + ' - ' + Name as groupCodeName from vw_Groups", "groupCodeName", "ID", ddlGroups, True)
+                clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, True)
+
+                'txtDateFrom.Text = PublicFunctions.DateFormat(DateTime.Now, "dd/MM/yyyy")
+                'txtDateTo.Text = PublicFunctions.DateFormat(DateTime.Now, "dd/MM/yyyy")
                 'FillGrid(sender, e)
             End If
         Catch ex As Exception
@@ -40,6 +46,7 @@ Partial Class SessionsList
     ' Fill gridview with data from tblCandidates.
     Sub FillGrid(sender As Object, e As EventArgs)
         Try
+
             Dim dtTable As DataTable = DBContext.Getdatatable("select * from vw_Sessions where " & CollectConditions() & "")
             If dtTable.Rows.Count > 0 Then
                 ' Initialize the sorting expression.
@@ -55,7 +62,7 @@ Partial Class SessionsList
                 lvMaster.DataSource = dv
                 lvMaster.DataBind()
             Else
-                lvMaster.DataSource = Nothing
+                lvMaster.DataSource = New DataTable
                 lvMaster.DataBind()
             End If
         Catch ex As Exception
@@ -67,15 +74,23 @@ Partial Class SessionsList
     Public Function CollectConditions() As String
         Dim result As String = "1 = 1"
         Try
-            Dim Search As String = IIf(txtSearch.Text = "", "1 = 1", " (Name like '%" & txtSearch.Text & "%' or CourseCode Like '%" & txtSearch.Text & "%' or CourseName Like '%" & txtSearch.Text & "%' or TeacherCode Like '%" & txtSearch.Text & "%' or TeacherName Like '%" & txtSearch.Text & "%' or SupervisorCode Like '%" & txtSearch.Text & "%' or SupervisorName Like '%" & txtSearch.Text & "%')")
-            Dim Group As String = IIf(ddlGroups.SelectedValue = "0", "1=1", "GroupId='" & ddlGroups.SelectedValue & "'")
-            Return Search & " and " & Group
+            Dim Search As String = IIf(txtSearch.Text = "", "1 = 1", " (Title like '%" & txtSearch.Text & "%' or CourseCode Like '%" & txtSearch.Text & "%' or CourseName Like '%" & txtSearch.Text & "%' or TeacherCode Like '%" & txtSearch.Text & "%' or TeacherName Like '%" & txtSearch.Text & "%' or SupervisorCode Like '%" & txtSearch.Text & "%' or SupervisorName Like '%" & txtSearch.Text & "%')")
+            Dim Group As String = IIf(ddlGroups.SelectedValue = "0", "1<>1", "GroupId='" & ddlGroups.SelectedValue & "'")
+            Dim Status As String = IIf(ddlStatus.SelectedValue = "0", "1=1", "Status='" & ddlStatus.SelectedValue & "'")
+            Dim DateFrom As String = IIf(txtFilterFromDate.Text = "", "1=1", "  IssueDate >= '" + PublicFunctions.DateFormat(txtFilterFromDate.Text, "yyyy/MM/dd") + " 00:00:00'")
+            Dim DateTo As String = IIf(txtFilterToDate.Text = "", "1=1", "  IssueDate <= '" + PublicFunctions.DateFormat(txtFilterToDate.Text, "yyyy/MM/dd") + " 23:59:59'")
+
+            Return Search & " and " & Group & " and " & DateFrom & " and " & DateTo & " and " & Status
         Catch ex As Exception
             Throw ex
         End Try
     End Function
 
-
+    Protected Sub Clear(sender As Object, e As EventArgs)
+        txtFilterFromDate.Text = ""
+        txtFilterToDate.Text = ""
+        FillGrid(sender, e)
+    End Sub
 
 #End Region
 

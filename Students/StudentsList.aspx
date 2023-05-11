@@ -88,7 +88,6 @@
                         </table>
                     </LayoutTemplate>
                     <ItemTemplate>
-
                         <tr>
                             <td>#<%# Eval("Code")%>
                                 <asp:Label ID="lblStudentId" runat="server" Visible="false" Text='<%# Eval("Id")%>'></asp:Label>
@@ -98,7 +97,7 @@
                                 <img class="img-thumbnail" src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "../img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="student"></td>
                             <td>
                                 <%--<a href="#Details_modal"  data-toggle="modal" data-url='<%# "Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>'><%# Eval("Name")%></a>--%>
-                                <a href='<%# "../Students/Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>' target="_blank"><%# Eval("Name")%></a>
+                                <a href='<%# "../Students/Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>'><%# Eval("Name")%></a>
                             </td>
                             <td><%# Eval("FullGender")%></td>
 
@@ -114,9 +113,13 @@
                                         <span class="flaticon-more-button-of-three-dots"></span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-
+                                        <asp:Panel ID="pnlView" runat="server">
+                                            <asp:LinkButton ID="lbView" runat="server" CssClass="dropdown-item" href='<%# "../Students/Student_Details.aspx?Mode=View&ID=" & Eval("Id")%>'>
+                                              <i class="fas fa-eye text-dodger-blue"></i>View
+                                            </asp:LinkButton>
+                                        </asp:Panel>
                                         <asp:Panel ID="pnlEdit" runat="server">
-                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" target="_blank" href='<%# "Students/Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
+                                            <asp:LinkButton ID="lbEdit" runat="server" CssClass="dropdown-item" href='<%# "Students/Student.aspx?Mode=Edit&ID=" & Eval("Id")%>'>
                                               <i class="fas fa-cogs text-dark-pastel-green"></i>Edit
                                             </asp:LinkButton>
                                         </asp:Panel>
@@ -125,9 +128,6 @@
                                               <i class="fas fa-times text-orange-red"></i>Delete
                                             </asp:LinkButton>
                                         </asp:Panel>
-                                       
-
-
                                     </div>
                                 </div>
                             </td>
@@ -143,9 +143,7 @@
                         </table>
                     </EmptyDataTemplate>
                 </asp:ListView>
-
             </div>
-
         </div>
     </div>
     <!-- Student Table Area End Here -->
