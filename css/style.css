@@ -6403,3 +6403,9 @@ a.text-red:hover {
         padding: 0 !important;
     }
 }
+
+.table input,
+.table select {
+    padding: 5px;
+    line-height: normal;
+}
