@@ -74,8 +74,8 @@
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Code </label>
                                     <asp:TextBox ID="txtCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vUsers"
-                                        ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>
+                                    <%--<asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vUsers"
+                                        ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>--%>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>First Name *</label>
