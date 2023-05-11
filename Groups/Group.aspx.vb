@@ -108,12 +108,12 @@ Partial Class Group
                 _sqlconn.Close()
                 Exit Sub
             End If
-            'If Not SaveStudents(dt.Id, _sqlconn, _sqltrans) Then
-            '    ShowErrorMessgage(lblRes, "Error", Me)
-            '    _sqltrans.Rollback()
-            '    _sqlconn.Close()
-            '    Exit Sub
-            'End If
+            If Not SaveStudents(dt.Id, _sqlconn, _sqltrans) Then
+                ShowErrorMessgage(lblRes, "Error", Me)
+                _sqltrans.Rollback()
+                _sqlconn.Close()
+                Exit Sub
+            End If
             _sqltrans.Commit()
             _sqlconn.Close()
             Clear()
@@ -149,13 +149,13 @@ Partial Class Group
                 _sqlconn.Close()
                 Exit Sub
             End If
-            'Dim daStudents As New TblStudentsGroupsFactory
-            'daStudents.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.GroupId, ID, _sqlconn, _sqltrans)
-            'If Not SaveStudents(ID, _sqlconn, _sqltrans) Then
-            '    _sqltrans.Rollback()
-            '    _sqlconn.Close()
-            '    Exit Sub
-            'End If
+            Dim daStudents As New TblStudentsGroupsFactory
+            daStudents.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.GroupId, ID, _sqlconn, _sqltrans)
+            If Not SaveStudents(ID, _sqlconn, _sqltrans) Then
+                _sqltrans.Rollback()
+                _sqlconn.Close()
+                Exit Sub
+            End If
             _sqltrans.Commit()
             _sqlconn.Close()
             ShowMessage(lblRes, MessageTypesEnum.Update, Page)
@@ -232,9 +232,15 @@ Partial Class Group
             Dim daDetails As New TblStudentsGroupsFactory
             For Each item As ListViewItem In lvStudents.Items
                 dtDetails.GroupId = id
-                dtDetails.StudentId = CType(item.FindControl("lblStudentID"), Label).Text
+                dtDetails.StudentId = IntFormat(CType(item.FindControl("lblStudentID"), Label).Text)
+                dtDetails.CoursePrice = GetDecimalValue(CType(item.FindControl("txtCoursePrice"), TextBox).Text)
+                dtDetails.DiscountRate = GetDecimalValue(CType(item.FindControl("txtDiscountRate"), TextBox).Text)
+                dtDetails.DiscountAmount = GetDecimalValue(CType(item.FindControl("lblDiscountAmount"), Label).Text)
+                dtDetails.NetAmount = GetDecimalValue(CType(item.FindControl("lblNetAmount"), Label).Text)
+                dtDetails.DiscountReason = CType(item.FindControl("txtDiscountReason"), TextBox).Text
                 dtDetails.CreatedDate = DateTime.Now
                 dtDetails.CreatedBy = UserID
+                dtDetails.IsDeleted = False
                 dtDetails.SchoolId = School_ID
                 If Not daDetails.InsertTrans(dtDetails, sqlconn, sqltrans) Then
                     ShowErrorMessgage(lblRes, "Insert Error", Me)
@@ -480,7 +486,7 @@ Partial Class Group
     Protected Sub EditSession(ByVal Sender As Object, ByVal e As EventArgs)
         Try
             Dim parent As Object = Sender.parent
-            hfSessionIndex.Value = (CType(parent.FindControl("lblSerialNo"), Label).Text) - 1
+            hfSessionIndex.Value = IntFormat((CType(parent.FindControl("lblSerialNo"), Label).Text) - 1)
             txtSessionCode.Text = CType(parent.FindControl("lblCode"), Label).Text
             txtTitle.Text = CType(parent.FindControl("txtTitle"), TextBox).Text
             txtIssueDate.Text = CType(parent.FindControl("txtIssueDate"), TextBox).Text
@@ -496,6 +502,39 @@ Partial Class Group
 #End Region
 
 #Region "Students"
+
+    Protected Sub CalculateNetAmount(sender As Object, e As EventArgs)
+        Try
+            Dim course_price As Decimal = GetDecimalValue(txtCoursePrice.Text), discount_rate As Decimal = GetDecimalValue(txtDiscountRate.Text),
+                discount_amount As Decimal = 0, net_amount As Decimal = 0
+            discount_amount = course_price * discount_rate / 100
+            net_amount = course_price - discount_amount
+            txtCoursePrice.Text = DecimalFormat(course_price)
+            txtDiscountRate.Text = DecimalFormat(discount_rate)
+            txtDiscountAmount.Text = DecimalFormat(discount_amount)
+            txtNetAmount.Text = DecimalFormat(net_amount)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+
+    Protected Sub CalculateNetAmountInLV(ByVal Sender As Object, ByVal e As EventArgs)
+        Try
+            Dim parent As Object = Sender.parent
+            Dim text_box As TextBox = CType(Sender, TextBox)
+            Dim course_price As Decimal = GetDecimalValue(CType(parent.FindControl("txtCoursePrice"), TextBox).Text),
+                discount_rate As Decimal = GetDecimalValue(CType(parent.FindControl("txtDiscountRate"), TextBox).Text),
+                discount_amount As Decimal = 0, net_amount As Decimal = 0
+            discount_amount = course_price * discount_rate / 100
+            net_amount = course_price - discount_amount
+            CType(parent.FindControl("txtCoursePrice"), TextBox).Text = DecimalFormat(course_price)
+            CType(parent.FindControl("txtDiscountRate"), TextBox).Text = DecimalFormat(discount_rate)
+            CType(parent.FindControl("lblDiscountAmount"), Label).Text = DecimalFormat(discount_amount)
+            CType(parent.FindControl("lblNetAmount"), Label).Text = DecimalFormat(net_amount)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
 
     Private Sub BindLVStudents()
         Try
@@ -528,8 +567,13 @@ Partial Class Group
         Try
             For Each item As ListViewItem In lvStudents.Items
                 Dim dtDetails As New TblStudentsGroups
-                dtDetails.StudentId = CType(item.FindControl("lblStudentID"), Label).Text
                 dtDetails.GroupId = IntFormat(CType(item.FindControl("lblGroupID"), Label).Text)
+                dtDetails.StudentId = IntFormat(CType(item.FindControl("lblStudentID"), Label).Text)
+                dtDetails.CoursePrice = GetDecimalValue(CType(item.FindControl("txtCoursePrice"), TextBox).Text)
+                dtDetails.DiscountRate = GetDecimalValue(CType(item.FindControl("txtDiscountRate"), TextBox).Text)
+                dtDetails.DiscountAmount = GetDecimalValue(CType(item.FindControl("lblDiscountAmount"), Label).Text)
+                dtDetails.NetAmount = GetDecimalValue(CType(item.FindControl("lblNetAmount"), Label).Text)
+                dtDetails.DiscountReason = CType(item.FindControl("txtDiscountReason"), TextBox).Text
                 lstStudents.Add(dtDetails)
             Next
             Return lstStudents
@@ -564,8 +608,13 @@ Partial Class Group
                 Return False
             End If
             Dim group_id As Integer = IntFormat(Request.QueryString("ID"))
-            dtDetails.StudentId = IntFormat(ddlStudentID.SelectedValue)
             dtDetails.GroupId = group_id
+            dtDetails.StudentId = IntFormat(ddlStudentID.SelectedValue)
+            dtDetails.CoursePrice = GetDecimalValue(txtCoursePrice.Text)
+            dtDetails.DiscountRate = GetDecimalValue(txtDiscountRate.Text)
+            dtDetails.DiscountAmount = GetDecimalValue(txtDiscountAmount.Text)
+            dtDetails.NetAmount = GetDecimalValue(txtNetAmount.Text)
+            dtDetails.DiscountReason = txtDiscountReason.Text
             dtDetails.CreatedBy = UserID
             dtDetails.CreatedDate = DateTime.Now
             dtDetails.IsDeleted = 0
@@ -589,8 +638,13 @@ Partial Class Group
 
     Protected Sub CancelStudent(Sender As Object, e As EventArgs)
         Try
-            ddlStudentID.SelectedIndex = -1
             hfSessionIndex.Value = String.Empty
+            ddlStudentID.SelectedIndex = -1
+            txtCoursePrice.Text = String.Empty
+            txtDiscountRate.Text = String.Empty
+            txtDiscountAmount.Text = String.Empty
+            txtNetAmount.Text = String.Empty
+            txtDiscountReason.Text = String.Empty
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -612,8 +666,13 @@ Partial Class Group
     Protected Sub EditStudent(ByVal Sender As Object, ByVal e As EventArgs)
         Try
             Dim parent As Object = Sender.parent
+            hfStudentIndex.Value = IntFormat((CType(parent.FindControl("lblSerialNo"), Label).Text) - 1)
             SetDDLValue(ddlStudentID, IntFormat(CType(parent.FindControl("lblStudentID"), Label).Text))
-            hfStudentIndex.Value = (CType(parent.FindControl("lblSerialNo"), Label).Text) - 1
+            txtCoursePrice.Text = DecimalFormat(CType(parent.FindControl("txtCoursePrice"), TextBox).Text)
+            txtDiscountRate.Text = DecimalFormat(CType(parent.FindControl("txtDiscountRate"), TextBox).Text)
+            txtDiscountAmount.Text = DecimalFormat(CType(parent.FindControl("lblDiscountAmount"), Label).Text)
+            txtNetAmount.Text = DecimalFormat(CType(parent.FindControl("lblNetAmount"), Label).Text)
+            txtDiscountReason.Text = CType(parent.FindControl("txtDiscountReason"), TextBox).Text
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

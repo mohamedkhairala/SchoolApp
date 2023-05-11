@@ -1,7 +1,6 @@
 <%@ Page Title="Up Skills | Add Group" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Group.aspx.vb" Inherits="Group" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-
 <asp:Content ID="PageHeader" ContentPlaceHolderID="Header" runat="Server">
     <!-- Select 2 CSS -->
     <link rel="stylesheet" href="../css/select2.min.css">
@@ -44,7 +43,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card height-auto">
             <div class="card-body">
                 <div class="heading-layout1">
@@ -117,7 +115,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card height-auto">
             <div class="card-body">
                 <div class="heading-layout1">
@@ -168,8 +165,6 @@
                             <div id="divRemarks" runat="server" class="col-lg-12 col-12 form-group">
                                 <label id="lblRemarks" runat="server" for="txtRemarks">Remarks</label>
                                 <asp:TextBox ID="txtRemarks" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="4"></asp:TextBox>
-                                <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqRemarks" runat="server" ValidationGroup="vsSessions" Visible="false"
-                                    ControlToValidate="txtRemarks" Display="Dynamic" Text="Required Remarks"></asp:RequiredFieldValidator>
                             </div>
                             <!-- lvSessions -->
                             <div class="col-xl-12 col-lg-12">
@@ -216,7 +211,7 @@
                                                     <i class="far fa-calendar-alt"></i>
                                                 </td>
                                                 <td>
-                                                    <asp:TextBox ID="txtDefaultPeriodHour" runat="server" Text='<%# PublicFunctions.DecimalFormat(Eval("DefaultPeriodHour").ToString)%>' TextMode="Number" MaxLength="2"></asp:TextBox>
+                                                    <asp:TextBox ID="txtDefaultPeriodHour" runat="server" Text='<%# PublicFunctions.GetDecimalValue(Eval("DefaultPeriodHour").ToString)%>' TextMode="Number" MaxLength="2"></asp:TextBox>
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtRemarks" runat="server" Text='<%# Eval("Remarks")%>' TextMode="MultiLine" CssClass="textarea" name="message" Rows="2"></asp:TextBox>
@@ -262,7 +257,6 @@
                 </div>
             </div>
         </div>
-
         <div class="card height-auto">
             <div class="card-body">
                 <div class="heading-layout1">
@@ -284,6 +278,39 @@
                                 <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqStudentID" runat="server" ValidationGroup="vsStudents"
                                     ControlToValidate="ddlStudentID" InitialValue="" Display="Dynamic" Text="Required Student"></asp:RequiredFieldValidator>
                             </div>
+                            <!-- CoursePrice -->
+                            <div id="divCoursePrice" runat="server" class="col-xl-4 col-lg-6 col-3 form-group">
+                                <label id="lblCoursePrice" runat="server" for="txtCoursePrice">Course Price *</label>
+                                <asp:TextBox ID="txtCoursePrice" runat="server" CssClass="form-control" MaxLength="12" AutoPostBack="true" OnTextChanged="CalculateNetAmount"></asp:TextBox>
+                                <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCoursePrice" runat="server" ValidationGroup="vsStudents"
+                                    ControlToValidate="txtCoursePrice" Display="Dynamic" Text="Required Course Price"></asp:RequiredFieldValidator>
+                                <asp:FilteredTextBoxExtender ID="fteCoursePrice" runat="server" TargetControlID="txtCoursePrice" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                            </div>
+                            <!-- DiscountRate -->
+                            <div id="divDiscountRate" runat="server" class="col-xl-4 col-lg-6 col-3 form-group">
+                                <label id="lblDiscountRate" runat="server" for="txtDiscountRate">Discount Rate</label>
+                                <asp:TextBox ID="txtDiscountRate" runat="server" CssClass="form-control" MaxLength="12" AutoPostBack="true" OnTextChanged="CalculateNetAmount"></asp:TextBox>
+                                <asp:FilteredTextBoxExtender ID="fteDiscountRate" runat="server" TargetControlID="txtDiscountRate" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                            </div>
+                            <!-- DiscountAmount -->
+                            <div id="divDiscountAmount" runat="server" class="col-xl-4 col-lg-6 col-3 form-group">
+                                <label id="lblDiscountAmount" runat="server" for="txtDiscountAmount">Discount Amount</label>
+                                <asp:TextBox ID="txtDiscountAmount" Enabled="false" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
+                                <asp:FilteredTextBoxExtender ID="fteDiscountAmount" runat="server" TargetControlID="txtDiscountAmount" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                            </div>
+                            <!-- NetAmount -->
+                            <div id="divNetAmount" runat="server" class="col-xl-4 col-lg-6 col-3 form-group">
+                                <label id="lblNetAmount" runat="server" for="txtNetAmount">Net Amount *</label>
+                                <asp:TextBox ID="txtNetAmount" Enabled="false" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
+                                <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqNetAmount" runat="server" ValidationGroup="vsStudents"
+                                    ControlToValidate="txtNetAmount" Display="Dynamic" Text="Required Net Amount"></asp:RequiredFieldValidator>
+                                <asp:FilteredTextBoxExtender ID="fteNetAmount" runat="server" TargetControlID="txtNetAmount" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
+                            </div>
+                            <!-- DiscountReason -->
+                            <div id="divDiscountReason" runat="server" class="col-lg-12 col-12 form-group">
+                                <label id="lblDiscountReason" runat="server" for="txtDiscountReason">Discount Reason</label>
+                                <asp:TextBox ID="txtDiscountReason" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="4"></asp:TextBox>
+                            </div>
                             <!-- lvStudents -->
                             <div class="col-xl-12 col-lg-12">
                                 <div class="table-responsive">
@@ -297,6 +324,11 @@
                                                         <th>Code</th>
                                                         <th>Name</th>
                                                         <th>Mobile</th>
+                                                        <th>Course Price</th>
+                                                        <th>Discount %</th>
+                                                        <th>Discount</th>
+                                                        <th>Net Amount</th>
+                                                        <th>Discount Reason</th>
                                                         <th style="width: 50px;"></th>
                                                     </tr>
                                                 </thead>
@@ -321,6 +353,21 @@
                                                 </td>
                                                 <td>
                                                     <asp:Label ID="lblMobile" runat="server"></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtCoursePrice" runat="server" Text='<%# PublicFunctions.GetDecimalValue(Eval("CoursePrice").ToString)%>' TextMode="Number" AutoPostBack="true" OnTextChanged="CalculateNetAmountInLV"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtDiscountRate" runat="server" Text='<%# PublicFunctions.GetDecimalValue(Eval("DiscountRate").ToString)%>' TextMode="Number" AutoPostBack="true" OnTextChanged="CalculateNetAmountInLV"></asp:TextBox>
+                                                </td>
+                                                <td>
+                                                    <asp:Label ID="lblDiscountAmount" runat="server" Text='<%# PublicFunctions.GetDecimalValue(Eval("DiscountAmount").ToString)%>'></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:Label ID="lblNetAmount" runat="server" Text='<%# PublicFunctions.GetDecimalValue(Eval("NetAmount").ToString)%>'></asp:Label>
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtDiscountReason" runat="server" Text='<%# Eval("DiscountReason")%>' TextMode="MultiLine" CssClass="textarea" name="message" Rows="2"></asp:TextBox>
                                                 </td>
                                                 <td>
                                                     <div class="dropdown">
@@ -374,7 +421,6 @@
     <script src="../js/datepicker.min.js"></script>
     <!-- Data Table Js -->
     <script src="../js/jquery.dataTables.min.js"></script>
-
     <script>
         $('#tblSessions, #tblStudents').DataTable({
             bLengthChange: false,
@@ -383,7 +429,6 @@
                 { orderable: false, targets: -1 }
             ]
         });
-
         $.fn.dataTable.ext.errMode = 'none';
     </script>
 </asp:Content>
