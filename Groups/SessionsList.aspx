@@ -170,10 +170,6 @@
     <script>
         $('#DataTables').DataTable({
             bLengthChange: false,
-            language: {
-                searchPlaceholder: "Search...",
-                
-            },
             columnDefs: [
                 { orderable: false, targets: -1 }
             ]

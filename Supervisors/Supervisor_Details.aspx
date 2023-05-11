@@ -24,7 +24,6 @@
             <div class="heading-layout1">
                 <div class="item-title">
                     <asp:Label Text="" ID="lblRes" runat="server" />
-                    <h3>About</h3>
                 </div>
 
             </div>
@@ -32,7 +31,7 @@
                 <ItemTemplate>
                     <div class="single-info-details">
                         <div class="item-img">
-                            <img src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("~/", ""))  %>' alt="student">
+                            <img src='<%# IIf(String.IsNullOrEmpty(Eval("Photo")), "../img/figure/Photo.jpg", PublicFunctions.ServerURL & Eval("Photo").ToString.Replace("../", ""))  %>' alt="student">
                         </div>
                         <div class="item-content">
                             <div class="header-inline item-header">

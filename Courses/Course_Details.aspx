@@ -24,7 +24,6 @@
             <div class="heading-layout1">
                 <div class="item-title">
                     <asp:Label Text="" ID="lblRes" runat="server" />
-                    <h3>About</h3>
                 </div>
 
             </div>

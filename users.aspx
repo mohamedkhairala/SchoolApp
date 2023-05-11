@@ -532,18 +532,4 @@
     <!-- Data Table Js -->
     <%--<script src="js/jquery.dataTables.min.js"></script>--%>
     <script src="js/Users.js"></script>
-    <%--<script>
-        $('#tblTeachers').DataTable({
-            bLengthChange: false,
-            language: {
-                searchPlaceholder: "Search by Code, Name, Phone or E-mail ...",
-                
-            },
-            columnDefs: [
-                { orderable: false, targets: -1 }
-            ]
-        });
-
-        $.fn.dataTable.ext.errMode = 'none';
-    </script>--%>
 </asp:Content>
