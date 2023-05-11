@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-12 px-0 text-right">
                 <div class="d-inline-flex mb-3">
-                    <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" AutoPostBack="true" OnSelectedIndexChanged="FillGrid">
+                    <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups">
                     </asp:DropDownList>
                 </div>
                 <div class="d-inline-flex mb-3">
