@@ -55,105 +55,108 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="form-group col-md-2 pl-0 pr-2">
-                        <label>Group</label>
-                        <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" AutoPostBack="true" OnSelectedIndexChanged="FillGrid"></asp:DropDownList>
-                    </div>
-                    <div class="form-group col-md-2 px-2">
-                        <label>From</label>
-                        <asp:TextBox runat="server" CssClass="form-control air-datepicker" ID="txtFilterFromDate" TextMode="Date"></asp:TextBox>
-                    </div>
-                    <div class="form-group col-md-2 px-2">
-                        <label>To</label>
-                        <asp:TextBox runat="server" CssClass="form-control air-datepicker" ID="txtFilterToDate" TextMode="Date"></asp:TextBox>
-                    </div>
-                    <div class="form-group col-md-2 px-2">
-                        <label>Status</label>
-                        <asp:DropDownList runat="server" ID="ddlStatus" CssClass="form-control"></asp:DropDownList>
-                    </div>
-                    <div class="form-group d-inline-flex flex-column px-2">
-                        <label>&nbsp;</label>
-                        <asp:LinkButton runat="server" CssClass="btn-fill-sm btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill" ID="lbFilter" OnClick="FillGrid">Filter<i class="fa fa-filter ml-3"></i></asp:LinkButton>
-                    </div>
-                    <div class="form-group d-inline-flex flex-column px-2">
-                        <label>&nbsp;</label>
-                        <asp:LinkButton runat="server" CssClass="btn-fill-sm bg-danger text-white fw-btn-fill" ID="lbClear" OnClick="Clear">Clear<i class="fa fa-trash ml-3"></i></asp:LinkButton>
-                    </div>
+            <div class="col-md-12 px-0 text-right">
+                <div class="d-inline-flex mb-3">
+                    <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups">
+                    </asp:DropDownList>
+                </div>
+                <div class="d-inline-flex mb-3">
+                    From
+                    <asp:TextBox runat="server" CssClass="form-control"
+                        ID="txtFilterFromDate" TextMode="Date">
+                        
+                    </asp:TextBox>
+                </div>
+                <div class="d-inline-flex mb-3">
+                    To
+                    <asp:TextBox runat="server" CssClass="form-control"
+                        ID="txtFilterToDate" TextMode="Date">
+                        
+                    </asp:TextBox>
+                </div>
+                <div class="d-inline-flex mb-3">
+                    <asp:DropDownList runat="server" ID="ddlStatus">
+                    </asp:DropDownList>
+                </div>
+                <div class="d-inline-flex mb-3">
+
+                    <asp:LinkButton Text="Filter" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill" ID="lbFilter" OnClick="FillGrid" /><i class="fa fa-filter ml-3"></i></asp:LinkButton>
+                    <asp:LinkButton Text="Clear" runat="server" CssClass="btn-fill-sm btn-info btn-hover-bluedark text-white fw-btn-fill" ID="lbClear" OnClick="Clear" /><i class="fa fa-trash ml-3"></i></asp:LinkButton>
                 </div>
             </div>
 
-            <asp:HiddenField ID="SortExpression" runat="server" />
-            <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
-                <LayoutTemplate>
-                    <table id="DataTables" class="table display data-table text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>Session</th>
-                                <th>Group</th>
-                                <th>Course</th>
-                                <th>Teacher</th>
-                                <th>Teacher Rate</th>
-                                <th>Supervisor</th>
-                                <th>Date/Time</th>
-                                <th>Period</th>
-                                <th>Remarks</th>
-                                <th>Status</th>
-                                <th>Status Remarks</th>
+            <div class="table-responsive">
+                <asp:HiddenField ID="SortExpression" runat="server" />
+                <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
+                    <LayoutTemplate>
+                        <table id="DataTables" class="table display data-table text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Session</th>
+                                    <th>Group</th>
+                                    <th>Course</th>
+                                    <th>Teacher</th>
+                                    <th>Teacher Rate</th>
+                                    <th>Supervisor</th>
+                                    <th>Date/Time</th>
+                                    <th>Period</th>
+                                    <th>Remarks</th>
+                                    <th>Status</th>
+                                    <th>Status Remarks</th>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="itemPlaceholder" runat="server">
-                            </tr>
-                        </tbody>
-                    </table>
-                </LayoutTemplate>
-                <ItemTemplate>
-                    <tr>
-                        <td>
-                            <%# Eval("Code") + " - " + Eval("Title")%>
-                            <asp:Label ID="lblSessionID" runat="server" Visible="false" Text='<%# Eval("ID")%>'></asp:Label>
-                            <asp:Label ID="lblCourseID" runat="server" Visible="false" Text='<%# Eval("CourseID")%>'></asp:Label>
-                            <asp:Label ID="lblTeacherID" runat="server" Visible="false" Text='<%# Eval("TeacherID")%>'></asp:Label>
-                            <asp:Label ID="lblSupervisorID" runat="server" Visible="false" Text='<%# Eval("SupervisorID")%>'></asp:Label>
-                        </td>
-                        <td><%# Eval("GroupCode") + " - " + Eval("GroupName") %></td>
-                        <td><%# Eval("CourseCode") + " - " + Eval("CourseName") %></td>
-                        <td><%# Eval("TeacherCode") + " - " + Eval("TeacherName") %> </td>
-                        <td><%# PublicFunctions.DecimalFormat(Eval("TeacherHourRate").ToString) %> / H </td>
-                        <td><%# Eval("SupervisorCode") + " - " + Eval("SupervisorName") %></td>
-                        <td>
-                            <asp:TextBox runat="server" ID="txtIssueDate" CssClass="air-datepicker"
-                                TextMode="DateTimeLocal" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate"), "yyyy-MM-dd") & "T" & PublicFunctions.DateFormat(Eval("IssueDate"), "HH:MM") %>' data-position='bottom right'></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:TextBox runat="server" ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
-                        </td>
-                        <td>
-                            <asp:TextBox runat="server" ID="txtRemarks" Text='<%# Eval("Remarks") %>' />
-                        </td>
-                        <td>
-                            <asp:Label ID="lblSessionStatus" Text='<%# Eval("Status") %>' runat="server" Visible="false" />
-                            <asp:DropDownList runat="server" ID="ddlStatus">
-                            </asp:DropDownList>
-                        </td>
-                        <td>
-                            <asp:TextBox runat="server" ID="txtStatusRemarks" Text='<%# Eval("StatusRemarks") %>' />
-                        </td>
-                    </tr>
-                </ItemTemplate>
-                <EmptyDataTemplate>
-                    <table style="width: 100%;">
-                        <tr class="EmptyRowStyle">
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="itemPlaceholder" runat="server">
+                                </tr>
+                            </tbody>
+                        </table>
+                    </LayoutTemplate>
+                    <ItemTemplate>
+                        <tr>
                             <td>
-                                <div>No Data Found.</div>
+                                <%# Eval("Code") + " - " + Eval("Title")%>
+                                <asp:Label ID="lblSessionID" runat="server" Visible="false" Text='<%# Eval("ID")%>'></asp:Label>
+                                <asp:Label ID="lblCourseID" runat="server" Visible="false" Text='<%# Eval("CourseID")%>'></asp:Label>
+                                <asp:Label ID="lblTeacherID" runat="server" Visible="false" Text='<%# Eval("TeacherID")%>'></asp:Label>
+                                <asp:Label ID="lblSupervisorID" runat="server" Visible="false" Text='<%# Eval("SupervisorID")%>'></asp:Label>
+                            </td>
+                            <td><%# Eval("GroupCode") + " - " + Eval("GroupName") %></td>
+                            <td><%# Eval("CourseCode") + " - " + Eval("CourseName") %></td>
+                            <td><%# Eval("TeacherCode") + " - " + Eval("TeacherName") %> </td>
+                            <td><%# PublicFunctions.DecimalFormat(Eval("TeacherHourRate").ToString) %> / H </td>
+                            <td><%# Eval("SupervisorCode") + " - " + Eval("SupervisorName") %></td>
+                            <td>
+                                <asp:TextBox runat="server" ID="txtIssueDate" CssClass="air-datepicker"
+                                    TextMode="DateTimeLocal" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate"), "yyyy-MM-dd") & "T" & PublicFunctions.DateFormat(Eval("IssueDate"), "HH:MM") %>' data-position='bottom right'></asp:TextBox>
+                            </td>
+                            <td>
+                                <asp:TextBox runat="server" ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
+                            </td>
+                            <td>
+                                <asp:TextBox runat="server" ID="txtRemarks" Text='<%# Eval("Remarks") %>' />
+                            </td>
+                            <td>
+                                <asp:Label ID="lblSessionStatus" Text='<%# Eval("Status") %>' runat="server" Visible="false" />
+                                <asp:DropDownList runat="server" ID="ddlStatus">
+                                </asp:DropDownList>
+                            </td>
+                            <td>
+                                <asp:TextBox runat="server" ID="txtStatusRemarks" Text='<%# Eval("StatusRemarks") %>' />
                             </td>
                         </tr>
-                    </table>
-                </EmptyDataTemplate>
-            </asp:ListView>
+                    </ItemTemplate>
+                    <EmptyDataTemplate>
+                        <table style="width: 100%;">
+                            <tr class="EmptyRowStyle">
+                                <td>
+                                    <div>No Data Found.</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </EmptyDataTemplate>
+                </asp:ListView>
+            </div>
         </div>
     </div>
     <!-- Groups Table Area End Here -->
