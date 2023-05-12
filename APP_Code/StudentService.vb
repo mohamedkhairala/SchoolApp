@@ -12,7 +12,7 @@ Imports System.Data
 Imports System.CodeDom
 
 Public Class StudentService
-    Private Shared ReadOnly UserId As String = PublicFunctions.GetUserId
+    Private Shared ReadOnly UserId As String = PublicFunctions.Decrypt(PublicFunctions.GetUserId)
     Public Shared Function DeleteStudent(ByVal StudentId As String) As Boolean
         Try
             If Not IsNumeric(StudentId) Then
