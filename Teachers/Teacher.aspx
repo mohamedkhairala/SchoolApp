@@ -149,7 +149,7 @@
                                     <asp:TextBox ID="txtBio" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>
                                 </div>
                                 <div class="col-12 form-group mg-t-8">
-                                    <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vgTeacher" UseSubmitBehavior="false"
+                                    <asp:Button ID="lbSave" runat="server" ValidationGroup="vgTeacher" UseSubmitBehavior="false"
                                         CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
                                         CommandArgument="Add" OnClick="Save" OnClientClick="SaveClick(this,'vgTeacher');" Text="Save" />
                                     <%--<asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>--%>
