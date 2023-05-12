@@ -27,9 +27,9 @@ Public Class WebService
         Dim dt As New DataTable
         Try
             If prefixText = "*" Then
-                dt = DBContext.Getdatatable("Select UserID,UserName from tblCPUsers where Isnull(IsDeleted,0)=0 ")
+                dt = DBManager.Getdatatable("Select UserID,UserName from tblCPUsers where Isnull(IsDeleted,0)=0 ")
             Else
-                dt = DBContext.Getdatatable("Select UserID,UserName from tblCPUsers where Isnull(IsDeleted,0)=0 and UserName like '" & prefixText & "%' ")
+                dt = DBManager.Getdatatable("Select UserID,UserName from tblCPUsers where Isnull(IsDeleted,0)=0 and UserName like '" & prefixText & "%' ")
             End If
 
             For Each row As DataRow In dt.Rows
@@ -52,9 +52,9 @@ Public Class WebService
             prefixText = prefixText.Trim()
             Dim dt As New DataTable
             If ID <> "" Then
-                dt = DBContext.Getdatatable("select * from tblCPUsers where UserName='" & prefixText & "' and UserID <> " & ID & " and isNULL(isDeleted,0)=0 ")
+                dt = DBManager.Getdatatable("select * from tblCPUsers where UserName='" & prefixText & "' and UserID <> " & ID & " and isNULL(isDeleted,0)=0 ")
             Else
-                dt = DBContext.Getdatatable("select * from tblCPUsers where UserName='" & prefixText & "'  and isNULL(isDeleted,0)=0 ")
+                dt = DBManager.Getdatatable("select * from tblCPUsers where UserName='" & prefixText & "'  and isNULL(isDeleted,0)=0 ")
             End If
             If dt.Rows.Count > 0 Then
                 Return False
@@ -76,9 +76,9 @@ Public Class WebService
             prefixText = prefixText.Trim()
             Dim dt As New DataTable
             If ID <> "" Then
-                dt = DBContext.Getdatatable("select * from tblCPUsers where Email='" & prefixText & "' and UserID <> " & ID & " and isNULL(isDeleted,0)=0 ")
+                dt = DBManager.Getdatatable("select * from tblCPUsers where Email='" & prefixText & "' and UserID <> " & ID & " and isNULL(isDeleted,0)=0 ")
             Else
-                dt = DBContext.Getdatatable("select * from tblCPUsers where Email='" & prefixText & "'  and isNULL(isDeleted,0)=0 ")
+                dt = DBManager.Getdatatable("select * from tblCPUsers where Email='" & prefixText & "'  and isNULL(isDeleted,0)=0 ")
             End If
             If dt.Rows.Count > 0 Then
                 Return False
@@ -103,7 +103,7 @@ Public Class WebService
 
         Try
 
-            dt = DBContext.Getdatatable("select Type from tblLookup where isnull(IsDeleted,0)=0  and  Type like '%" + prefixText + "%' ")
+            dt = DBManager.Getdatatable("select Type from tblLookup where isnull(IsDeleted,0)=0  and  Type like '%" + prefixText + "%' ")
 
             If dt.Rows.Count > 0 Then
                 Dim i As Integer = 0
@@ -122,6 +122,10 @@ Public Class WebService
             Return LookupList.ToArray()
         End Try
     End Function
+
+#End Region
+
+#Region "Register"
 
 #End Region
 

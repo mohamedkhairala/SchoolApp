@@ -35,9 +35,9 @@
 <body>
     <form id="form1" runat="server" autocomplete="off">
         <asp:ToolkitScriptManager ID="TKSM" runat="server" ScriptMode="Release">
-            <%-- <Services>
+             <Services>
             <asp:ServiceReference Path="~/WebService.asmx" />
-        </Services>--%>
+        </Services>
         </asp:ToolkitScriptManager>
         <asp:label ID="lblRes" runat ="server" Visible ="false"  ></asp:label>
         <!-- Preloader Start Here -->
