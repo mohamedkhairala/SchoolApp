@@ -86,7 +86,7 @@ Partial Class Master
                     'menu with one form
                     If dtSubParentMenus.Rows.Count = 1 Then
                         Dim SubMenuId = dtSubParentMenus.Rows(0).Item("Id").ToString
-                        FillForms(SubMenuId, dtForms)
+                        FillForms(SubMenuId, dtForms, MenuName)
                     Else
                         'menu that have sub menu
                         ''''''''''''''''''''''' V Menu''''''''''''''''''''''
@@ -94,7 +94,7 @@ Partial Class Master
                         UlMenu.Controls.Add(liMenu)
                         ''''''''''''''''''''''' End ''''''''''''''''''''''
 
-                        FillSubMenus(ParentId, dtSubMenu, dtForms)
+                        FillSubMenus(ParentId, dtSubMenu, dtForms, MenuName)
                         ''''''''''''''''''''''' V Menu''''''''''''''''''''''
                         Dim ulSubMenuClose As New LiteralControl("</ul></li>")
                         UlMenu.Controls.Add(ulSubMenuClose)
@@ -108,7 +108,8 @@ Partial Class Master
                 'menu with many forms
                 If dtSubMenu.Rows.Count > 0 Then
                     Dim SubMenuId = dtSubMenu.Rows(0).Item("Id").ToString
-                    FillForms(SubMenuId, dtForms)
+                    Dim SubMenuName As String = dtSubMenu.Rows(0).Item("Name").ToString
+                    FillForms(SubMenuId, dtForms, SubMenuName)
                 End If
             End If
 
@@ -120,11 +121,11 @@ Partial Class Master
     ''' <summary>
     ''' Draw Sub Menus.
     ''' </summary>
-    Sub FillSubMenus(ByVal ParentId As String, ByVal dtSubMenu As DataTable, ByVal dtForms As DataTable)
+    Sub FillSubMenus(ByVal ParentId As String, ByVal dtSubMenu As DataTable, ByVal dtForms As DataTable, ByVal ParentName As String)
         Try
             Dim dvSubMenu As New DataView(dtSubMenu)
             dvSubMenu.RowFilter = "ParentId = '" + ParentId + "'"
-                        For Each dr As DataRowView In dvSubMenu
+            For Each dr As DataRowView In dvSubMenu
                 Dim SubMenuName As String = dr.Item("Name").ToString
                 Dim SubMenuId As String = dr.Item("Id").ToString
                 Dim SubMenuIcon As String = dr.Item("Icon").ToString
@@ -133,12 +134,12 @@ Partial Class Master
                 If dvSubMenu.Count > 1 Then
                     If dvForms.Count > 1 Then
                         ''''''''''''''''''''''' V Menu''''''''''''''''''''''
-                        Dim liSubMenu As New LiteralControl("<li class='nav-item'><a class='nav-link'><i class='" + SubMenuIcon + "'></i><span>" + SubMenuName + "</span></a><ul>")
+                        Dim liSubMenu As New LiteralControl("<li class='nav-item'><a class='nav-link' lang='" & ParentName & "'><i class='" + SubMenuIcon + "'></i><span>" + SubMenuName + "</span></a><ul>")
                         UlMenu.Controls.Add(liSubMenu)
                         ''''''''''''''''''''''' End''''''''''''''''''''''
 
 
-                        FillForms(SubMenuId, dtForms)
+                        FillForms(SubMenuId, dtForms, ParentName)
                         ''''''''''''''''''''''' V Menu''''''''''''''''''''''
                         Dim liSubMenuClose As New LiteralControl("</ul></li>")
                         UlMenu.Controls.Add(liSubMenuClose)
@@ -146,10 +147,10 @@ Partial Class Master
 
 
                     Else
-                        FillForms(SubMenuId, dtForms)
+                        FillForms(SubMenuId, dtForms, ParentName)
                     End If
                 Else
-                    FillForms(SubMenuId, dtForms)
+                    FillForms(SubMenuId, dtForms, ParentName)
                 End If
             Next
         Catch ex As Exception
@@ -160,7 +161,7 @@ Partial Class Master
     ''' <summary>
     ''' Draw Forms name and its links.
     ''' </summary>
-    Sub FillForms(ByVal SubMenuId As String, ByVal dtForms As DataTable)
+    Sub FillForms(ByVal SubMenuId As String, ByVal dtForms As DataTable, ByVal ParentName As String)
         Try
             Dim dvForms As New DataView(dtForms)
             dvForms.RowFilter = "MenuId = '" & SubMenuId & "'"
@@ -180,8 +181,7 @@ Partial Class Master
                 Dim spanName As New LiteralControl("<i class='" + FormIcon + " ' ></i><span>" + FormTitle + "</span>")
                 lb.Controls.Add(spanName)
                 lb.Attributes.Add("class", "nav-link")
-
-
+                lb.Attributes.Add("lang", ParentName)
 
 
                 lb.ClientIDMode = UI.ClientIDMode.Static
