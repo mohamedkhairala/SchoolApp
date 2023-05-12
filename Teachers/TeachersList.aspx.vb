@@ -82,7 +82,7 @@ Partial Class Teachers
     ''' </summary>
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
-            Dim TeacherId = Val(CType(sender.parent.FindControl("lblTeacherId"), Label).Text)
+            Dim TeacherId = Val(CType(sender.parent.parent.FindControl("lblTeacherId"), Label).Text)
             If Not TeacherService.DeleteTeacher(TeacherId) Then
                 ShowErrorMessgage(lblRes, "حدث خطأ", Me)
                 Exit Sub
