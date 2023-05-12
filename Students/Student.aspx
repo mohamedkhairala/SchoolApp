@@ -146,9 +146,9 @@
                                     <asp:TextBox ID="txtBio" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="9"></asp:TextBox>
                                 </div>
                                 <div class="col-12 form-group mg-t-8">
-                                    <asp:LinkButton ID="lbSave" runat="server" ValidationGroup="vgStudent"
+                                    <asp:Button ID="lbSave" runat="server" ValidationGroup="vgStudent" UseSubmitBehavior="false"
                                         CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
-                                        CommandArgument="Add" OnClick="Save" OnClientClick="SaveClick(this,'vgStudent');">Save</asp:LinkButton>
+                                        CommandArgument="Add" OnClick="Save" OnClientClick="SaveClick(this,'vgStudent');" Text="Save" />
                                     <%--<asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>--%>
                                     <a href="#" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white"
                                         onclick="ShowConfirmModal('mpConfirmCancel','pnlConfirmExtenderCancel');return false;">Cancel</a>
