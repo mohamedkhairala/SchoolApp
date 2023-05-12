@@ -69,7 +69,7 @@
                                                                     <div class="item-icon">
                                                                         <i class="fas fa-exclamation icon-modal"></i>
                                                                     </div>
-                                                                    <h3 class="item-title">You want to delete this student ?</h3>
+                                                                    <h3 class="item-title">You want to delete this teacher ?</h3>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
