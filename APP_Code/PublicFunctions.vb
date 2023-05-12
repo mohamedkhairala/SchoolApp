@@ -913,7 +913,7 @@ Optional ByVal MinNumber As Integer = 0) As Integer
     Public Shared Function GetUserId() As String
         Try
             If HttpContext.Current.Request.Cookies.Get("UpSkillsSchool") IsNot Nothing Then
-                Dim UserId As String = HttpContext.Current.Request.Cookies("UpSkillsSchool")("UserId")
+                Dim UserId As String = Decrypt(HttpContext.Current.Request.Cookies("UpSkillsSchool")("UserId"))
                 Return UserId
             End If
 
