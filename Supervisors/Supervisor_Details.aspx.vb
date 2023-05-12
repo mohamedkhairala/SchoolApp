@@ -62,10 +62,10 @@ Partial Class Student_Details
     ''' </summary>
     Protected Sub Delete(sender As Object, e As EventArgs)
         Try
-            Dim TeacherID = Request.QueryString("ID")
+            Dim SupervisorId = Request.QueryString("ID")
 
-            If Not TeacherService.DeleteTeacher(TeacherID) Then
-                ShowErrorMessgage(lblRes, "حدث خطأ", Me)
+            If Not SupervisorService.DeleteSupervisor(SupervisorId) Then
+                ShowErrorMessgage(lblRes, "Error", Me)
                 Exit Sub
             End If
             'Dim ParentId = Val(CType(sender.parent.FindControl("lblParentId"), Label).Text)
@@ -76,7 +76,7 @@ Partial Class Student_Details
             '    Exit Sub
             'End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
-            Response.Redirect("TeachersList.aspx")
+            Response.Redirect("SupervisorsList.aspx")
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
