@@ -916,6 +916,9 @@ h6 {
 }
 
 /*=============== 2.7 Modal ==================*/
+.modal {
+    z-index: 99999 !important;
+}
 
 .modal .modal-dialog .modal-content {
     border: none;
@@ -2083,11 +2086,13 @@ ul {
         }
 
         .header-main-menu .navbar-nav .header-language .navbar-nav-link:after {
-            content: "\f107";
-            font-family: Font Awesome\ 5 Free;
+            border-style: none;
+    border-color: inherit;
+    border-width: medium;
+    content: "\f107";
+            font-family: "Font Awesome 5 Free";
             font-weight: 600;
             font-size: 14px;
-            border: none;
             position: absolute;
             top: 0;
             right: 9px;
@@ -6422,4 +6427,8 @@ a.aspNetDisabled {
     filter: grayscale(80%);
     cursor: not-allowed !important;
     pointer-events: none !important;
+}
+
+.vertical-align-middle {
+    vertical-align: middle !important;
 }

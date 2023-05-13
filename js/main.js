@@ -472,13 +472,19 @@ function ShowConfirmModal(popup, pnl) {
         var modal = $find(popup);
         if (modal != null) {
             modal.show();
-            $("div[id*=" + popup + "]").removeAttr('style');
             $("#" + pnl).removeAttr('style');
             $("#" + pnl).show();
         }
     }
     catch (err) {
         alert(err);
+    }
+}
+
+function CloseConfirmPopup(popup) {
+    var modal = $find(popup);
+    if (modal !== null) {
+        modal.hide();
     }
 }
 
