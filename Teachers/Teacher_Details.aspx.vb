@@ -77,6 +77,10 @@ Partial Class Student_Details
             'End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
             Response.Redirect("TeachersList.aspx")
+            If Page.IsPostBack = False Then
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
+            End If
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

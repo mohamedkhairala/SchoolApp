@@ -30,6 +30,8 @@ Partial Class Add_Student
                 lbEdit.Visible = False
                 'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Teacher)
                 View()
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
             FillIcon()
         Catch ex As Exception

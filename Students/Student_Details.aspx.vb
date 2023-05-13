@@ -21,6 +21,8 @@ Partial Class Student_Details
             UserID = PublicFunctions.GetUserId(Page)
             If Page.IsPostBack = False Then
                 FillGrid(sender, e)
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)

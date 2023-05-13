@@ -59,6 +59,10 @@ Partial Class StudentsList
                 lvMaster.DataSource = Nothing
                 lvMaster.DataBind()
             End If
+            If Page.IsPostBack = False Then
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
+            End If
         Catch ex As Exception
             Throw ex
         End Try
