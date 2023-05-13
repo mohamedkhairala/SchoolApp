@@ -119,7 +119,7 @@
                             <ItemTemplate>
                                 <div class="student-count pseudo-bg-blue">
                                     <h4 class="item-title">Female Students</h4>
-                                    <div class="item-number" id="divFemaleCount" ><%# Eval("FemaleStudentsCount") %></div>
+                                    <div class="item-number" id="divFemaleCount"><%# Eval("FemaleStudentsCount") %></div>
                                 </div>
                                 <div class="student-count pseudo-bg-yellow">
                                     <h4 class="item-title">Male Students</h4>
@@ -133,63 +133,57 @@
         </div>
         <div class="col-lg-12 col-xl-6 col-9-xxxl">
             <div class="card dashboard-card-five pd-b-20">
-                <div class="card-body pd-b-14">
-                    <div class="heading-layout1">
-                        <div class="item-title">
-                            <h3>Daily Traffic</h3>
-                        </div>
-                        <!--<div class="dropdown">
-                            <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
+                <asp:Repeater runat="server" ID="rpSessions">
+                    <ItemTemplate>
+                        <div class="card-body pd-b-14">
+                            <div class="heading-layout1">
+                                <div class="item-title">
+                                    <h3>Sessions Status</h3>
+                                </div>
 
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-times text-orange-red"></i>Close</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-cogs text-dark-pastel-green"></i>Edit</a>
-                                <a class="dropdown-item" href="#"><i
-                                        class="fas fa-redo-alt text-orange-peel"></i>Refresh</a>
                             </div>
-                        </div>-->
-                    </div>
-                    <h6 class="traffic-title">Unique Visitors</h6>
-                    <div class="traffic-number">2,590</div>
-                    <div class="traffic-bar">
-                        <div class="direct" data-toggle="tooltip" data-placement="top" title="Direct">
+                            <h6 class="traffic-title">Total Sessions</h6>
+                            <div class="traffic-number"><%# PublicFunctions.IntFormat(Eval("TotalSession")) %></div>
+                            <div class="traffic-bar">
+                                <div class="status-1" data-toggle="tooltip" data-placement="top" title="Completed" style="--status-1: <%# (Eval("CompletedCount")/Eval("TotalSession"))*100 %>%;">
+                                </div>
+                                <div class="status-2" data-toggle="tooltip" data-placement="top" title="Pending" style="--status-2: <%# (Eval("PendingCount")/Eval("TotalSession"))*100 %>%;">
+                                </div>                          
+                                <div class="status-3" data-toggle="tooltip" data-placement="top" title="Postponed" style="--status-3: <%# (Eval("PostponedCount")/Eval("TotalSession"))*100 %>%;">
+                                </div>
+                                <div class="status-4" data-toggle="tooltip" data-placement="top" title="Cancelled" style="--status-4: <%# (Eval("CancelledCount")/Eval("TotalSession"))*100 %>%;">
+                                </div>
+                            </div>
+                            <div class="traffic-table table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                         <tr>
+                                            <td class="t-title pseudo-bg-Aquamarine">Completed</td>
+                                            <td><%# PublicFunctions.IntFormat(Eval("CompletedCount")) %></td>
+                                            <td><%# PublicFunctions.DecimalFormat((Eval("CompletedCount") / Eval("TotalSession")) * 100) %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="t-title pseudo-bg-blue">Pending</td>
+                                            <td><%# PublicFunctions.IntFormat(Eval("PendingCount")) %></td>
+                                            <td><%# PublicFunctions.DecimalFormat((Eval("PendingCount") / Eval("TotalSession")) * 100) %>%</td>
+                                        </tr>
+                                       
+                                        <tr>
+                                            <td class="t-title pseudo-bg-yellow">Postpond</td>
+                                            <td><%# PublicFunctions.IntFormat(Eval("PostponedCount")) %></td>
+                                            <td><%# PublicFunctions.DecimalFormat((Eval("PostponedCount") / Eval("TotalSession")) * 100) %>%</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="t-title pseudo-bg-red">Cancelled</td>
+                                            <td><%# PublicFunctions.IntFormat(Eval("CancelledCount")) %></td>
+                                            <td><%# PublicFunctions.DecimalFormat((Eval("CancelledCount") / Eval("TotalSession")) * 100) %>%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="search" data-toggle="tooltip" data-placement="top" title="Search">
-                        </div>
-                        <div class="referrals" data-toggle="tooltip" data-placement="top" title="Referrals">
-                        </div>
-                        <div class="social" data-toggle="tooltip" data-placement="top" title="Social">
-                        </div>
-                    </div>
-                    <div class="traffic-table table-responsive">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td class="t-title pseudo-bg-Aquamarine">Students</td>
-                                    <td>12,890</td>
-                                    <td>50%</td>
-                                </tr>
-                                <tr>
-                                    <td class="t-title pseudo-bg-blue">Teachers</td>
-                                    <td>7,245</td>
-                                    <td>27%</td>
-                                </tr>
-                                <tr>
-                                    <td class="t-title pseudo-bg-yellow">Parents</td>
-                                    <td>4,256</td>
-                                    <td>8%</td>
-                                </tr>
-                                <tr>
-                                    <td class="t-title pseudo-bg-red">Supervisors</td>
-                                    <td>500</td>
-                                    <td>7%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    </ItemTemplate>
+                </asp:Repeater>
             </div>
         </div>
         <div class="col-lg-12 col-xl-12 col-12-xxxl">
@@ -224,7 +218,7 @@
                                         <p><%# Eval("MessageBody") %></p>
                                     </h6>
                                     <div class="entry-meta"><%# Eval("CreatedByUserName") %> / <span><%# clsNotifications.SetTimeAgo(Eval("CreatedDate"), Eval("time_ago")) %></span></div>
-                                     
+
                                 </div>
                             </ItemTemplate>
                             <EmptyDataTemplate>

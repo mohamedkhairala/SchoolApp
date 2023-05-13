@@ -916,57 +916,60 @@ h6 {
 }
 
 /*=============== 2.7 Modal ==================*/
-
-.modal .modal-dialog .modal-content {
-    border: none;
+.modal {
+    z-index: 99999 !important;
 }
 
-    .modal .modal-dialog .modal-content .modal-header {
-        padding: 15px 20px;
-        align-items: center;
+    .modal .modal-dialog .modal-content {
+        border: none;
     }
 
-        .modal .modal-dialog .modal-content .modal-header .modal-title {
-            font-weight: 500;
+        .modal .modal-dialog .modal-content .modal-header {
+            padding: 15px 20px;
+            align-items: center;
         }
 
-        .modal .modal-dialog .modal-content .modal-header .close {
-            font-size: 24px;
+            .modal .modal-dialog .modal-content .modal-header .modal-title {
+                font-weight: 500;
+            }
+
+            .modal .modal-dialog .modal-content .modal-header .close {
+                font-size: 24px;
+            }
+
+                .modal .modal-dialog .modal-content .modal-header .close:focus {
+                    outline: none;
+                }
+
+        .modal .modal-dialog .modal-content .modal-body {
+            padding: 20px;
         }
 
-            .modal .modal-dialog .modal-content .modal-header .close:focus {
-                outline: none;
-            }
-
-    .modal .modal-dialog .modal-content .modal-body {
-        padding: 20px;
-    }
-
-    .modal .modal-dialog .modal-content .modal-footer {
-        padding: 15px 20px;
-    }
-
-        .modal .modal-dialog .modal-content .modal-footer .footer-btn {
-            cursor: pointer;
-            font-size: 14px;
-            color: #ffffff;
-            border: none;
-            border-radius: 4px;
-            padding: 6px 15px;
-            -webkit-transition: all 0.3s ease-out;
-            -moz-transition: all 0.3s ease-out;
-            -ms-transition: all 0.3s ease-out;
-            -o-transition: all 0.3s ease-out;
-            transition: all 0.3s ease-out;
+        .modal .modal-dialog .modal-content .modal-footer {
+            padding: 15px 20px;
         }
 
-            .modal .modal-dialog .modal-content .modal-footer .footer-btn:hover {
-                background-color: #042954;
+            .modal .modal-dialog .modal-content .modal-footer .footer-btn {
+                cursor: pointer;
+                font-size: 14px;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                padding: 6px 15px;
+                -webkit-transition: all 0.3s ease-out;
+                -moz-transition: all 0.3s ease-out;
+                -ms-transition: all 0.3s ease-out;
+                -o-transition: all 0.3s ease-out;
+                transition: all 0.3s ease-out;
             }
 
-            .modal .modal-dialog .modal-content .modal-footer .footer-btn:focus {
-                outline: none;
-            }
+                .modal .modal-dialog .modal-content .modal-footer .footer-btn:hover {
+                    background-color: #042954;
+                }
+
+                .modal .modal-dialog .modal-content .modal-footer .footer-btn:focus {
+                    outline: none;
+                }
 
 .modal-trigger {
     cursor: pointer;
@@ -1122,7 +1125,12 @@ h6 {
             .dataTables_wrapper .table tbody tr td .dropdown .dropdown-menu .dropdown-item {
                 font-size: 15px;
                 padding: 7px 20px;
+                cursor: pointer;
             }
+
+                .dataTables_wrapper .table tbody tr td .dropdown .dropdown-menu .dropdown-item:active {
+                    background-color: #f8f9fa;
+                }
 
                 .dataTables_wrapper .table tbody tr td .dropdown .dropdown-menu .dropdown-item i {
                     margin-right: 14px;
@@ -2078,11 +2086,13 @@ ul {
         }
 
         .header-main-menu .navbar-nav .header-language .navbar-nav-link:after {
+            border-style: none;
+            border-color: inherit;
+            border-width: medium;
             content: "\f107";
-            font-family: Font Awesome\ 5 Free;
+            font-family: "Font Awesome 5 Free";
             font-weight: 600;
             font-size: 14px;
-            border: none;
             position: absolute;
             top: 0;
             right: 9px;
@@ -3013,7 +3023,7 @@ ul {
         height: 50px;
     }
 
-    .new-added-form .form-group i {
+    .new-added-form .form-group i:not(.icon-modal) {
         position: absolute;
         top: 50px;
         right: 34px;
@@ -4630,35 +4640,42 @@ ul {
     margin-bottom: 18px;
 }
 
-    .dashboard-card-five .card-body .traffic-bar .direct {
-        flex: 0 0 50%;
-        max-width: 50%;
-        min-height: 10px;
-        background-color: #1de9b6;
-        border-radius: 40px 0 0 40px;
-    }
+:root {
+    --status-1: 25%;
+    --status-2: 25%;
+    --status-3: 25%;
+    --status-4: 25%;
+}
 
-    .dashboard-card-five .card-body .traffic-bar .search {
-        flex: 0 0 27%;
-        max-width: 27%;
-        min-height: 10px;
-        background-color: #304ffe;
-    }
+.dashboard-card-five .card-body .traffic-bar .status-1 {
+    flex: 0 0 var(--status-1);
+    max-width: var(--status-1);
+    min-height: 10px;
+    background-color: #1de9b6;
+    border-radius: 40px 0 0 40px;
+}
 
-    .dashboard-card-five .card-body .traffic-bar .referrals {
-        flex: 0 0 16%;
-        max-width: 16%;
-        min-height: 10px;
-        background-color: #ffea00;
-    }
+.dashboard-card-five .card-body .traffic-bar .status-2 {
+    flex: 0 0 var(--status-2);
+    max-width: var(--status-2);
+    min-height: 10px;
+    background-color: #304ffe;
+}
 
-    .dashboard-card-five .card-body .traffic-bar .social {
-        flex: 0 0 7%;
-        max-width: 7%;
-        min-height: 10px;
-        background-color: #ed1c24;
-        border-radius: 0 40px 40px 0;
-    }
+.dashboard-card-five .card-body .traffic-bar .status-3 {
+    flex: 0 0 var(--status-3);
+    max-width: var(--status-3);
+    min-height: 10px;
+    background-color: #ffea00;
+}
+
+.dashboard-card-five .card-body .traffic-bar .status-4 {
+    flex: 0 0 var(--status-4);
+    max-width: var(--status-4);
+    min-height: 10px;
+    background-color: #ed1c24;
+    border-radius: 0 40px 40px 0;
+}
 
 .dashboard-card-five .card-body .traffic-table .table tbody tr {
     border-bottom: 1px dashed #e1e1e1;
@@ -5703,6 +5720,7 @@ ul {
 .alert {
     display: block;
     /*padding: 12px 25px;*/
+    margin: 1rem 0;
 }
 
 /*=============== 8.6 Padding ==================*/
@@ -6286,20 +6304,20 @@ a.text-red:hover {
             color: #fff;
         }
 
-        .header-actions ul li a.action-green:hover {
-            background-color: #3cb878;
-            color: #fff;
-        }
+    .header-actions ul li a.action-green:hover {
+        background-color: #3cb878;
+        color: #fff;
+    }
 
-        .header-actions ul li a.action-blue:hover {
-            background-color: #3f7afc;
-            color: #fff;
-        }
+    .header-actions ul li a.action-blue:hover {
+        background-color: #3f7afc;
+        color: #fff;
+    }
 
-        .header-actions ul li a.action-red:hover {
-            background-color: #ff0000;
-            color: #fff;
-        }
+    .header-actions ul li a.action-red:hover {
+        background-color: #ff0000;
+        color: #fff;
+    }
 
 /* Start Radio Button */
 .radio-list {
@@ -6380,3 +6398,49 @@ a.text-red:hover {
     }
 }
 /* End Radio Button */
+
+@media print {
+    .navbar,
+    .sidebar-main,
+    .breadcrumbs-area,
+    .header-actions,
+    .footer-wrap-layout1 {
+        display: none !important;
+    }
+
+    html,
+    body,
+    .dashboard-content-one,
+    .card {
+        background-color: #fff !important;
+    }
+
+    .dashboard-content-one,
+    .card-body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+.table input,
+.table select {
+    padding: 5px;
+    line-height: normal;
+}
+
+.aspNetDisabled a,
+a.aspNetDisabled {
+    opacity: 0.8;
+    filter: grayscale(80%);
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+.vertical-align-middle {
+    vertical-align: middle !important;
+}
+
+.tbl-header-checkbox tr th input[type="checkbox"] + label {
+    display: inline-block;
+    margin-left: 0.5rem;
+}

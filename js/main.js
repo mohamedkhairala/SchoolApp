@@ -472,7 +472,6 @@ function ShowConfirmModal(popup, pnl) {
         var modal = $find(popup);
         if (modal != null) {
             modal.show();
-            $("div[id*=" + popup + "]").removeAttr('style');
             $("#" + pnl).removeAttr('style');
             $("#" + pnl).show();
         }
@@ -480,4 +479,40 @@ function ShowConfirmModal(popup, pnl) {
     catch (err) {
         alert(err);
     }
+}
+
+function CloseConfirmPopup(popup) {
+    var modal = $find(popup);
+    if (modal !== null) {
+        modal.hide();
+    }
+}
+
+function PrintDetails() {
+    window.print();
+}
+
+// On Save Click , grop is optional parameter
+function SaveClick(sender, grop = '') {
+    //if group permission not attached to form (ie. grop is not passed as parameter) then disable buttons without check page validation - Adel
+    if (grop !== '') {
+        if (Page_ClientValidate(grop)) {
+            sender.disabled = 'true';
+            sender.value = 'Please wait ....';
+            let btn2 = document.getElementById(sender.lang);
+            if (btn2) {
+                btn2.disabled = 'true';
+                btn2.value = 'Please wait ....';
+            }
+        }
+    } else {
+        sender.disabled = 'true';
+        sender.value = 'Please wait ....';
+        let btn2 = document.getElementById(sender.lang);
+        if (btn2) {
+            btn2.disabled = 'true';
+            btn2.value = 'Please wait ....';
+        }
+    }
+
 }

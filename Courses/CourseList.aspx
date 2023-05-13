@@ -20,8 +20,8 @@
     </div>
     <!-- Breadcubs Area End Here -->
     <!-- Course Table Area Start Here -->
-    <div class="card height-auto">
-        <div class="card-body">
+    <div class="card height-auto ui-modal-box">
+        <div class="card-body modal-box">
             <div class="heading-layout1">
                 <div class="item-title">
                     <h3>All Courses Data</h3>
@@ -57,8 +57,8 @@
             <div class="col-md-12 px-0 text-right">
                 <div class="d-inline-flex mb-3">
                     <%--<a href="Course.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>--%>
-                    <asp:LinkButton ID="lbAdd" runat ="server" href="Course.aspx" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
-                
+                    <asp:LinkButton ID="lbAdd" runat="server" href="Course.aspx" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
+
                 </div>
             </div>
 
@@ -116,15 +116,38 @@
                                             </asp:LinkButton>
                                         </asp:Panel>
                                         <asp:Panel ID="pnlDelete" runat="server">
-                                            <asp:LinkButton ID="lbDelete" runat="server" CssClass="dropdown-item"
-                                                OnClientClick="return confirm('Confirm Delete?')" OnClick="Delete">
-                                              <i class="fas fa-times text-orange-red"></i>Delete
-                                            </asp:LinkButton>
+                                            <a class="dropdown-item"
+                                                onclick="ShowConfirmModal('<%# CType(Container, ListViewItem).FindControl("mpConfirmDelete").ClientID.ToString%>','<%# CType(Container, ListViewItem).FindControl("pnlConfirmExtenderDelete").ClientID.ToString%>');return false;">
+                                                <i class="fas fa-times text-orange-red"></i>Delete
+                                            </a>
+                                            <asp:HiddenField ID="hfDelete" runat="server" />
+                                            <asp:ModalPopupExtender ID="mpConfirmDelete" runat="server" PopupControlID="pnlConfirmExtenderDelete" TargetControlID="hfDelete"
+                                                CancelControlID="lbNoDelete" BackgroundCssClass="modal-backdrop fade show">
+                                            </asp:ModalPopupExtender>
                                         </asp:Panel>
-
-
                                     </div>
                                 </div>
+                                <asp:Panel ID="pnlConfirmExtenderDelete" runat="server" CssClass="modal fade show" TabIndex="-1" role="dialog" aria-hidden="true" Style="display: none;">
+                                    <div class="modal-dialog success-modal-content" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirmation Message</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="success-message">
+                                                    <div class="item-icon">
+                                                        <i class="fas fa-exclamation icon-modal"></i>
+                                                    </div>
+                                                    <h3 class="item-title">You want to delete this record ?</h3>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="footer-btn btn-success" CommandArgument='<%# Eval("Id") %>' OnClick="Delete">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                <asp:LinkButton ID="lbNoDelete" runat="server" CssClass="footer-btn btn-danger" data-dismiss="modal">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </asp:Panel>
                             </td>
                         </tr>
                     </ItemTemplate>

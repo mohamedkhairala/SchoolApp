@@ -44,19 +44,6 @@ Partial Class Student_Details
         End Try
     End Sub
 
-    Protected Sub rp_ItemDataBound(sender As Object, e As ListViewItemEventArgs) Handles rpDetails.ItemDataBound
-        Try
-            If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
-                Dim rbGroups As GridView = DirectCast(e.Item.FindControl("rpGroups"), GridView)
-                Dim CourseId = Request.QueryString("ID")
-                rbGroups.DataSource = DBContext.Getdatatable("Select Name,TeacherName,SupervisorName from vw_Groups where CourseId=" & CourseId)
-                rbGroups.DataBind()
-            End If
-
-        Catch ex As Exception
-            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
-        End Try
-    End Sub
 #End Region
 
 #Region "Delete"
@@ -90,6 +77,13 @@ Partial Class Student_Details
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles rpDetails.DataBound
         Try
             Permissions.CheckPermisions(rpDetails, New LinkButton, New TextBox, New LinkButton, Me.Page, "Course", UserID)
+
+            For Each item In rpDetails.Items
+                Dim rbGroups As GridView = DirectCast(item.FindControl("rpGroups"), GridView)
+                Dim CourseId = Request.QueryString("ID")
+                rbGroups.DataSource = DBContext.Getdatatable("Select Name,TeacherName,SupervisorName from vw_Groups where CourseId=" & CourseId)
+                rbGroups.DataBind()
+            Next
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

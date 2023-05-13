@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Up Skills | All Groups" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="SessionsList.aspx.vb" Inherits="SessionsList" %>
+﻿<%@ Page Title="Up Skills | All Sessions" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="SessionsList.aspx.vb" Inherits="SessionsList" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -55,33 +55,32 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 px-0 text-right">
-                <div class="d-inline-flex mb-3">
-                    <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" AutoPostBack="true" OnSelectedIndexChanged="FillGrid">
-                    </asp:DropDownList>
-                </div>
-                <div class="d-inline-flex mb-3">
-                    From
-                    <asp:TextBox runat="server" CssClass="form-control"
-                        ID="txtFilterFromDate" TextMode="Date">
-                        
-                    </asp:TextBox>
-                </div>
-                <div class="d-inline-flex mb-3">
-                    To
-                    <asp:TextBox runat="server" CssClass="form-control"
-                        ID="txtFilterToDate" TextMode="Date">
-                        
-                    </asp:TextBox>
-                </div>
-                <div class="d-inline-flex mb-3">
-                    <asp:DropDownList runat="server" ID="ddlStatus">
-                    </asp:DropDownList>
-                </div>
-                <div class="d-inline-flex mb-3">
-
-                    <asp:LinkButton Text="Filter" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill" ID="lbFilter" OnClick="FillGrid" /><i class="fa fa-filter ml-3"></i></asp:LinkButton>
-                    <asp:LinkButton Text="Clear" runat="server" CssClass="btn-fill-sm btn-info btn-hover-bluedark text-white fw-btn-fill" ID="lbClear" OnClick="Clear" /><i class="fa fa-trash ml-3"></i></asp:LinkButton>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form-group col-md-2 pl-0 pr-2">
+                        <label>Group</label>
+                        <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" ></asp:DropDownList>
+                    </div>
+                    <div class="form-group col-md-2 px-2">
+                        <label>From</label>
+                        <asp:TextBox runat="server" CssClass="form-control" ID="txtFilterFromDate" TextMode="Date"></asp:TextBox>
+                    </div>
+                    <div class="form-group col-md-2 px-2">
+                        <label>To</label>
+                        <asp:TextBox runat="server" CssClass="form-control" ID="txtFilterToDate" TextMode="Date"></asp:TextBox>
+                    </div>
+                    <div class="form-group col-md-2 px-2">
+                        <label>Status</label>
+                        <asp:DropDownList runat="server" ID="ddlStatus" CssClass="form-control"></asp:DropDownList>
+                    </div>
+                    <div class="form-group d-inline-flex flex-column px-2">
+                        <label>&nbsp;</label>
+                        <asp:LinkButton runat="server" CssClass="btn-fill-sm btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill" ID="lbFilter" OnClick="FillGrid">Filter<i class="fa fa-filter ml-3"></i></asp:LinkButton>
+                    </div>
+                    <div class="form-group d-inline-flex flex-column px-2">
+                        <label>&nbsp;</label>
+                        <asp:LinkButton runat="server" CssClass="btn-fill-sm bg-danger text-white fw-btn-fill" ID="lbClear" OnClick="Clear">Clear<i class="fa fa-trash ml-3"></i></asp:LinkButton>
+                    </div>
                 </div>
             </div>
 
@@ -116,7 +115,7 @@
                         <tr>
                             <td>
                                 <%# Eval("Code") + " - " + Eval("Title")%>
-                                <asp:Label ID="lblSessionID" runat="server" Visible="false" Text='<%# Eval("ID")%>'></asp:Label>
+                                <asp:TextBox ID="txtSessionID" runat="server" style="display:none;" Text='<%# Eval("ID")%>'></asp:TextBox>
                                 <asp:Label ID="lblCourseID" runat="server" Visible="false" Text='<%# Eval("CourseID")%>'></asp:Label>
                                 <asp:Label ID="lblTeacherID" runat="server" Visible="false" Text='<%# Eval("TeacherID")%>'></asp:Label>
                                 <asp:Label ID="lblSupervisorID" runat="server" Visible="false" Text='<%# Eval("SupervisorID")%>'></asp:Label>
@@ -127,22 +126,27 @@
                             <td><%# PublicFunctions.DecimalFormat(Eval("TeacherHourRate").ToString) %> / H </td>
                             <td><%# Eval("SupervisorCode") + " - " + Eval("SupervisorName") %></td>
                             <td>
-                                <asp:TextBox runat="server" ID="txtIssueDate" CssClass="air-datepicker"
-                                    TextMode="DateTimeLocal" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate"), "yyyy-MM-dd") & "T" & PublicFunctions.DateFormat(Eval("IssueDate"), "HH:MM") %>' data-position='bottom right'></asp:TextBox>
+                                <asp:TextBox runat="server" ID="txtIssueDate" onchange="UpdateSession(this)"
+                                    TextMode="DateTimeLocal" Text='<%# DateTime.Parse(Eval("IssueDate")).ToString("yyyy-MM-ddTHH:mm:ss.fff") %>' data-position='bottom right'></asp:TextBox>
                             </td>
                             <td>
-                                <asp:TextBox runat="server" ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
+                                <asp:TextBox runat="server" onchange="UpdateSession(this)" MaxLength="6"
+                                    ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
+                                <asp:FilteredTextBoxExtender TargetControlID="txtPeriod" runat="server" FilterMode="ValidChars" ValidChars=".0123456789"></asp:FilteredTextBoxExtender>
+
                             </td>
                             <td>
-                                <asp:TextBox runat="server" ID="txtRemarks" Text='<%# Eval("Remarks") %>' />
+                                <asp:TextBox runat="server" onchange="UpdateSession(this)" 
+                                    ID="txtRemarks" MaxLength="500" Text='<%# Eval("Remarks") %>' />
                             </td>
                             <td>
                                 <asp:Label ID="lblSessionStatus" Text='<%# Eval("Status") %>' runat="server" Visible="false" />
-                                <asp:DropDownList runat="server" ID="ddlStatus">
+                                <asp:DropDownList runat="server" ID="ddlStatus" onchange="UpdateSession(this)" >
                                 </asp:DropDownList>
                             </td>
                             <td>
-                                <asp:TextBox runat="server" ID="txtStatusRemarks" Text='<%# Eval("StatusRemarks") %>' />
+                                <asp:TextBox runat="server" MaxLength="500" onchange="UpdateSession(this)" 
+                                    ID="txtStatusRemarks" Text='<%# Eval("StatusRemarks") %>' />
                             </td>
                         </tr>
                     </ItemTemplate>
@@ -160,6 +164,7 @@
         </div>
     </div>
     <!-- Groups Table Area End Here -->
+    <script src="../JSCode/jsSession.js"></script>
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">
     <!-- Date Picker Js -->

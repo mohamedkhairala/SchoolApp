@@ -26,13 +26,12 @@ Partial Class SessionsList
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
+            UserID = PublicFunctions.GetUserId(Me)
             If Page.IsPostBack = False Then
-                clsBindDDL.BindCustomDDLs("Select Id,CourseName + ' - ' + Code + ' - ' + Name as groupCodeName from vw_Groups", "groupCodeName", "ID", ddlGroups, True)
-                clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, True)
+                'Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
 
-                'txtDateFrom.Text = PublicFunctions.DateFormat(DateTime.Now, "dd/MM/yyyy")
-                'txtDateTo.Text = PublicFunctions.DateFormat(DateTime.Now, "dd/MM/yyyy")
-                'FillGrid(sender, e)
+                clsBindDDL.BindCustomDDLs("Select Id,CourseName + ' - ' + Code + ' - ' + Name as groupCodeName from vw_Groups", "groupCodeName", "ID", ddlGroups, True)
+                clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, True, "All")
             End If
         Catch ex As Exception
             Throw ex
@@ -89,6 +88,7 @@ Partial Class SessionsList
     Protected Sub Clear(sender As Object, e As EventArgs)
         txtFilterFromDate.Text = ""
         txtFilterToDate.Text = ""
+        ddlStatus.SelectedIndex = -1
         FillGrid(sender, e)
     End Sub
 
@@ -97,7 +97,7 @@ Partial Class SessionsList
 #Region "Permissions"
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
         Try
-            'Permissions.CheckPermisions(lvMaster, New LinkButton, txtSearch, lbSearch, Me.Page, UserID)
+            Permissions.CheckPermisions(lvMaster, New LinkButton, txtSearch, lbSearch, Me.Page, UserID)
 
             For Each r In lvMaster.Items
                 Dim Status As String = Val(DirectCast(r.FindControl("lblSessionStatus"), Label).Text)

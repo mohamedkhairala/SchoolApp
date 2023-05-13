@@ -8,6 +8,9 @@
     <div class="breadcrumbs-area">
         <h3>Messages</h3>
         <ul>
+            <li>
+                <a href="../Dashboard.aspx">Home</a>
+            </li>
             <li>Messages</li>
         </ul>
     </div>
