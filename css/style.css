@@ -6551,3 +6551,41 @@ a.aspNetDisabled {
         padding: 0.5rem;
         text-align: center;
     }
+
+/* Start File-Upload */
+.file-upload-container {
+    display: flex;
+}
+
+.file-upload-wrapper {
+    position: relative;
+    flex: 1;
+    height: 35px;
+    display: flex;
+    overflow: hidden;
+    border: 1px solid #4daf7c;
+    border-radius: 4px 0px 0px 4px;
+}
+
+    .file-upload-wrapper input[type="file"] {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -110px;
+        right: 0;
+        width: calc(100% + 110px);
+    }
+
+.file-upload-container .btn-file-upload {
+    border: 0;
+    color: #fff;
+    padding: 0 2rem;
+    letter-spacing: 0.5px;
+    background-color: #4daf7c;
+    border-radius: 0px 4px 4px 0px;
+}
+
+    .file-upload-container .btn-file-upload:hover {
+        background-color: #3d8c63;
+    }
+/* End File-Upload */
