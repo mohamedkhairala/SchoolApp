@@ -136,9 +136,8 @@
                                                 <tr>
                                                     <td>Group:</td>
                                                     <td class="font-medium text-dark-medium">
-                                                        <asp:Repeater runat="server" ID="rpGroups">
-                                                            <ItemTemplate></ItemTemplate>
-                                                        </asp:Repeater>
+                                                        <asp:GridView runat="server" ID="rpGroups">
+                                                         </asp:GridView>
                                                     </td>
                                                 </tr>
                                                 <tr>
