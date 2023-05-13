@@ -34,6 +34,8 @@ Partial Class SessionsList
 
                 clsBindDDL.BindCustomDDLs("Select Id,CourseName + ' - ' + Code + ' - ' + Name as groupCodeName from vw_Groups", "groupCodeName", "ID", ddlGroups, True)
                 clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, True, "All")
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
         Catch ex As Exception
             Throw ex
