@@ -163,7 +163,7 @@ Partial Class Supervisor
                 txtFirstName.Text = dt.Rows(0).Item("Name").ToString
                 txtPhone.Text = dt.Rows(0).Item("Tel").ToString
                 txtMobile.Text = dt.Rows(0).Item("Mobile").ToString
-                txtDateOfBirth.Text = (dt.Rows(0).Item("DateOfBirth").ToString)
+                txtDateOfBirth.Text = PublicFunctions.DateFormat(dt.Rows(0).Item("DateOfBirth"), "dd/MM/yyyy")
                 txtEmail.Text = dt.Rows(0).Item("Email").ToString
                 txtRatePerHour.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("HourRate"))
                 txtRatePerStudent.Text = PublicFunctions.DecimalFormat(dt.Rows(0).Item("StudentRate"))

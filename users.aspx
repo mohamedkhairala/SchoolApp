@@ -24,24 +24,33 @@
     </style>
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
-    <!-- Breadcubs Area Start Here -->
-    <div class="breadcrumbs-area">
-        <ul>
-            <li>
-                <a href="Dashboard.aspx">Home</a>
-            </li>
-            <li>Users</li>
-        </ul>
-    </div>
-    <!-- Breadcubs Area End Here -->
     <!-- Admit Form Area Start Here -->
     <asp:UpdatePanel ID="upUsers" runat="server" ClientIDMode="Static" RenderMode="Inline" ScriptMode="Release">
         <ContentTemplate>
-            <asp:UpdateProgress ID="upgg" runat="server" AssociatedUpdatePanelID="upUsers">
-                <ProgressTemplate>
-                    <asp:Image runat="server" ImageUrl="~/img/preloader.gif" />
-                </ProgressTemplate>
-            </asp:UpdateProgress>
+            <div class="page-load">
+                <asp:UpdateProgress ID="upLoader" runat="server" AssociatedUpdatePanelID="upUsers">
+                    <ProgressTemplate>
+                        <div class="loader-container">
+                            <div class="lds-ripple">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <h3>Loading</h3>
+                        </div>
+                    </ProgressTemplate>
+                </asp:UpdateProgress>
+            </div>
+
+            <!-- Breadcubs Area Start Here -->
+            <div class="breadcrumbs-area">
+                <ul>
+                    <li>
+                        <a href="Dashboard.aspx">Home</a>
+                    </li>
+                    <li>Users</li>
+                </ul>
+            </div>
+            <!-- Breadcubs Area End Here -->
 
             <asp:Panel ID="pnlConfirm" runat="server" Visible="false" CssClass="card height-auto pb-4 ui-modal-box">
                 <div class="card-body py-4 modal-box">
@@ -163,7 +172,7 @@
                                                 <asp:Label ID="lblEmail" Text='<%# Eval("Email")%>' runat="server"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
-                                         <asp:TemplateField HeaderText="Password" SortExpression="Password" HeaderStyle-CssClass="sorting">
+                                        <asp:TemplateField HeaderText="Password" SortExpression="Password" HeaderStyle-CssClass="sorting">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblPassword" Text='<%# PublicFunctions.Decrypt(Eval("Password"))%>' runat="server"></asp:Label>
                                             </ItemTemplate>
@@ -180,7 +189,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField>
                                             <ItemTemplate>
-                                                <asp:Panel ID="pnlActons" runat ="server"  CssClass="dropdown" Enabled ='<%# IIf(PublicFunctions.BoolFormat(Eval("SystemUser")) = True, False, True)%>'>
+                                                <asp:Panel ID="pnlActons" runat="server" CssClass="dropdown" Enabled='<%# IIf(PublicFunctions.BoolFormat(Eval("SystemUser")) = True, False, True)%>'>
                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                         <span class="flaticon-more-button-of-three-dots"></span>
                                                     </a>
@@ -199,10 +208,10 @@
                                                             </asp:ModalPopupExtender>
                                                         </asp:Panel>
 
-                                                         <a class="dropdown-item"
-                                                             href='<%# "https://wa.me/2" & Eval("MobileNo") & "?text=UpSkills User --> Username : " & Eval("Username") & " ... Password : " & PublicFunctions.Decrypt(Eval("Password"))  %>'>
-                                                                <i class="fas fa-user-lock text-blue"></i>Send Credentials
-                                                            </a>
+                                                        <a class="dropdown-item"
+                                                            href='<%# "https://wa.me/2" & Eval("MobileNo") & "?text=UpSkills User --> Username : " & Eval("Username") & " ... Password : " & PublicFunctions.Decrypt(Eval("Password"))  %>'>
+                                                            <i class="fas fa-user-lock text-blue"></i>Send Credentials
+                                                        </a>
                                                     </div>
                                                 </asp:Panel>
                                                 <asp:Panel ID="pnlConfirmExtenderDelete" runat="server" CssClass="modal fade show" TabIndex="-1" role="dialog" aria-hidden="true" Style="display: none;">
@@ -364,7 +373,7 @@
                                             <div class="dashes" runat="server" id="previewDiv">
                                                 <asp:Image ID="imgIcon" ClientIDMode="Static" CssClass="userPhoto" runat="server" ImageUrl="img/figure/Photo.jpg" />
                                             </div>
-                                            <asp:Image ID="imgIconLoader" runat="server" CssClass="img-loader-upload" ClientIDMode="Static" ImageUrl="~/img/preloader.gif" Style="display: none;" />
+                                            <asp:Image ID="imgIconLoader" runat="server" CssClass="img-loader-upload" ClientIDMode="Static" ImageUrl="~/img/preloader-2.gif" Style="display: none;" />
                                             <label class="btn-upload btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white">Upload Photo</label>
                                         </div>
                                     </div>
