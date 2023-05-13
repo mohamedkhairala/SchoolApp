@@ -43,10 +43,10 @@ Partial Class Attendance
     Private Sub FillDDL()
         Try
             FillDropDownList(ddlCourseID, "select ID, (Code + ' - ' + Name) as Course from vw_Courses where SchoolID = " & School_ID & ";", "ID", "Course", True)
-            FillDropDownList(ddlGroupID, "select ID, Name as [Group] from vw_Groups where SchoolID = " & School_ID & ";", "ID", "Group", True)
-            FillDropDownList(ddlSessionID, "select ID, Title as Session from vw_Sessions where SchoolID = " & School_ID & ";", "ID", "Session", True)
-            FillDropDownList(ddlTeacherID, "select ID, (Code + ' - ' + Name) as Teacher from vw_Teachers where SchoolID = " & School_ID & ";", "ID", "Teacher", True)
-            FillDropDownList(ddlSupervisorID, "select ID, (Code + ' - ' + Name) as Supervisor from vw_Supervisors where SchoolID = " & School_ID & ";", "ID", "Supervisor", True)
+            'FillDropDownList(ddlGroupID, "select ID, Name as [Group] from vw_Groups where SchoolID = " & School_ID & ";", "ID", "Group", True)
+            'FillDropDownList(ddlSessionID, "select ID, Title as Session from vw_Sessions where SchoolID = " & School_ID & ";", "ID", "Session", True)
+            'FillDropDownList(ddlTeacherID, "select ID, (Code + ' - ' + Name) as Teacher from vw_Teachers where SchoolID = " & School_ID & ";", "ID", "Teacher", True)
+            'FillDropDownList(ddlSupervisorID, "select ID, (Code + ' - ' + Name) as Supervisor from vw_Supervisors where SchoolID = " & School_ID & ";", "ID", "Supervisor", True)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -280,6 +280,7 @@ Partial Class Attendance
             Else
                 FillDropDownList(ddlGroupID, "select 0 as ID, 'Please Select Group' as [Group] union select ID, Name as [Group] from vw_Groups where CourseID = " & IntFormat(ddlCourseID.SelectedValue) & " and SchoolID = " & School_ID & ";", "ID", "Group", False)
             End If
+            FillDropDownList(ddlGroupID, "select 0 as ID, 'Please Select Group' as [Group] union select ID, Name as [Group] from vw_Groups where CourseID = " & IntFormat(ddlCourseID.SelectedValue) & " and SchoolID = " & School_ID & ";", "ID", "Group", False)
             ddlGroupID.SelectedIndex = -1
             ddlSessionID.SelectedIndex = -1
         Catch ex As Exception
@@ -291,9 +292,9 @@ Partial Class Attendance
         Try
             ddlSessionID.Items.Clear()
             If IntFormat(ddlGroupID.SelectedValue) = 0 Then
-                FillDropDownList(ddlSessionID, "select 0 as ID, 'Please Select Session' as [Session] union select ID, Title as Session from vw_Sessions where SchoolID = " & School_ID & ";", "ID", "Session", True)
+                FillDropDownList(ddlSessionID, "select 0 as ID, 'Please Select Session' as [Session] union select ID, Title as Session from vw_Sessions where HasAttendance = 0 and SchoolID = " & School_ID & ";", "ID", "Session", True)
             Else
-                FillDropDownList(ddlSessionID, "select 0 as ID, 'Please Select Session' as [Session] union select ID, Title as Session from vw_Sessions where GroupID = " & IntFormat(ddlGroupID.SelectedValue) & " and SchoolID = " & School_ID & ";", "ID", "Session", False)
+                FillDropDownList(ddlSessionID, "select 0 as ID, 'Please Select Session' as [Session] union select ID, Title as Session from vw_Sessions where HasAttendance = 0 and GroupID = " & IntFormat(ddlGroupID.SelectedValue) & " and SchoolID = " & School_ID & ";", "ID", "Session", False)
             End If
             Dim query As String = "select CourseID from vw_Groups where ID = " & IntFormat(ddlGroupID.SelectedValue) & " and SchoolID = " & School_ID & ";"
             Dim dt As DataTable = DBContext.Getdatatable(query)
