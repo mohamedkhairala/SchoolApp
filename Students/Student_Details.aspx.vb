@@ -44,10 +44,7 @@ Partial Class Student_Details
     Protected Sub rp_ItemDataBound(sender As Object, e As ListViewItemEventArgs) Handles rpStudent.ItemDataBound
         Try
             If e.Item.ItemType = ListItemType.Item OrElse e.Item.ItemType = ListItemType.AlternatingItem Then
-                Dim rbGroups As Repeater = DirectCast(e.Item.FindControl("rpGroups"), Repeater)
-                Dim StudentID = Request.QueryString("ID")
-                rbGroups.DataSource = DBContext.Getdatatable("Select * from vw_StudentsGroups where StudentId=" & StudentID)
-                rbGroups.DataBind()
+
             End If
 
         Catch ex As Exception
@@ -87,6 +84,13 @@ Partial Class Student_Details
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles rpStudent.DataBound
         Try
             Permissions.CheckPermisions(rpStudent, New LinkButton, New TextBox, New LinkButton, Me.Page, "Student", UserID)
+            For Each item In rpStudent.Items
+                Dim rbGroups As GridView = DirectCast(item.FindControl("rpGroups"), GridView)
+                Dim StudentID = Request.QueryString("ID")
+                rbGroups.DataSource = DBContext.Getdatatable("Select CourseCode,CourseName, GroupCode,GroupName,TeacherName,SupervisorName from vw_StudentsGroups where StudentId=" & StudentID)
+                rbGroups.DataBind()
+            Next
+
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try

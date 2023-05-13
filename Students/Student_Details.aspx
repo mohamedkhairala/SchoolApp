@@ -120,10 +120,12 @@
                                         </tr>
                                         <tr>
                                             <td>Group:</td>
-                                            <td class="font-medium text-dark-medium">
-                                                <asp:Repeater runat="server" ID="rpGroups">
-                                                    <ItemTemplate></ItemTemplate>
-                                                </asp:Repeater>
+                                            <td>
+                                                <div class="dataTables_wrapper no-footer">
+                                                    <asp:GridView runat="server" ID="rpGroups" ClientIDMode="AutoID" Style="min-width: 50vw;"
+                                                        CssClass="table display data-table text-nowrap dataTable no-footer w-100" HeaderStyle-CssClass="header-row" RowStyle-CssClass="odd" AlternatingRowStyle-CssClass="even">
+                                                    </asp:GridView>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
