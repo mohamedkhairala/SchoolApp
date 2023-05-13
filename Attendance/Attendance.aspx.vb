@@ -254,7 +254,7 @@ Partial Class Attendance
 #Region "Cancel"
 
     Protected Sub Cancel(sender As Object, e As EventArgs)
-        Response.Redirect("Dashboard.aspx")
+        Response.Redirect("~/Dashboard.aspx")
     End Sub
 
     Protected Sub Clear()
