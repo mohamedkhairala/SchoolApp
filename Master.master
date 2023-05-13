@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="item-content">
                                     <ul class="settings-list">
-                                        <li><a href="../Message.aspx"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Messages</a></li>
+                                        <li><a href="../MessagesList.aspx"><i class="flaticon-chat-comment-oval-speech-bubble-with-text-lines"></i>Messages</a></li>
                                         <li>
                                             <%--<a href="login.html"><i class="flaticon-turn-off"></i>Log Out</a>--%>
                                             <asp:LinkButton ID="lbLogout" runat ="server" OnClick ="Logout">

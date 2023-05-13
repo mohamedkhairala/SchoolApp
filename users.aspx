@@ -209,7 +209,7 @@
                                                             </asp:ModalPopupExtender>
                                                         </asp:Panel>
 
-                                                        <a class="dropdown-item"
+                                                        <a class="dropdown-item" target="_blank"
                                                             href='<%# "https://wa.me/2" & Eval("MobileNo") & "?text=UpSkills User --> Username : " & Eval("Username") & " ... Password : " & PublicFunctions.Decrypt(Eval("Password"))  %>'>
                                                             <i class="fas fa-user-lock text-blue"></i>Send Credentials
                                                         </a>
