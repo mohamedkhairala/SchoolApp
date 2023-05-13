@@ -22,10 +22,11 @@
                 color: inherit;
             }
     </style>
+     
 </asp:Content>
-<asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
+<asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server" >
     <!-- Admit Form Area Start Here -->
-    <asp:UpdatePanel ID="upUsers" runat="server" ClientIDMode="Static" RenderMode="Inline" ScriptMode="Release">
+    <asp:UpdatePanel ID="upUsers" runat="server" ClientIDMode="Static" >
         <ContentTemplate>
             <div class="page-load">
                 <asp:UpdateProgress ID="upLoader" runat="server" AssociatedUpdatePanelID="upUsers">
@@ -569,8 +570,8 @@
     <script src="js/select2.min.js"></script>
     <!-- Date Picker Js -->
     <script src="js/datepicker.min.js"></script>
-    <!-- Upload Photo Js -->
-    <script src="js/uploaduserimg.js"></script>
+   <!-- Upload Photo Js -->
+    <script src="js/UploadUserImg.js"></script>
     <!-- Data Table Js -->
     <%--<script src="js/jquery.dataTables.min.js"></script>--%>
     <script src="js/Users.js"></script>

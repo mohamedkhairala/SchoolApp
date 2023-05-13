@@ -21,18 +21,8 @@ function UploadPhotoCompleted(sender, args) {
     document.getElementById('HiddenIcon').value = '~/Users_Photos/' + args.get_fileName();
   
     img.style.display = 'none';
-    switch (true) {
-        case (fileLength > 1000000):
-            fileLength = fileLength / 1000000 + 'MB';
-            break;
-        case (fileLength < 1000000):
-            fileLength = fileLength / 1000000 + 'KB';
-            break;
-        default:
-            fileLength = '1 MB';
-            break;
-    }
 }
 
 function UploadError() {
+
 }
