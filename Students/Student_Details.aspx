@@ -147,8 +147,16 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Mobile:</td>
-                                                    <td><i class="fa fa-mobile-alt mr-2"></i><a href="tel:<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
-                                                    <td><i class="fab fa-whatsapp mr-2"></i><a target="_blank" href="https://wa.me/<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a></td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div>
+                                                                <i class="fa fa-mobile-alt mr-2"></i><a href="tel:<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a>
+                                                            </div>
+                                                            <div class="ml-5">
+                                                                <i class="fab fa-whatsapp mr-2"></i><a target="_blank" href="https://wa.me/<%# Eval("Mobile")%>"><%# Eval("Mobile")%></a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Phone:</td>
