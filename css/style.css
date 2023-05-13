@@ -6540,3 +6540,14 @@ a.aspNetDisabled {
     width: 50%;
     transform: translate(-50%, -50%);
 }
+
+.EmptyRowStyle {
+    background-color: rgba(255, 169, 1, 0.2);
+    border: 1px solid #ffa901;
+}
+
+    .EmptyRowStyle td {
+        color: #9e6800;
+        padding: 0.5rem;
+        text-align: center;
+    }

@@ -29,6 +29,8 @@ Partial Class Supervisor
                 Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Supervisor)
                 View()
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
             FillIcon()
         Catch ex As Exception

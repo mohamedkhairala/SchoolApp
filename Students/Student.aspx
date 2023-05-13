@@ -14,7 +14,7 @@
     <asp:UpdatePanel ID="UP" runat="server" ClientIDMode="Static" RenderMode="Inline">
         <ContentTemplate>
             <div class="page-load">
-                <asp:UpdateProgress ID="upLoader" runat="server" AssociatedUpdatePanelID="UP">
+                <asp:UpdateProgress ID="upLoader" runat="server" ClientIDMode="Static" AssociatedUpdatePanelID="UP">
                     <ProgressTemplate>
                         <div class="loader-container">
                             <div class="lds-ripple">

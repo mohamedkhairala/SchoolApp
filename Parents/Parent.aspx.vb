@@ -31,6 +31,8 @@ Partial Class Parent
                 divActions.Visible = False
                 'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Parent)
                 View()
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
             FillIcon()
         Catch ex As Exception
