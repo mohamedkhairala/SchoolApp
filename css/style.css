@@ -6439,3 +6439,8 @@ a.aspNetDisabled {
 .vertical-align-middle {
     vertical-align: middle !important;
 }
+
+.tbl-header-checkbox tr th input[type="checkbox"] + label {
+    display: inline-block;
+    margin-left: 0.5rem;
+}

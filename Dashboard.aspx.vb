@@ -49,6 +49,9 @@ Partial Class Dashboard
 
         rpGenderChart.DataSource = dt
         rpGenderChart.DataBind()
+
+        rpSessions.DataSource = dt
+        rpSessions.DataBind()
     End Sub
 
     Private Sub FillMessages()
