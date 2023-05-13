@@ -34,6 +34,7 @@ Partial Class Group
             If Page.IsPostBack = False Then
                 Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 FillDDL()
+
                 View()
             End If
         Catch ex As Exception
@@ -142,13 +143,13 @@ Partial Class Group
                 _sqlconn.Close()
                 Exit Sub
             End If
-            Dim daSessions As New TblSessionsFactory
-            daSessions.DeleteTrans(TblSessions.TblSessionsFields.GroupId, ID, _sqlconn, _sqltrans)
-            If Not SaveSessions(ID, _sqlconn, _sqltrans) Then
-                _sqltrans.Rollback()
-                _sqlconn.Close()
-                Exit Sub
-            End If
+            'Dim daSessions As New TblSessionsFactory
+            'daSessions.DeleteTrans(TblSessions.TblSessionsFields.GroupId, ID, _sqlconn, _sqltrans)
+            'If Not SaveSessions(ID, _sqlconn, _sqltrans) Then
+            '    _sqltrans.Rollback()
+            '    _sqlconn.Close()
+            '    Exit Sub
+            'End If
             Dim daStudents As New TblStudentsGroupsFactory
             daStudents.DeleteTrans(TblStudentsGroups.TblStudentsGroupsFields.GroupId, ID, _sqlconn, _sqltrans)
             If Not SaveStudents(ID, _sqlconn, _sqltrans) Then
@@ -293,6 +294,7 @@ Partial Class Group
                 txtGroupCode.Text = dt.Rows(0).Item("Code").ToString
                 txtName.Text = dt.Rows(0).Item("Name").ToString
                 SetDDLValue(ddlCourseID, dt.Rows(0).Item("CourseID").ToString)
+                SelectCourse(ddlCourseID, Nothing)
                 SetDDLValue(ddlTeacherID, dt.Rows(0).Item("TeacherID").ToString)
                 txtTeacherRate.Text = DecimalFormat(dt.Rows(0).Item("TeacherRate").ToString)
                 SetDDLValue(ddlSupervisorID, dt.Rows(0).Item("SupervisorID").ToString)
@@ -311,7 +313,12 @@ Partial Class Group
                 End If
                 lbSave.CommandArgument = "Edit"
                 pnlForm.Enabled = Mode = "Edit"
+            Else
+                Mode = "Add"
             End If
+            ddlCourseID.Enabled = Mode = "Add"
+            pnlSessions.Enabled = Mode = "Add"
+            pnlSessionControls.Visible = Mode = "Add"
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
