@@ -37,8 +37,59 @@
     <!-- Admit Form Area Start Here -->
     <asp:UpdatePanel ID="upUsers" runat="server" ClientIDMode="Static" RenderMode="Inline" ScriptMode="Release">
         <ContentTemplate>
-            <div class="card height-auto">
-                <div class="card-body">
+            <asp:UpdateProgress ID="upgg" runat="server" AssociatedUpdatePanelID="upUsers">
+                <ProgressTemplate>
+                    <asp:Image runat="server" ImageUrl="~/img/preloader.gif" />
+                </ProgressTemplate>
+            </asp:UpdateProgress>
+
+            <asp:Panel ID="pnlConfirm" runat="server" Visible="false" CssClass="card height-auto pb-4 ui-modal-box">
+                <div class="card-body py-4 modal-box">
+                    <div class="heading-layout1 mb-0">
+                        <div class="item-title">
+                            <h3>Add New User</h3>
+                        </div>
+                        <div class="">
+                            <asp:Button ID="btnSave" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white" ValidationGroup="vgMain"
+                                OnClick="Save" UseSubmitBehavior="false" OnClientClick="SaveClick(this,'vgMain');" Text="Save" />
+                            <asp:Panel runat="server" ID="pnlCancel" CssClass="d-inline-block ml-3">
+                                <%--<asp:LinkButton ID="lbYesCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel" CausesValidation="false">Cancel</asp:LinkButton>--%>
+                                <a href="#" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white"
+                                    onclick="ShowConfirmModal('mpConfirmCancel','pnlConfirmExtenderCancel');return false;">Cancel</a>
+
+                                <asp:HiddenField ID="hfCancel" runat="server" />
+                                <asp:ModalPopupExtender ID="mpConfirmCancel" runat="server" PopupControlID="pnlConfirmExtenderCancel" TargetControlID="hfCancel"
+                                    CancelControlID="lbNoCancel" ClientIDMode="Static" BackgroundCssClass="modal-backdrop fade show">
+                                </asp:ModalPopupExtender>
+                                <asp:Panel ID="pnlConfirmExtenderCancel" runat="server" ClientIDMode="Static" CssClass="modal fade show" TabIndex="-1" role="dialog" aria-hidden="true" Style="display: none;">
+                                    <div class="modal-dialog success-modal-content" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirmation Message</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="success-message">
+                                                    <div class="item-icon">
+                                                        <i class="fas fa-exclamation icon-modal"></i>
+                                                    </div>
+                                                    <h3 class="item-title">You want to Cancel ?</h3>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <asp:LinkButton ID="LinkButton1" runat="server" CssClass="footer-btn btn-success" CausesValidation="false" OnClick="Cancel">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                <asp:LinkButton ID="lbNoCancel" runat="server" CssClass="footer-btn btn-danger" data-dismiss="modal">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </asp:Panel>
+                            </asp:Panel>
+                        </div>
+                    </div>
+                </div>
+            </asp:Panel>
+
+            <div class="card height-auto ui-modal-box">
+                <div class="card-body modal-box">
                     <div class="item-title">
                         <h3>All Users</h3>
                     </div>
@@ -126,38 +177,40 @@
                                                     <div class="dropdown-menu dropdown-menu-right">
                                                         <asp:LinkButton ID="lbPermission" CssClass="dropdown-item" CommandArgument='<%#Eval("UserID")%>' runat="server" ToolTip="Permissions" OnClick="ShowPermission" Visible='<%# False %>'><i class="fas fa-user-lock text-blue"></i>User Permissions</asp:LinkButton>
                                                         <asp:LinkButton ID="lbUpdate" CssClass="dropdown-item" OnClick="Edit" ToolTip="Edit" runat="server" CommandArgument='<%#Eval("UserID")%>' Visible='<%# IIf(Eval("UserName").ToString = "system", False, True) %>'><i class="fas fa-cogs text-dark-pastel-green"></i>Edit</asp:LinkButton>
-                                                        <asp:LinkButton ID="lbDelete" CssClass="dropdown-item" OnClick="Delete" ToolTip="Delete" runat="server" CommandArgument='<%#Eval("UserID")%>' Visible='<%# IIf(Eval("UserName").ToString = "system", False, True) %>'><i class="fas fa-times text-orange-red"></i>Delete</asp:LinkButton>
-                                                       
-                                                        
-                                                       <%-- <a href="#" id="hrefDelete" class="dropdown-item" title="Delete" style='<%# IIf(Eval("UserName").ToString = "system", "display:none;", "") %>'
-                                                            onclick="ShowConfirmPopup('<%# CType(Container, GridViewRow).FindControl("mpConfirmDelete").ClientID.ToString%>','<%# CType(Container, GridViewRow).FindControl("pnlConfirmExtenderDelete").ClientID.ToString%>');return false;"><i class="fas fa-times text-orange-red"></i>Delete</a>
-                                                        <asp:HiddenField ID="hfDelete" runat="server" />
-                                                        <asp:ModalPopupExtender ID="mpConfirmDelete" runat="server" PopupControlID="pnlConfirmExtenderDelete" TargetControlID="hfDelete"
-                                                            CancelControlID="lbNoDelete" BackgroundCssClass="modalBackground">
-                                                        </asp:ModalPopupExtender>
-                                                        <asp:Panel ID="pnlConfirmExtenderDelete" runat="server" CssClass="rodal rodal-fade-enter" align="center" Style="display: none">
-                                                            <div class="rodal-mask"></div>
-                                                            <div class="rodal-dialog rodal-slideUp-enter" style="width: 300px;">
-                                                                <div class="card">
-                                                                    <div class="card-header p-2">
-                                                                        <h5 class="card-title m-0">Confirmation Message</h5>
-                                                                    </div>
-                                                                    <div class="body p-2">
-                                                                        <label>Are you sure you want to delete this user ?</label>
-                                                                    </div>
-                                                                    <div class="footer">
-                                                                        <div class="input-in">
-                                                                            <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="btn btn-success" CommandArgument='<%# Eval("UserId") %>' OnClick="Delete">Yes<i class="fa fa-check"></i></asp:LinkButton>
-                                                                        </div>
-                                                                        <div class="input-in">
-                                                                            <a id="lbNoDelete" class="btn btn-danger" onclick="CloseConfirmPopup('<%# CType(Container, GridViewRow).FindControl("mpConfirmDelete").ClientID.ToString%>');return false;">No<i class="fa fa-times"></i></a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </asp:Panel>--%>
+                                                        <asp:Panel ID="pnlDelete" runat="server" Visible='<%# IIf(Eval("UserName").ToString = "system", False, True) %>'>
+                                                            <%--<asp:LinkButton ID="lbDelete" CssClass="dropdown-item" OnClick="Delete" ToolTip="Delete" runat="server" CommandArgument='<%#Eval("UserID")%>' Visible='<%# IIf(Eval("UserName").ToString = "system", False, True) %>'><i class="fas fa-times text-orange-red"></i>Delete</asp:LinkButton>--%>
+                                                            <a class="dropdown-item"
+                                                                onclick="ShowConfirmModal('<%# CType(Container, GridViewRow).FindControl("mpConfirmDelete").ClientID.ToString%>','<%# CType(Container, GridViewRow).FindControl("pnlConfirmExtenderDelete").ClientID.ToString%>');return false;">
+                                                                <i class="fas fa-times text-orange-red"></i>Delete
+                                                            </a>
+                                                            <asp:HiddenField ID="hfDelete" runat="server" />
+                                                            <asp:ModalPopupExtender ID="mpConfirmDelete" runat="server" PopupControlID="pnlConfirmExtenderDelete" TargetControlID="hfDelete"
+                                                                CancelControlID="lbNoDelete" BackgroundCssClass="modal-backdrop fade show">
+                                                            </asp:ModalPopupExtender>
+                                                        </asp:Panel>
                                                     </div>
                                                 </div>
+                                                <asp:Panel ID="pnlConfirmExtenderDelete" runat="server" CssClass="modal fade show" TabIndex="-1" role="dialog" aria-hidden="true" Style="display: none;">
+                                                    <div class="modal-dialog success-modal-content" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Confirmation Message</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="success-message">
+                                                                    <div class="item-icon">
+                                                                        <i class="fas fa-exclamation icon-modal"></i>
+                                                                    </div>
+                                                                    <h3 class="item-title">You want to delete this record ?</h3>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="footer-btn btn-success" CommandArgument='<%# Eval("UserID") %>' OnClick="Delete">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                                <asp:LinkButton ID="lbNoDelete" runat="server" CssClass="footer-btn btn-danger" data-dismiss="modal">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </asp:Panel>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>
@@ -202,7 +255,7 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderStyle-CssClass="gvPermissionCheckBox">
                                                         <HeaderTemplate>
-                                                            <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);"  />
+                                                            <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);" />
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chkAccess" onclick="Select(this);" ClientIDMode="Static" Text=" " runat="server" Checked='<%#Eval("PAccess")%>' />
@@ -280,7 +333,7 @@
                     </asp:Panel>
 
                     <asp:Panel ID="pnlForm" Visible="false" runat="server">
-                        <div class="row">
+                        <div class="row new-added-form">
                             <div class="col-xl-3 col-lg-6">
                                 <div class="row">
                                     <div class="col-xl-12 col-lg-12 col-12 form-group mg-t-30">
@@ -296,39 +349,39 @@
                                             <div class="dashes" runat="server" id="previewDiv">
                                                 <asp:Image ID="imgIcon" ClientIDMode="Static" CssClass="userPhoto" runat="server" ImageUrl="img/figure/Photo.jpg" />
                                             </div>
-                                            <asp:Image ID="imgIconLoader" runat="server" CssClass="img-loader-upload" ClientIDMode="Static" ImageUrl="~/images/image-uploader.gif" Style="display: none;" />
+                                            <asp:Image ID="imgIconLoader" runat="server" CssClass="img-loader-upload" ClientIDMode="Static" ImageUrl="~/img/preloader.gif" Style="display: none;" />
                                             <label class="btn-upload btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white">Upload Photo</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-9 col-lg-6">
-                                <asp:ValidationSummary ID="ValidationSummary" CssClass="ValidationSummary" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="Main" EnableClientScript="true" runat="server" />
+                                <asp:ValidationSummary ID="vsMain" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vgMain" EnableClientScript="true" runat="server" Visible="false" />
 
                                 <div class="row">
-                                    <div class="form-group col-md-4 input-in">
+                                    <div class="form-group col-md-8 input-in">
                                         <label class="form-label required">Full Name</label>
                                         <asp:TextBox ID="txtFullName" runat="server" CssClass="form-control" MaxLength="50" onkeypress="return isString(event);" onkeyup="ValidateChars(this);"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="valid-inp" ValidationGroup="Main" ControlToValidate="txtFullName"
-                                            ErrorMessage="Enter Full Name" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="valid-inp" ValidationGroup="vgMain" ControlToValidate="txtFullName"
+                                            Text="Enter Full Name" Display="Dynamic"></asp:RequiredFieldValidator>
                                     </div>
                                     <div class="form-group col-md-4 input-in">
                                         <label class="form-label required">E-mail</label>
                                         <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" MaxLength="200" onkeypress="return isString(event);" onkeyup="ValidateChars(this);"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" CssClass="valid-inp" ValidationGroup="Main" ControlToValidate="txtEmail"
-                                            ErrorMessage="Enter E-mail" Display="Dynamic"></asp:RequiredFieldValidator>
-                                        <%--<asp:CustomValidator ID="cvEmail" runat="server" ValidationGroup="Main" Display="Dynamic" ControlToValidate="txtEmail" ErrorMessage="Email already exist" EnableViewState="false" ValidateEmptyText="true"
+                                        <asp:RequiredFieldValidator ID="rfvEmail" runat="server" CssClass="valid-inp" ValidationGroup="vgMain" ControlToValidate="txtEmail"
+                                            Text="Enter E-mail" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        <%--<asp:CustomValidator ID="cvEmail" runat="server" ValidationGroup="vgMain" Display="Dynamic" ControlToValidate="txtEmail" ErrorMessage="Email already exist" EnableViewState="false" ValidateEmptyText="true"
                                             EnableClientScript="true" Enabled="true" ClientValidationFunction="CheckEmail"></asp:CustomValidator>--%>
-                                        <asp:RegularExpressionValidator ID="revEmail" ValidationGroup="Main" CssClass="valid-inp" runat="server" ControlToValidate="txtEmail"
+                                        <asp:RegularExpressionValidator ID="revEmail" ValidationGroup="vgMain" CssClass="valid-inp" runat="server" ControlToValidate="txtEmail"
                                             ErrorMessage="Invalid Email" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
                                     </div>
                                     <div class="form-group col-md-4 input-in">
                                         <span id="display" style="color: red; font-size: 10px;"></span>
                                         <label class="form-label required">Username</label>
                                         <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" MaxLength="20" onkeypress="return isString(event);" onkeyup="ValidateChars(this);"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvUserName" runat="server" CssClass="valid-inp" ValidationGroup="Main" ControlToValidate="txtUsername"
-                                            ErrorMessage="Enter Username" Display="Dynamic"></asp:RequiredFieldValidator>
-                                       <%-- <asp:CustomValidator ID="cvUserName" runat="server" ValidationGroup="Main" Display="Dynamic" ControlToValidate="txtUsername" ErrorMessage="Username already exist" EnableViewState="false" ValidateEmptyText="true"
+                                        <asp:RequiredFieldValidator ID="rfvUserName" runat="server" CssClass="valid-inp" ValidationGroup="vgMain" ControlToValidate="txtUsername"
+                                            Text="Enter Username" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        <%-- <asp:CustomValidator ID="cvUserName" runat="server" ValidationGroup="vgMain" Display="Dynamic" ControlToValidate="txtUsername" ErrorMessage="Username already exist" EnableViewState="false" ValidateEmptyText="true"
                                             EnableClientScript="true" Enabled="true" ClientValidationFunction="CheckUserName"></asp:CustomValidator>--%>
                                         <asp:RegularExpressionValidator ID="valtxtUsername" runat="server" CssClass="valid-inp"
                                             ControlToValidate="txtUsername" ErrorMessage="Minimum UserName length is 5" ValidationExpression=".{5}.*" />
@@ -337,20 +390,20 @@
                                         <label class="form-label required">Password</label>
                                         <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" MaxLength="15" ClientIDMode="Static" onchange="ValidatePass();" autocomplete="new-password"></asp:TextBox>
                                         <asp:Label ID="lblPassStatus" runat="server" ClientIDMode="Static"></asp:Label>
-                                        <asp:RequiredFieldValidator ID="rfvPassword" runat="server" CssClass="valid-inp" ValidationGroup="Main" ControlToValidate="txtPassword"
-                                            ErrorMessage="Enter Password" Display="Dynamic"></asp:RequiredFieldValidator>
-                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="Main" CssClass="inp-validate" runat="server" ControlToValidate="txtPassword"
+                                        <asp:RequiredFieldValidator ID="rfvPassword" runat="server" CssClass="valid-inp" ValidationGroup="vgMain" ControlToValidate="txtPassword"
+                                            Text="Enter Password" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        <%--<asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="vgMain" CssClass="inp-validate" runat="server" ControlToValidate="txtPassword"
                                                                                 ErrorMessage="Password must contain: Minimum 6 characters atleast 1 UpperCase Alphabet, 1 LowerCase Alphabet" ValidationExpression="^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z\d]{6,}$">*</asp:RegularExpressionValidator>--%>
                                         <%-- ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$  --%>
-                                        <%--<asp:CustomValidator ID="cfvPassword" CssClass="custmValidator" runat="server" ValidationGroup="Main" Display="Dynamic" ControlToValidate="txtPassword" ErrorMessage="Password Very Week" EnableViewState="false" ValidateEmptyText="true"
+                                        <%--<asp:CustomValidator ID="cfvPassword" CssClass="custmValidator" runat="server" ValidationGroup="vgMain" Display="Dynamic" ControlToValidate="txtPassword" ErrorMessage="Password Very Week" EnableViewState="false" ValidateEmptyText="true"
                                                                                     EnableClientScript="true" Enabled="true" ClientValidationFunction="ValidatePassword" ForeColor="Red">*</asp:CustomValidator>--%>
                                     </div>
                                     <div class="form-group col-md-4 input-in">
                                         <label class="form-label required">Confirm Password</label>
                                         <asp:TextBox ID="txtPasswordConfirm" runat="server" CssClass="form-control" TextMode="Password" MaxLength="15" autocomplete="new-password"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rfvConfirmPassword" runat="server" CssClass="valid-inp" ValidationGroup="Main" ControlToValidate="txtPasswordConfirm"
-                                            ErrorMessage="Enter Confirm Password" Display="Dynamic"></asp:RequiredFieldValidator>
-                                        <asp:CompareValidator ID="cvPassword" runat="server" ControlToCompare="txtPassword" ValidationGroup="Main" ForeColor="Red"
+                                        <asp:RequiredFieldValidator ID="rfvConfirmPassword" runat="server" CssClass="valid-inp" ValidationGroup="vgMain" ControlToValidate="txtPasswordConfirm"
+                                            Text="Enter Confirm Password" Display="Dynamic"></asp:RequiredFieldValidator>
+                                        <asp:CompareValidator ID="cvPassword" runat="server" ControlToCompare="txtPassword" ValidationGroup="vgMain" ForeColor="Red"
                                             ControlToValidate="txtPasswordConfirm" ErrorMessage="Password Not Matched" Text="Password Not Matched" Style="position: absolute; font-size: 10px;"></asp:CompareValidator>
                                     </div>
 
@@ -391,7 +444,7 @@
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="table-responsive">
-                                                        <asp:GridView ID="gvUserPermissions" CssClass="table table-striped table-bordered table-hover" ClientIDMode="Static" runat="server" AutoGenerateColumns="False">
+                                                        <asp:GridView ID="gvUserPermissions" CssClass="table table-striped table-bordered table-hover tbl-header-checkbox" ClientIDMode="Static" runat="server" AutoGenerateColumns="False">
                                                             <Columns>
                                                                 <asp:TemplateField HeaderText="Form Title">
                                                                     <ItemTemplate>
@@ -401,7 +454,7 @@
                                                                 </asp:TemplateField>
                                                                 <asp:TemplateField HeaderStyle-CssClass="gvPermissionCheckBox">
                                                                     <HeaderTemplate>
-                                                                        <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);"  />
+                                                                        <asp:CheckBox ID="chkAllAccess" ClientIDMode="Static" Text="Access" runat="server" onclick="CheckAll(this);" />
                                                                     </HeaderTemplate>
                                                                     <ItemTemplate>
                                                                         <asp:CheckBox ID="chkAccess" onclick="Select(this);" ClientIDMode="Static" Text=" " runat="server" Checked='<%#Eval("PAccess")%>' />
@@ -467,41 +520,6 @@
                                 </div>
                             </div>
                         </asp:Panel>
-                    </asp:Panel>
-
-                    <asp:Panel ID="pnlConfirm" runat="server" Visible="false" CssClass="form-group">
-                        <asp:LinkButton ID="btnSave" runat="server" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white" ValidationGroup="Main" OnClick="Save" UseSubmitBehavior="false" OnClientClick="SaveClick(this,'Main');" ToolTip="Save">Save</asp:LinkButton>
-                        <asp:Panel runat="server" ID="pnlCancel" CssClass="d-inline-block ml-3">
-                            <asp:LinkButton ID="lbYesCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel" CausesValidation="false">Cancel</asp:LinkButton>
-                            <%--<a href="#" title="Cancel" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" data-toggle="modal" data-placement="bottom" data-original-title="Cancel"
-                                onclick="ShowConfirmPopup('mpConfirmCancel','pnlConfirmExtenderCancel');return false;">Cancel</a>
-                            <asp:HiddenField ID="hfCancel" runat="server" />
-                            <asp:ModalPopupExtender ID="mpConfirmCancel" ClientIDMode="Static" runat="server" PopupControlID="pnlConfirmExtenderCancel" TargetControlID="hfCancel"
-                                CancelControlID="lbNoCancel" BackgroundCssClass="modalBackground">
-                            </asp:ModalPopupExtender>--%>
-                        </asp:Panel>
-
-                      <%--  <asp:Panel ID="pnlConfirmExtenderCancel" runat="server" ClientIDMode="Static" CssClass="rodal rodal-fade-enter" align="center" Style="display: none">
-                            <div class="rodal-mask"></div>
-                            <div class="rodal-dialog rodal-slideUp-enter" style="width: 300px;">
-                                <div class="card">
-                                    <div class="card-header p-2">
-                                        <h5 class="card-title border-0 m-0 p-0">Confirmation Message</h5>
-                                    </div>
-                                    <div class="body p-2">
-                                        <label>Confirm Cancel ?</label>
-                                    </div>
-                                    <div class="footer">
-                                        <div class="input-in">
-                                            <asp:LinkButton ID="lbYesCancel" runat="server" CssClass="btn btn-success" OnClick="Cancel" CausesValidation="false">Yes<i class="fa fa-check"></i></asp:LinkButton>
-                                        </div>
-                                        <div class="input-in">
-                                            <asp:LinkButton ID="lbNoCancel" runat="server" CssClass="btn btn-danger" OnClientClick="CloseConfirmPopup('mpConfirmCancel');return false;">No<i class="fa fa-times"></i></asp:LinkButton>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </asp:Panel>--%>
                     </asp:Panel>
 
                     <!--============================ Page-content =============================-->
