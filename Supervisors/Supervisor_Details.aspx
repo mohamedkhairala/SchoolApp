@@ -134,8 +134,11 @@
                                                 <tr>
                                                     <td>Group:</td>
                                                     <td>
-                                                        <asp:GridView runat="server" ID="rpGroups" ClientIDMode="AutoID">
-                                                        </asp:GridView>
+                                                        <div class="dataTables_wrapper no-footer">
+                                                            <asp:GridView runat="server" ID="rpGroups" ClientIDMode="AutoID" CssClass="table display data-table text-nowrap dataTable no-footer"
+                                                                HeaderStyle-CssClass="header-row" RowStyle-CssClass="odd" AlternatingRowStyle-CssClass="even">
+                                                            </asp:GridView>
+                                                        </div>
                                                     </td>
 
                                                 </tr>
