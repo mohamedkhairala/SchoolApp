@@ -28,7 +28,7 @@ Partial Class SessionsList
             lblRes.Visible = False
             If Page.IsPostBack = False Then
                 clsBindDDL.BindCustomDDLs("Select Id,CourseName + ' - ' + Code + ' - ' + Name as groupCodeName from vw_Groups", "groupCodeName", "ID", ddlGroups, True)
-                clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, True)
+                clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, True, "All")
 
                 'txtDateFrom.Text = PublicFunctions.DateFormat(DateTime.Now, "dd/MM/yyyy")
                 'txtDateTo.Text = PublicFunctions.DateFormat(DateTime.Now, "dd/MM/yyyy")
