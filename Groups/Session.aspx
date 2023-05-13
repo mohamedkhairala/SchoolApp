@@ -94,7 +94,7 @@
                             <asp:TextBox ID="txtCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
                         </div>--%>
                         <!-- Title -->
-                        <div id="divTitle" runat="server" class="col-xl-6 col-lg-6 col-12 form-group">
+                        <div id="divTitle" runat="server" class="col-xl-4 col-lg-6 col-12 form-group">
                             <label id="lblTitle" runat="server" for="txtTitle">Title *</label>
                             <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control"></asp:TextBox>
                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTitle" runat="server" ValidationGroup="vsMaster"
@@ -110,7 +110,7 @@
                                 ControlToValidate="txtIssueDate" Display="Dynamic" Text="Required Issue Date"></asp:RequiredFieldValidator>
                         </div>
                         <!-- DefaultPeriodHour -->
-                        <div id="divDefaultPeriodHour" runat="server" class="col-xl-3 col-lg-6 col-3 form-group">
+                        <div id="divDefaultPeriodHour" runat="server" class="col-xl-2 col-lg-6 col-3 form-group">
                             <label id="lblDefaultPeriodHour" runat="server" for="txtDefaultPeriodHour">Period *</label>
                             <asp:TextBox ID="txtDefaultPeriodHour" runat="server" CssClass="form-control" MaxLength="2" TextMode="Number"></asp:TextBox>
                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqDefaultPeriodHour" runat="server" ValidationGroup="vsMaster"
@@ -118,7 +118,7 @@
                             <asp:FilteredTextBoxExtender ID="fteDefaultPeriodHour" runat="server" TargetControlID="txtDefaultPeriodHour" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                         </div>
                         <!-- Remarks -->
-                        <div id="divRemarks" runat="server" class="col-lg-12 col-12 form-group">
+                        <div id="divRemarks" runat="server" class="col-lg-12 col-12 form-group mb-5">
                             <label id="lblRemarks" runat="server" for="txtRemarks">Remarks</label>
                             <asp:TextBox ID="txtRemarks" runat="server" TextMode="MultiLine" CssClass="textarea form-control" name="message" Rows="4"></asp:TextBox>
                         </div>
