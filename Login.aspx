@@ -62,14 +62,14 @@
                             <asp:LinkButton ID="lbLogin" runat="server" CssClass="login-btn" OnClick ="CheckLogin">Login</asp:LinkButton>
                         </div>
                     </div>
-                    <div class="login-social">
+                    <%--<div class="login-social">
                         <p>or sign in with</p>
                         <ul>
                             <li><a href="#" class="bg-fb"><i class="fab fa-facebook-f"></i></a></li>
                             <li><a href="#" class="bg-twitter"><i class="fab fa-twitter"></i></a></li>
                             <li><a href="#" class="bg-gplus"><i class="fab fa-google-plus-g"></i></a></li>
                         </ul>
-                    </div>
+                    </div>--%>
                 </div>
                 <div class="sign-up">Don't have an account ? <a href="Signup.aspx">Signup now!</a></div>
             </div>
