@@ -516,3 +516,11 @@ function SaveClick(sender, grop = '') {
     }
 
 }
+
+function ScriptPostback() {
+    if ($.fn.select2 !== undefined) {
+        $('.select2').select2({
+            width: '100%'
+        });
+    }
+}
