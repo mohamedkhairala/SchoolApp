@@ -24,3 +24,13 @@
         debugger;
     })
 }
+
+
+function SelectGroup(groupId) {
+    $("#divAdd").attr('style', 'display: none !important');
+    if (groupId != "0") {
+        $("#divAdd").attr('style', 'display: inline-flex !important');
+        $("#lbAdd").attr('href', "Session.aspx?GroupId=" + groupId);
+
+    }
+}
