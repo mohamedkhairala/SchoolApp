@@ -6,6 +6,8 @@ Imports System.Data.SqlClient
 Imports BusinessLayer.BusinessLayer
 Imports System.Activities.Expressions
 Imports System.IdentityModel.Protocols.WSTrust
+Imports System.Web.Services.Description
+
 
 
 
@@ -94,16 +96,31 @@ Partial Class SessionsList
 
 #End Region
 
+
+#Region "Add"
+    Protected Sub Add(sender As Object, e As EventArgs)
+        Dim url = "Session.aspx?GroupId=" & ddlGroups.SelectedValue
+        Response.Redirect(url)
+    End Sub
+
+    Protected Sub SelectGroup(sender As Object, e As EventArgs)
+        'divAdd.Visible = ddlGroups.SelectedValue <> 0
+    End Sub
+#End Region
+
+
 #Region "Permissions"
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
         Try
             Permissions.CheckPermisions(lvMaster, New LinkButton, txtSearch, lbSearch, Me.Page, UserID)
 
+            'D 'im dtLookupValues As DataTable = DBContext.Getdatatable("select Id,value from tblLookupValue where lookupId=(select top 1 ID from tbllookup where TYPE='SessionStatus') and (ISNULL(IsDeleted, 0) = 0)")
+
             For Each r In lvMaster.Items
                 Dim Status As String = Val(DirectCast(r.FindControl("lblSessionStatus"), Label).Text)
                 Dim ddlStatus As DropDownList = DirectCast(r.FindControl("ddlStatus"), DropDownList)
                 clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, False,,, , Status)
-
+                ddlStatus.Enabled = Not PublicFunctions.BoolFormat(DirectCast(r.FindControl("lblHasAttendance"), Label).Text)
             Next
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)

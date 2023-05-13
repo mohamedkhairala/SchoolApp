@@ -24,3 +24,14 @@
         debugger;
     })
 }
+
+
+function SelectGroup(groupId) {
+    debugger;
+    document.getElementById("divAdd").style.display = 'none !important';
+    if (groupId != "0") {
+        document.getElementById("divAdd").style.display = 'block';
+        document.getElementById("lbAdd").href = "Session.aspx?GroupId=" + groupId;
+
+    }
+}

@@ -59,7 +59,8 @@
                 <div class="row">
                     <div class="form-group col-md-2 pl-0 pr-2">
                         <label>Group</label>
-                        <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" ></asp:DropDownList>
+                        <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" 
+                            onchange="SelectGroup(this.value)" ></asp:DropDownList>
                     </div>
                     <div class="form-group col-md-2 px-2">
                         <label>From</label>
@@ -80,6 +81,11 @@
                     <div class="form-group d-inline-flex flex-column px-2">
                         <label>&nbsp;</label>
                         <asp:LinkButton runat="server" CssClass="btn-fill-sm bg-danger text-white fw-btn-fill" ID="lbClear" OnClick="Clear">Clear<i class="fa fa-trash ml-3"></i></asp:LinkButton>
+                    </div>
+                     <div class="form-group d-inline-flex flex-column px-2" id="divAdd" style="display:none !important;">
+                        <label>&nbsp;</label>
+                         <a href="#" target="_blank" class="btn-fill-sm bg-success text-white fw-btn-fill" ID="lbAdd">Add<i class="fa fa-plus ml-3"></i></a>
+                         <%--<asp:LinkButton runat="server" CssClass="btn-fill-sm bg-success text-white fw-btn-fill" ID="lbAdd" OnClick="Add">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>--%>
                     </div>
                 </div>
             </div>
@@ -127,11 +133,14 @@
                             <td><%# Eval("SupervisorCode") + " - " + Eval("SupervisorName") %></td>
                             <td>
                                 <asp:TextBox runat="server" ID="txtIssueDate" onchange="UpdateSession(this)"
+                                    Enabled='<%#Not PublicFunctions.BoolFormat(Eval("HasAttendance")) %>'
                                     TextMode="DateTimeLocal" Text='<%# DateTime.Parse(Eval("IssueDate")).ToString("yyyy-MM-ddTHH:mm:ss.fff") %>' data-position='bottom right'></asp:TextBox>
                             </td>
                             <td>
                                 <asp:TextBox runat="server" onchange="UpdateSession(this)" MaxLength="6"
-                                    ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
+                                    ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' 
+                                    Enabled='<%#Not PublicFunctions.BoolFormat(Eval("HasAttendance")) %>'/>
+
                                 <asp:FilteredTextBoxExtender TargetControlID="txtPeriod" runat="server" FilterMode="ValidChars" ValidChars=".0123456789"></asp:FilteredTextBoxExtender>
 
                             </td>
@@ -141,7 +150,9 @@
                             </td>
                             <td>
                                 <asp:Label ID="lblSessionStatus" Text='<%# Eval("Status") %>' runat="server" Visible="false" />
-                                <asp:DropDownList runat="server" ID="ddlStatus" onchange="UpdateSession(this)" >
+                                <asp:Label ID="lblHasAttendance" Text='<%# Eval("HasAttendance") %>' runat="server" Visible="false" />
+                                <asp:DropDownList runat="server" ClientIDMode="AutoID"
+                                    ID="ddlStatus" onchange="UpdateSession(this)" >
                                 </asp:DropDownList>
                             </td>
                             <td>
