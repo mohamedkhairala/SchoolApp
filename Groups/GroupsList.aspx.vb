@@ -25,6 +25,7 @@ Partial Class GroupsList
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
+            UserID = PublicFunctions.GetUserId(Me)
             If Page.IsPostBack = False Then
                 FillGrid(sender, e)
             End If

@@ -145,10 +145,10 @@
                             <h6 class="traffic-title">Total Sessions</h6>
                             <div class="traffic-number"><%# PublicFunctions.IntFormat(Eval("TotalSession")) %></div>
                             <div class="traffic-bar">
-                                <div class="status-1" data-toggle="tooltip" data-placement="top" title="Pending" style="--status-1: <%# (Eval("PendingCount")/Eval("TotalSession"))*100 %>%;">
+                                <div class="status-1" data-toggle="tooltip" data-placement="top" title="Completed" style="--status-1: <%# (Eval("CompletedCount")/Eval("TotalSession"))*100 %>%;">
                                 </div>
-                                <div class="status-2" data-toggle="tooltip" data-placement="top" title="Completed" style="--status-2: <%# (Eval("CompletedCount")/Eval("TotalSession"))*100 %>%;">
-                                </div>
+                                <div class="status-2" data-toggle="tooltip" data-placement="top" title="Pending" style="--status-2: <%# (Eval("PendingCount")/Eval("TotalSession"))*100 %>%;">
+                                </div>                          
                                 <div class="status-3" data-toggle="tooltip" data-placement="top" title="Postponed" style="--status-3: <%# (Eval("PostponedCount")/Eval("TotalSession"))*100 %>%;">
                                 </div>
                                 <div class="status-4" data-toggle="tooltip" data-placement="top" title="Cancelled" style="--status-4: <%# (Eval("CancelledCount")/Eval("TotalSession"))*100 %>%;">
@@ -157,16 +157,17 @@
                             <div class="traffic-table table-responsive">
                                 <table class="table">
                                     <tbody>
-                                        <tr>
-                                            <td class="t-title pseudo-bg-Aquamarine">Pending</td>
-                                            <td><%# PublicFunctions.IntFormat(Eval("PendingCount")) %></td>
-                                            <td><%# PublicFunctions.DecimalFormat((Eval("PendingCount") / Eval("TotalSession")) * 100) %>%</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="t-title pseudo-bg-blue">Completed</td>
+                                         <tr>
+                                            <td class="t-title pseudo-bg-Aquamarine">Completed</td>
                                             <td><%# PublicFunctions.IntFormat(Eval("CompletedCount")) %></td>
                                             <td><%# PublicFunctions.DecimalFormat((Eval("CompletedCount") / Eval("TotalSession")) * 100) %>%</td>
                                         </tr>
+                                        <tr>
+                                            <td class="t-title pseudo-bg-blue">Pending</td>
+                                            <td><%# PublicFunctions.IntFormat(Eval("PendingCount")) %></td>
+                                            <td><%# PublicFunctions.DecimalFormat((Eval("PendingCount") / Eval("TotalSession")) * 100) %>%</td>
+                                        </tr>
+                                       
                                         <tr>
                                             <td class="t-title pseudo-bg-yellow">Postpond</td>
                                             <td><%# PublicFunctions.IntFormat(Eval("PostponedCount")) %></td>
