@@ -103,13 +103,13 @@ Partial Class Group
                 Exit Sub
             End If
             If Not SaveSessions(dt.Id, _sqlconn, _sqltrans) Then
-                ShowErrorMessgage(lblRes, "Error", Me)
+                'ShowErrorMessgage(lblRes, "Error", Me)
                 _sqltrans.Rollback()
                 _sqlconn.Close()
                 Exit Sub
             End If
             If Not SaveStudents(dt.Id, _sqlconn, _sqltrans) Then
-                ShowErrorMessgage(lblRes, "Error", Me)
+                'ShowErrorMessgage(lblRes, "Error", Me)
                 _sqltrans.Rollback()
                 _sqlconn.Close()
                 Exit Sub
@@ -212,11 +212,17 @@ Partial Class Group
                 End If
                 dtDetails.Title = CType(item.FindControl("txtTitle"), TextBox).Text
                 ' validate session date
-                If IsDate(CType(item.FindControl("txtIssueDate"), TextBox).Text) Then
+                Dim issueDate = CType(item.FindControl("txtIssueDate"), TextBox).Text
+                ' Define the format string for DateTimeLocal
+                Dim formatString As String = "yyyy-MM-ddTHH:mm"
+                ' Try to parse the input text as a DateTime using the format string
+                Dim dateTimeValue As DateTime
+                If DateTime.TryParseExact(issueDate, formatString, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, dateTimeValue) Then
+                    dtDetails.IssueDate = dateTimeValue
+                Else
                     ShowInfoMessgage(lblRes, "Session No. " & index & " Date is not valid", Me)
                     Return False
                 End If
-                dtDetails.IssueDate = CType(item.FindControl("txtIssueDate"), TextBox).Text
                 dtDetails.DefaultPeriodHour = GetDecimalValue(CType(item.FindControl("txtDefaultPeriodHour"), TextBox).Text)
                 dtDetails.Remarks = CType(item.FindControl("txtRemarks"), TextBox).Text
                 dtDetails.Status = IntFormat(CType(item.FindControl("lblStatus"), Label).Text)
@@ -700,4 +706,37 @@ Partial Class Group
 
 #End Region
 
+#Region "Teacher"
+    Protected Sub SelectTeacher(sender As Object, e As EventArgs)
+        Try
+            Dim da As New TblTeachersFactory
+            Dim TeacherId = Val(ddlTeacherID.SelectedValue)
+            If TeacherId = 0 Then
+                txtTeacherRate.Text = String.Empty
+                Exit Sub
+            End If
+            Dim Teacher = da.GetAllBy(TblTeachers.TblTeachersFields.Id, TeacherId).FirstOrDefault
+            txtTeacherRate.Text = PublicFunctions.DecimalFormat(Teacher.HourRate)
+        Catch ex As Exception
+            txtTeacherRate.Text = String.Empty
+        End Try
+
+    End Sub
+
+    Protected Sub SelectSupervisor(sender As Object, e As EventArgs)
+        Try
+            Dim da As New TblSupervisorsFactory
+            Dim SupervisorID = Val(ddlSupervisorID.SelectedValue)
+            If SupervisorID = 0 Then
+                txtSupervisorRate.Text = String.Empty
+                Exit Sub
+            End If
+            Dim Supervisor = da.GetAllBy(TblSupervisors.TblSupervisorsFields.Id, SupervisorID).FirstOrDefault
+            txtSupervisorRate.Text = PublicFunctions.DecimalFormat(Supervisor.HourRate)
+        Catch ex As Exception
+            txtSupervisorRate.Text = String.Empty
+        End Try
+
+    End Sub
+#End Region
 End Class
