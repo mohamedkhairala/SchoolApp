@@ -37,6 +37,8 @@ Partial Class Add_Student
                 'txtCode.Text = GenerateCode.GenerateCodeFor(PublicFunctions.Stackholders.Student)
                 FillDDL()
                 View()
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
             FillIcon()
         Catch ex As Exception
