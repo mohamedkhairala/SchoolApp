@@ -278,7 +278,7 @@ Partial Class Master
             ShowMessage(lblRes, clsMessages.MessageTypesEnum.ERR, Page, ex)
         End Try
         'Redirect to login
-        Response.Redirect("login.aspx")
+        Response.Redirect("~/login.aspx")
     End Sub
 
 #End Region

@@ -96,7 +96,7 @@ Partial Class ControlPanel_users
     ''' </summary>
     Sub FillGrid()
         Try
-            Dim dtUsers As DataTable = DBContext.Getdatatable("select * from TblUsers where isnull(isdeleted,0)=0  and SystemUser <> '1'  and " + CollectConditions() + "")
+            Dim dtUsers As DataTable = DBContext.Getdatatable("select *,case when OwnerType = 'S' then 'Student' when OwnerType='P' then 'Parent' when OwnerType='T' then 'Teacher' when OwnerType='U' then 'Supervisor' else 'N/A' end as 'OType' from TblUsers where isnull(isdeleted,0)=0   and " + CollectConditions() + "")
             If dtUsers.Rows.Count > 0 Then
                 pgPanel.Visible = True
 
