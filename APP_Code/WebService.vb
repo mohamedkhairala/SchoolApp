@@ -4,6 +4,7 @@
 Imports System.Web.Services
 Imports System.Data
 Imports BusinessLayer.BusinessLayer
+Imports Newtonsoft.Json
 #End Region
 
 ' To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
@@ -125,4 +126,34 @@ Public Class WebService
 
 #End Region
 
+#Region "Sessions"
+    ''' <summary>
+    ''' Return all DataType from LookUp .
+    ''' Handles Settings form search.
+    ''' </summary> 
+    <System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()>
+    Public Function UpdateSession(ByVal SessionObject As String) As String
+        Try
+            Dim SessionData = JsonConvert.DeserializeObject(SessionObject)
+            Dim SessionId = SessionData("id").value
+            Dim Key = SessionData("key").value
+            Dim value = SessionData("value").value
+            If Key = "IssueDate" Then
+                Dim Time = value.ToString.Split("T").Last & ":00.000"
+                Dim d = value.ToString.Split("T").First & "T" & Time
+
+                value = "CONVERT(datetime, '" & d & "', 126)"
+            Else
+                value = "'" & value & "'"
+            End If
+            Dim isUpdated = DBContext.ExcuteQuery("SET DATEFORMAT ymd Update TblSessions set " & Key & "=" & value & " where Id=" & SessionId) > 0
+            If isUpdated Then
+                Return "Ok"
+            End If
+            Return "Error"
+        Catch ex As Exception
+            Return "Error"
+        End Try
+    End Function
+#End Region
 End Class

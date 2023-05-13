@@ -920,56 +920,56 @@ h6 {
     z-index: 99999 !important;
 }
 
-.modal .modal-dialog .modal-content {
-    border: none;
-}
-
-    .modal .modal-dialog .modal-content .modal-header {
-        padding: 15px 20px;
-        align-items: center;
+    .modal .modal-dialog .modal-content {
+        border: none;
     }
 
-        .modal .modal-dialog .modal-content .modal-header .modal-title {
-            font-weight: 500;
+        .modal .modal-dialog .modal-content .modal-header {
+            padding: 15px 20px;
+            align-items: center;
         }
 
-        .modal .modal-dialog .modal-content .modal-header .close {
-            font-size: 24px;
+            .modal .modal-dialog .modal-content .modal-header .modal-title {
+                font-weight: 500;
+            }
+
+            .modal .modal-dialog .modal-content .modal-header .close {
+                font-size: 24px;
+            }
+
+                .modal .modal-dialog .modal-content .modal-header .close:focus {
+                    outline: none;
+                }
+
+        .modal .modal-dialog .modal-content .modal-body {
+            padding: 20px;
         }
 
-            .modal .modal-dialog .modal-content .modal-header .close:focus {
-                outline: none;
-            }
-
-    .modal .modal-dialog .modal-content .modal-body {
-        padding: 20px;
-    }
-
-    .modal .modal-dialog .modal-content .modal-footer {
-        padding: 15px 20px;
-    }
-
-        .modal .modal-dialog .modal-content .modal-footer .footer-btn {
-            cursor: pointer;
-            font-size: 14px;
-            color: #ffffff;
-            border: none;
-            border-radius: 4px;
-            padding: 6px 15px;
-            -webkit-transition: all 0.3s ease-out;
-            -moz-transition: all 0.3s ease-out;
-            -ms-transition: all 0.3s ease-out;
-            -o-transition: all 0.3s ease-out;
-            transition: all 0.3s ease-out;
+        .modal .modal-dialog .modal-content .modal-footer {
+            padding: 15px 20px;
         }
 
-            .modal .modal-dialog .modal-content .modal-footer .footer-btn:hover {
-                background-color: #042954;
+            .modal .modal-dialog .modal-content .modal-footer .footer-btn {
+                cursor: pointer;
+                font-size: 14px;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                padding: 6px 15px;
+                -webkit-transition: all 0.3s ease-out;
+                -moz-transition: all 0.3s ease-out;
+                -ms-transition: all 0.3s ease-out;
+                -o-transition: all 0.3s ease-out;
+                transition: all 0.3s ease-out;
             }
 
-            .modal .modal-dialog .modal-content .modal-footer .footer-btn:focus {
-                outline: none;
-            }
+                .modal .modal-dialog .modal-content .modal-footer .footer-btn:hover {
+                    background-color: #042954;
+                }
+
+                .modal .modal-dialog .modal-content .modal-footer .footer-btn:focus {
+                    outline: none;
+                }
 
 .modal-trigger {
     cursor: pointer;
@@ -2087,9 +2087,9 @@ ul {
 
         .header-main-menu .navbar-nav .header-language .navbar-nav-link:after {
             border-style: none;
-    border-color: inherit;
-    border-width: medium;
-    content: "\f107";
+            border-color: inherit;
+            border-width: medium;
+            content: "\f107";
             font-family: "Font Awesome 5 Free";
             font-weight: 600;
             font-size: 14px;
@@ -4640,35 +4640,42 @@ ul {
     margin-bottom: 18px;
 }
 
-    .dashboard-card-five .card-body .traffic-bar .direct {
-        flex: 0 0 50%;
-        max-width: 50%;
-        min-height: 10px;
-        background-color: #1de9b6;
-        border-radius: 40px 0 0 40px;
-    }
+:root {
+    --status-1: 25%;
+    --status-2: 25%;
+    --status-3: 25%;
+    --status-4: 25%;
+}
 
-    .dashboard-card-five .card-body .traffic-bar .search {
-        flex: 0 0 27%;
-        max-width: 27%;
-        min-height: 10px;
-        background-color: #304ffe;
-    }
+.dashboard-card-five .card-body .traffic-bar .status-1 {
+    flex: 0 0 var(--status-1);
+    max-width: var(--status-1);
+    min-height: 10px;
+    background-color: #1de9b6;
+    border-radius: 40px 0 0 40px;
+}
 
-    .dashboard-card-five .card-body .traffic-bar .referrals {
-        flex: 0 0 16%;
-        max-width: 16%;
-        min-height: 10px;
-        background-color: #ffea00;
-    }
+.dashboard-card-five .card-body .traffic-bar .status-2 {
+    flex: 0 0 var(--status-2);
+    max-width: var(--status-2);
+    min-height: 10px;
+    background-color: #304ffe;
+}
 
-    .dashboard-card-five .card-body .traffic-bar .social {
-        flex: 0 0 7%;
-        max-width: 7%;
-        min-height: 10px;
-        background-color: #ed1c24;
-        border-radius: 0 40px 40px 0;
-    }
+.dashboard-card-five .card-body .traffic-bar .status-3 {
+    flex: 0 0 var(--status-3);
+    max-width: var(--status-3);
+    min-height: 10px;
+    background-color: #ffea00;
+}
+
+.dashboard-card-five .card-body .traffic-bar .status-4 {
+    flex: 0 0 var(--status-4);
+    max-width: var(--status-4);
+    min-height: 10px;
+    background-color: #ed1c24;
+    border-radius: 0 40px 40px 0;
+}
 
 .dashboard-card-five .card-body .traffic-table .table tbody tr {
     border-bottom: 1px dashed #e1e1e1;
