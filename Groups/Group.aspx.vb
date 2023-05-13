@@ -91,7 +91,7 @@ Partial Class Group
                 Exit Sub
             End If
             If Not IsCodeUnique("tblGroups", "Code", Val(dt.Id), dt.Code, School_ID) Then
-                ShowInfoMessgage(lblRes, "Code is not unique", Me)
+                ShowInfoMessgage(lblRes, "Group Code is not unique", Me)
                 Exit Sub
             End If
             _sqlconn.Open()
@@ -202,9 +202,20 @@ Partial Class Group
             Dim dtDetails As New TblSessions
             Dim daDetails As New TblSessionsFactory
             For Each item As ListViewItem In lvSessions.Items
+                Dim index As Integer = IntFormat(CType(item.FindControl("lblSerialNo"), Label).Text)
                 dtDetails.GroupId = id
                 dtDetails.Code = GenerateCode.GenerateCodeFor(Stackholders.Session, new_session_id, sqlconn, _sqltrans)
+                ' validate session code
+                If Not IsCodeUnique("tblSessions", "Code", Val(dtDetails.Id), dtDetails.Code, School_ID, sqlconn, sqltrans) Then
+                    ShowInfoMessgage(lblRes, "Session No. " & index & " Code is not unique", Me)
+                    Return False
+                End If
                 dtDetails.Title = CType(item.FindControl("txtTitle"), TextBox).Text
+                ' validate session date
+                If IsDate(CType(item.FindControl("txtIssueDate"), TextBox).Text) Then
+                    ShowInfoMessgage(lblRes, "Session No. " & index & " Date is not valid", Me)
+                    Return False
+                End If
                 dtDetails.IssueDate = CType(item.FindControl("txtIssueDate"), TextBox).Text
                 dtDetails.DefaultPeriodHour = GetDecimalValue(CType(item.FindControl("txtDefaultPeriodHour"), TextBox).Text)
                 dtDetails.Remarks = CType(item.FindControl("txtRemarks"), TextBox).Text
@@ -231,7 +242,13 @@ Partial Class Group
             Dim dtDetails As New TblStudentsGroups
             Dim daDetails As New TblStudentsGroupsFactory
             For Each item As ListViewItem In lvStudents.Items
+                Dim index As Integer = IntFormat(CType(item.FindControl("lblSerialNo"), Label).Text)
                 dtDetails.GroupId = id
+                ' validate student id
+                If IntFormat(CType(item.FindControl("lblStudentID"), Label).Text) <= 0 Then
+                    ShowInfoMessgage(lblRes, "Student No. " & index & " is not valid", Me)
+                    Return False
+                End If
                 dtDetails.StudentId = IntFormat(CType(item.FindControl("lblStudentID"), Label).Text)
                 dtDetails.CoursePrice = GetDecimalValue(CType(item.FindControl("txtCoursePrice"), TextBox).Text)
                 dtDetails.DiscountRate = GetDecimalValue(CType(item.FindControl("txtDiscountRate"), TextBox).Text)
