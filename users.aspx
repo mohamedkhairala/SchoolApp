@@ -163,6 +163,16 @@
                                                 <asp:Label ID="lblEmail" Text='<%# Eval("Email")%>' runat="server"></asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
+                                         <asp:TemplateField HeaderText="Password" SortExpression="Password" HeaderStyle-CssClass="sorting">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblPassword" Text='<%# PublicFunctions.Decrypt(Eval("Password"))%>' runat="server"></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Type" SortExpression="OType" HeaderStyle-CssClass="sorting">
+                                            <ItemTemplate>
+                                                <asp:Label ID="lblOwnerType" Text='<%# Eval("OType")%>' runat="server"></asp:Label>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField HeaderText="Modified Date" SortExpression="ModifiedDate" HeaderStyle-CssClass="sorting">
                                             <ItemTemplate>
                                                 <asp:Label ID="lblModifiedDate" Text='<%# Eval("ModifiedDate")%>' runat="server"></asp:Label>
@@ -170,7 +180,7 @@
                                         </asp:TemplateField>
                                         <asp:TemplateField>
                                             <ItemTemplate>
-                                                <div class="dropdown">
+                                                <asp:Panel ID="pnlActons" runat ="server"  CssClass="dropdown" Enabled ='<%# IIf(PublicFunctions.BoolFormat(Eval("SystemUser")) = True, False, True)%>'>
                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                         <span class="flaticon-more-button-of-three-dots"></span>
                                                     </a>
@@ -188,8 +198,13 @@
                                                                 CancelControlID="lbNoDelete" BackgroundCssClass="modal-backdrop fade show">
                                                             </asp:ModalPopupExtender>
                                                         </asp:Panel>
+
+                                                         <a class="dropdown-item"
+                                                             href='<%# "https://wa.me/2" & Eval("MobileNo") & "?text=UpSkills User --> Username : " & Eval("Username") & " ... Password : " & PublicFunctions.Decrypt(Eval("Password"))  %>'>
+                                                                <i class="fas fa-user-lock text-blue"></i>Send Credentials
+                                                            </a>
                                                     </div>
-                                                </div>
+                                                </asp:Panel>
                                                 <asp:Panel ID="pnlConfirmExtenderDelete" runat="server" CssClass="modal fade show" TabIndex="-1" role="dialog" aria-hidden="true" Style="display: none;">
                                                     <div class="modal-dialog success-modal-content" role="document">
                                                         <div class="modal-content">
