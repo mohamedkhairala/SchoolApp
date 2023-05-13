@@ -3023,7 +3023,7 @@ ul {
         height: 50px;
     }
 
-    .new-added-form .form-group i:not(.icon-modal) {
+    .new-added-form .form-group i:not(.icon-modal):not(.icon-search) {
         position: absolute;
         top: 50px;
         right: 34px;

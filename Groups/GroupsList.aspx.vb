@@ -28,6 +28,8 @@ Partial Class GroupsList
             UserID = PublicFunctions.GetUserId(Me)
             If Page.IsPostBack = False Then
                 FillGrid(sender, e)
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
         Catch ex As Exception
             Throw ex

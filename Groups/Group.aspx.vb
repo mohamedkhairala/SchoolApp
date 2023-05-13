@@ -36,6 +36,8 @@ Partial Class Group
                 FillDDL()
 
                 View()
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
