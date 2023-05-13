@@ -22,8 +22,8 @@
     </div>
     <!-- Breadcubs Area End Here -->
     <!-- Groups Table Area Start Here -->
-    <div class="card height-auto">
-        <div class="card-body">
+    <div class="card height-auto ui-modal-box">
+        <div class="card-body modal-box">
             <div class="heading-layout1">
                 <div class="item-title">
                     <h3>All Sessions</h3>
@@ -59,7 +59,9 @@
                 <div class="row">
                     <div class="form-group col-md-2 pl-0 pr-2">
                         <label>Group</label>
-                        <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups" ></asp:DropDownList>
+                        <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups"
+                            onchange="SelectGroup(this.value)">
+                        </asp:DropDownList>
                     </div>
                     <div class="form-group col-md-2 px-2">
                         <label>From</label>
@@ -81,10 +83,15 @@
                         <label>&nbsp;</label>
                         <asp:LinkButton runat="server" CssClass="btn-fill-sm bg-danger text-white fw-btn-fill" ID="lbClear" OnClick="Clear">Clear<i class="fa fa-trash ml-3"></i></asp:LinkButton>
                     </div>
+                    <div class="form-group d-inline-flex flex-column px-2" id="divAdd" style="display: none !important;">
+                        <label>&nbsp;</label>
+                        <a href="#" target="_blank" class="btn-fill-sm bg-success text-white fw-btn-fill" id="lbAdd">Add<i class="fa fa-plus ml-3"></i></a>
+                        <%--<asp:LinkButton runat="server" CssClass="btn-fill-sm bg-success text-white fw-btn-fill" ID="lbAdd" OnClick="Add">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>--%>
+                    </div>
                 </div>
             </div>
 
-            <div class="table-responsive">
+            <div class="table-responsive mb-3">
                 <asp:HiddenField ID="SortExpression" runat="server" />
                 <asp:ListView ID="lvMaster" runat="server" ClientIDMode="AutoID">
                     <LayoutTemplate>
@@ -102,7 +109,7 @@
                                     <th>Remarks</th>
                                     <th>Status</th>
                                     <th>Status Remarks</th>
-
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -115,7 +122,7 @@
                         <tr>
                             <td>
                                 <%# Eval("Code") + " - " + Eval("Title")%>
-                                <asp:TextBox ID="txtSessionID" runat="server" style="display:none;" Text='<%# Eval("ID")%>'></asp:TextBox>
+                                <asp:TextBox ID="txtSessionID" runat="server" Style="display: none;" Text='<%# Eval("ID")%>'></asp:TextBox>
                                 <asp:Label ID="lblCourseID" runat="server" Visible="false" Text='<%# Eval("CourseID")%>'></asp:Label>
                                 <asp:Label ID="lblTeacherID" runat="server" Visible="false" Text='<%# Eval("TeacherID")%>'></asp:Label>
                                 <asp:Label ID="lblSupervisorID" runat="server" Visible="false" Text='<%# Eval("SupervisorID")%>'></asp:Label>
@@ -127,26 +134,60 @@
                             <td><%# Eval("SupervisorCode") + " - " + Eval("SupervisorName") %></td>
                             <td>
                                 <asp:TextBox runat="server" ID="txtIssueDate" onchange="UpdateSession(this)"
+                                    Enabled='<%#Not PublicFunctions.BoolFormat(Eval("HasAttendance")) %>' CssClass="form-control"
                                     TextMode="DateTimeLocal" Text='<%# DateTime.Parse(Eval("IssueDate")).ToString("yyyy-MM-ddTHH:mm:ss.fff") %>' data-position='bottom right'></asp:TextBox>
                             </td>
                             <td>
                                 <asp:TextBox runat="server" onchange="UpdateSession(this)" MaxLength="6"
-                                    ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' />
+                                    ID="txtPeriod" Text='<%# Eval("DefaultPeriodHour") %>' CssClass="form-control"
+                                    Enabled='<%#Not PublicFunctions.BoolFormat(Eval("HasAttendance")) %>'></asp:TextBox>
                                 <asp:FilteredTextBoxExtender TargetControlID="txtPeriod" runat="server" FilterMode="ValidChars" ValidChars=".0123456789"></asp:FilteredTextBoxExtender>
-
                             </td>
                             <td>
-                                <asp:TextBox runat="server" onchange="UpdateSession(this)" 
-                                    ID="txtRemarks" MaxLength="500" Text='<%# Eval("Remarks") %>' />
+                                <asp:TextBox runat="server" onchange="UpdateSession(this)" CssClass="form-control"
+                                    ID="txtRemarks" MaxLength="500" Text='<%# Eval("Remarks") %>' Style="min-width: 200px;"></asp:TextBox>
                             </td>
                             <td>
                                 <asp:Label ID="lblSessionStatus" Text='<%# Eval("Status") %>' runat="server" Visible="false" />
-                                <asp:DropDownList runat="server" ID="ddlStatus" onchange="UpdateSession(this)" >
+                                <asp:Label ID="lblHasAttendance" Text='<%# Eval("HasAttendance") %>' runat="server" Visible="false" />
+                                <asp:DropDownList runat="server" ClientIDMode="AutoID" CssClass="form-control" Style="min-width: 100px;"
+                                    ID="ddlStatus" onchange="UpdateSession(this)">
                                 </asp:DropDownList>
                             </td>
                             <td>
-                                <asp:TextBox runat="server" MaxLength="500" onchange="UpdateSession(this)" 
-                                    ID="txtStatusRemarks" Text='<%# Eval("StatusRemarks") %>' />
+                                <asp:TextBox runat="server" MaxLength="500" onchange="UpdateSession(this)" CssClass="form-control"
+                                    ID="txtStatusRemarks" Text='<%# Eval("StatusRemarks") %>' Style="min-width: 200px;"></asp:TextBox>
+                            </td>
+                            <td class="text-center">
+                                <a class="btn btn-danger text-white"
+                                    onclick="ShowConfirmModal('<%# CType(Container, ListViewItem).FindControl("mpConfirmDelete").ClientID.ToString%>','<%# CType(Container, ListViewItem).FindControl("pnlConfirmExtenderDelete").ClientID.ToString%>');return false;">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                <asp:HiddenField ID="hfDelete" runat="server" />
+                                <asp:ModalPopupExtender ID="mpConfirmDelete" runat="server" PopupControlID="pnlConfirmExtenderDelete" TargetControlID="hfDelete"
+                                    CancelControlID="lbNoDelete" BackgroundCssClass="modal-backdrop fade show">
+                                </asp:ModalPopupExtender>
+                                <asp:Panel ID="pnlConfirmExtenderDelete" runat="server" CssClass="modal fade show" TabIndex="-1" role="dialog" aria-hidden="true" Style="display: none;">
+                                    <div class="modal-dialog success-modal-content" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirmation Message</h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="success-message">
+                                                    <div class="item-icon">
+                                                        <i class="fas fa-exclamation icon-modal"></i>
+                                                    </div>
+                                                    <h3 class="item-title">You want to delete this record ?</h3>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="footer-btn btn-success">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                <asp:LinkButton ID="lbNoDelete" runat="server" CssClass="footer-btn btn-danger" data-dismiss="modal">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </asp:Panel>
                             </td>
                         </tr>
                     </ItemTemplate>
