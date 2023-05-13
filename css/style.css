@@ -6428,6 +6428,11 @@ a.text-red:hover {
     line-height: normal;
 }
 
+.table .form-control {
+    min-height: 35px;
+    font-size: 1.2rem;
+}
+
 .aspNetDisabled a,
 a.aspNetDisabled {
     opacity: 0.8;

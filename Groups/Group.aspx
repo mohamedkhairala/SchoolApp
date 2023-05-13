@@ -510,6 +510,7 @@
         $('#tblSessions, #tblStudents').DataTable({
             bLengthChange: false,
             searching: false,
+            bPaginate: false,
             columnDefs: [
                 { orderable: false, targets: -1 }
             ]
