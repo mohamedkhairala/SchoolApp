@@ -107,7 +107,7 @@
                         <!-- TeacherID -->
                         <div id="divTeacherID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
                             <label id="lblTeacherID" runat="server" for="ddlTeacherID">Teacher *</label>
-                            <asp:DropDownList ID="ddlTeacherID" runat="server" CssClass="select2">
+                            <asp:DropDownList ID="ddlTeacherID" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectTeacher">
                                 <asp:ListItem Value="">Please Select Teacher *</asp:ListItem>
                             </asp:DropDownList>
                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTeacherID" runat="server" ValidationGroup="vsMaster"
@@ -115,7 +115,7 @@
                         </div>
                         <!-- TeacherRate -->
                         <div id="divTeacherRate" runat="server" class="col-xl-3 col-lg-6 col-3 form-group">
-                            <label id="lblTeacherRate" runat="server" for="txtTeacherRate">Teacher Rate *</label>
+                            <label id="lblTeacherRate" runat="server" for="txtTeacherRate">Teacher Rate/H *</label>
                             <asp:TextBox ID="txtTeacherRate" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqTeacherRate" runat="server" ValidationGroup="vsMaster"
                                 ControlToValidate="txtTeacherRate" Display="Dynamic" Text="Required Teacher Rate"></asp:RequiredFieldValidator>
@@ -124,7 +124,7 @@
                         <!-- SupervisorID -->
                         <div id="divSupervisorID" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
                             <label id="lblSupervisorID" runat="server" for="ddlSupervisorID">Supervisor *</label>
-                            <asp:DropDownList ID="ddlSupervisorID" runat="server" CssClass="select2">
+                            <asp:DropDownList ID="ddlSupervisorID" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectSupervisor">
                                 <asp:ListItem Value="">Please Select Supervisor *</asp:ListItem>
                             </asp:DropDownList>
                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqSupervisorID" runat="server" ValidationGroup="vsMaster"
@@ -132,7 +132,7 @@
                         </div>
                         <!-- SupervisorRate -->
                         <div id="diSupervisorRate" runat="server" class="col-xl-3 col-lg-6 col-3 form-group">
-                            <label id="lblSupervisorRate" runat="server" for="txtSupervisorRate">Supervisor Rate *</label>
+                            <label id="lblSupervisorRate" runat="server" for="txtSupervisorRate">Supervisor Rate/H *</label>
                             <asp:TextBox ID="txtSupervisorRate" runat="server" CssClass="form-control" MaxLength="12"></asp:TextBox>
                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqSupervisorRate" runat="server" ValidationGroup="vsMaster"
                                 ControlToValidate="txtSupervisorRate" Display="Dynamic" Text="Required Supervisor Rate"></asp:RequiredFieldValidator>
@@ -173,9 +173,9 @@
                         <!-- IssueDate -->
                         <div id="divIssueDate" class="col-xl-3 col-lg-6 col-12 form-group">
                             <label id="lblIssueDate" runat="server" for="txtIssueDate">Issue Date *</label>
-                            <asp:TextBox ID="txtIssueDate" runat="server" placeholder="dd/mm/yyyy" CssClass="form-control air-datepicker"
+                            <asp:TextBox ID="txtIssueDate" runat="server" TextMode="DateTimeLocal"
+                                placeholder="dd/mm/yyyy" CssClass="form-control"
                                 data-position='bottom right'></asp:TextBox>
-                            <i class="far fa-calendar-alt"></i>
                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqIssueDate" runat="server" ValidationGroup="vsSessions"
                                 ControlToValidate="txtIssueDate" Display="Dynamic" Text="Required Issue Date"></asp:RequiredFieldValidator>
                         </div>
@@ -232,10 +232,12 @@
                                                 <asp:TextBox autocomplete="off" ID="txtTitle" runat="server" Text='<%# Eval("Title")%>'></asp:TextBox>
                                             </td>
                                             <td>
-                                                <asp:TextBox ID="txtIssueDate" runat="server" Text='<%# PublicFunctions.DateFormat(Eval("IssueDate").ToString)%>' placeholder="dd/mm/yyyy" CssClass="air-datepicker"
+                                                <asp:TextBox ID="txtIssueDate" runat="server" 
+                                                    TextMode="DateTimeLocal"
+                                                    Text='<%# DateTime.Parse(Eval("IssueDate")).ToString("yyyy-MM-ddTHH:mm") %>' 
+                                                    placeholder="dd/mm/yyyy"  
                                                     data-position='bottom right'></asp:TextBox>
-                                                <i class="far fa-calendar-alt"></i>
-                                            </td>
+                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtDefaultPeriodHour" runat="server" Text='<%# PublicFunctions.GetDecimalValue(Eval("DefaultPeriodHour").ToString)%>' TextMode="Number" MaxLength="2"></asp:TextBox>
                                             </td>
