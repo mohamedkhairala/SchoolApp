@@ -71,7 +71,7 @@
                         </ul>
                     </div>--%>
                 </div>
-                <div class="sign-up">Don't have an account ? <a href="Signup.aspx">Signup now!</a></div>
+                <%--<div class="sign-up">Don't have an account ? <a href="Signup.aspx">Signup now!</a></div>--%>
             </div>
         </div>
         <!-- Login Page End Here -->
