@@ -89,10 +89,10 @@
                             <asp:HiddenField ID="hfGroupID" runat="server" />
                         </div>
                         <!-- Code -->
-                        <div id="divCode" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
+             <%--           <div id="divCode" runat="server" class="col-xl-3 col-lg-6 col-12 form-group">
                             <label id="lblCode" runat="server" for="txtCode">Code</label>
                             <asp:TextBox ID="txtCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
-                        </div>
+                        </div>--%>
                         <!-- Title -->
                         <div id="divTitle" runat="server" class="col-xl-6 col-lg-6 col-12 form-group">
                             <label id="lblTitle" runat="server" for="txtTitle">Title *</label>
@@ -103,10 +103,10 @@
                         <!-- IssueDate -->
                         <div id="divIssueDate" class="col-xl-3 col-lg-6 col-12 form-group">
                             <label id="lblIssueDate" runat="server" for="txtIssueDate">Issue Date *</label>
-                            <asp:TextBox ID="txtIssueDate" runat="server" placeholder="dd/mm/yyyy" CssClass="form-control air-datepicker"
+                            <asp:TextBox ID="txtIssueDate" runat="server" TextMode="DateTimeLocal"
+                                placeholder="dd/mm/yyyy" CssClass="form-control"
                                 data-position='bottom right'></asp:TextBox>
-                            <i class="far fa-calendar-alt"></i>
-                            <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqIssueDate" runat="server" ValidationGroup="vsMaster"
+                             <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqIssueDate" runat="server" ValidationGroup="vsMaster"
                                 ControlToValidate="txtIssueDate" Display="Dynamic" Text="Required Issue Date"></asp:RequiredFieldValidator>
                         </div>
                         <!-- DefaultPeriodHour -->

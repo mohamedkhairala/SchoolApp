@@ -62,10 +62,17 @@ Partial Class Session
                 Return False
             End If
             ' validate session date
-            If IsDate(txtIssueDate.Text) Then
+            Dim issueDate = txtIssueDate.Text
+            ' Define the format string for DateTimeLocal
+            Dim formatString As String = "yyyy-MM-ddTHH:mm"
+            ' Try to parse the input text as a DateTime using the format string
+            Dim dateTimeValue As DateTime
+            If Not DateTime.TryParseExact(issueDate, formatString, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, dateTimeValue) Then
                 ShowInfoMessgage(lblRes, "Session Date is not valid", Me)
                 Return False
             End If
+
+
             Return True
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
@@ -111,6 +118,7 @@ Partial Class Session
             _sqlconn.Close()
             Clear()
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
+            Response.Redirect("SessionList.aspx")
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.Insert, Page)
         End Try
@@ -122,9 +130,8 @@ Partial Class Session
                 Return False
             End If
             dt.GroupId = IntFormat(hfGroupID.Value)
-            dt.Code = txtCode.Text.Trim
             dt.Title = txtTitle.Text.Trim
-            dt.IssueDate = txtIssueDate.Text
+            dt.IssueDate = Convert.ToDateTime(txtIssueDate.Text)
             dt.DefaultPeriodHour = GetDecimalValue(txtDefaultPeriodHour.Text)
             dt.Remarks = txtRemarks.Text
             dt.Status = GetLookupID("SessionStatus", "Pending", School_ID)
@@ -155,7 +162,6 @@ Partial Class Session
 
     Protected Sub Clear()
         Try
-            txtCode.Text = String.Empty
             txtTitle.Text = String.Empty
             txtIssueDate.Text = String.Empty
             txtDefaultPeriodHour.Text = String.Empty
