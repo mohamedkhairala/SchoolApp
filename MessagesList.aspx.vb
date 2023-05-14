@@ -1,4 +1,5 @@
 ﻿#Region "Import"
+Imports System.Activities.Expressions
 Imports System.Data
 Imports System.Data.SqlClient
 Imports AjaxControlToolkit
@@ -19,6 +20,7 @@ Partial Class Dashboard
             lblRes.Visible = False
             isAdmin = True
             If Page.IsPostBack = False Then
+                UserID = PublicFunctions.GetUserId(Page)
                 FillGrid(sender, e)
             End If
         Catch ex As Exception
@@ -88,6 +90,16 @@ Partial Class Dashboard
             End If
             ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
             FillGrid(sender, e)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
+
+#Region "Permissions"
+    Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles rbMessages.DataBound
+        Try
+            'Permissions.CheckPermisions(rbMessages, New LinkButton, txtSearch, lbSearchIcon, Me.Page, UserID)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
