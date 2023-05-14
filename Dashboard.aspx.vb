@@ -23,7 +23,7 @@ Partial Class Dashboard
     Protected Sub Page_Load(sender As Object, e As EventArgs) Handles Me.Load
         Try
             lblRes.Visible = False
-            'UserID = PublicFunctions.GetUserId(Page)
+            UserID = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
                 'Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)

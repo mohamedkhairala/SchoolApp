@@ -27,6 +27,7 @@ Partial Class Course
             UserID = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
+                Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 divActions.Visible = False
                 lblUserRole.Text = GetUserRole(UserID)
                 FillDDL()
