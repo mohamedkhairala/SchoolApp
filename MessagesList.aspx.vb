@@ -98,7 +98,7 @@ Partial Class Dashboard
 #Region "Permissions"
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles rbMessages.DataBound
         Try
-            Permissions.CheckPermisions(rbMessages, lbAdd, txtSearch, lbSearchIcon, Me.Page, UserID)
+            'Permissions.CheckPermisions(rbMessages, New LinkButton, txtSearch, lbSearchIcon, Me.Page, UserID)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
