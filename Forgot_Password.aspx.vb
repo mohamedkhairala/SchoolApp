@@ -22,7 +22,7 @@ Partial Class Forgot_Password
         Try
             lblRes.Visible = False
             If PublicFunctions.CheckLogged() Then
-                Response.Redirect("Main.aspx")
+                Response.Redirect("~/Dashboard.aspx")
                 Exit Sub
             End If
 

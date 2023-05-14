@@ -22,7 +22,7 @@ Partial Class Login
         Try
             lblRes.Visible = False
             If PublicFunctions.CheckLogged() Then
-                Response.Redirect("Dashboard.aspx")
+                Response.Redirect("~/Dashboard.aspx")
                 Exit Sub
             End If
 

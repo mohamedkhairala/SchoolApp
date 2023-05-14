@@ -27,7 +27,7 @@ Partial Class Message
             UserID = PublicFunctions.GetUserId(Page)
             'School_Id = PublicFunctions.GetClientId
             If Page.IsPostBack = False Then
-                'Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
+                Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 divActions.Visible = False
                 FillGroups()
                 'View()
@@ -108,7 +108,7 @@ Partial Class Message
                 msg.MessageBody = txtDescription.Text
                 msg.SenderId = UserID
                 msg.ReceiverId = SupervisorUserId
-                msg.SenderId = UserID
+                msg.CreatedBy = UserID
                 msg.CreatedDate = DateTime.Now
                 msg.SchoolId = School_Id
                 If Not da.InsertTrans(msg, _sqlconn, _sqltrans) Then
@@ -141,7 +141,7 @@ Partial Class Message
                 msg.MessageBody = txtDescription.Text
                 msg.SenderId = UserID
                 msg.ReceiverId = TeacherUserID
-                msg.SenderId = UserID
+                msg.CreatedBy = UserID
                 msg.CreatedDate = DateTime.Now
                 msg.SchoolId = School_Id
                 If Not da.InsertTrans(msg, _sqlconn, _sqltrans) Then
@@ -173,7 +173,7 @@ Partial Class Message
                 msg.MessageBody = txtDescription.Text
                 msg.SenderId = UserID
                 msg.ReceiverId = StudentUserID
-                msg.SenderId = UserID
+                msg.CreatedBy = UserID
                 msg.CreatedDate = DateTime.Now
                 msg.SchoolId = School_Id
                 If Not da.InsertTrans(msg, _sqlconn, _sqltrans) Then
@@ -301,7 +301,7 @@ Partial Class Message
 
 #Region "Cancel"
     Protected Sub Cancel(sender As Object, e As EventArgs)
-        Response.Redirect("~/Dashboard.aspx")
+        Response.Redirect("~/MessagesList.aspx")
     End Sub
     Protected Sub Edit(sender As Object, e As EventArgs)
         pnlForm.Enabled = True
