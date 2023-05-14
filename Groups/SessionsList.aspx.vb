@@ -98,7 +98,6 @@ Partial Class SessionsList
 
 #End Region
 
-
 #Region "Add"
     Protected Sub Add(sender As Object, e As EventArgs)
         Dim url = "Session.aspx?GroupId=" & ddlGroups.SelectedValue
@@ -106,10 +105,40 @@ Partial Class SessionsList
     End Sub
 
     Protected Sub SelectGroup(sender As Object, e As EventArgs)
-        'divAdd.Visible = ddlGroups.SelectedValue <> 0
+        divAdd.Visible = ddlGroups.SelectedValue <> 0
     End Sub
 #End Region
 
+#Region "Delete"
+    ''' <summary>
+    ''' Handle Click Delete 
+    ''' </summary>
+    Protected Sub Delete(sender As LinkButton, e As EventArgs)
+        Try
+            Dim ID = Val(sender.CommandArgument)
+            'Check if Session dosn`t have attendance
+            Dim dtAttendance = DBContext.Getdatatable("Select hasAttendance from vw_Sessions where ID=" & ID)
+            If dtAttendance.Rows.Count = 0 Then
+                Exit Sub
+            End If
+            Dim hasAttendance = PublicFunctions.BoolFormat(dtAttendance.Rows(0).Item(0))
+            If hasAttendance Then
+                ShowInfoMessgage(lblRes, "You can not delete this sesssion , attendance exit!", Me)
+                Exit Sub
+            End If
+            'Dim ParentId = Val(CType(sender.parent.FindControl("lblParentId"), Label).Text)
+            Dim str As String = "Update TblSessions Set isDeleted=1, DeletedBy ='" & UserID & "',DeletedDate=GetDate() where ID=" & ID & ";"
+            If DBContext.ExcuteQuery(str) < 1 Then
+                ShowErrorMessgage(lblRes, "حدث خطأ", Me)
+                Exit Sub
+            End If
+            FillGrid(sender, e)
+            ShowMessage(lblRes, MessageTypesEnum.Delete, Me)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+#End Region
 
 #Region "Permissions"
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound

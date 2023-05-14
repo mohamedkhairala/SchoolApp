@@ -24,7 +24,7 @@
                     </ProgressTemplate>
                 </asp:UpdateProgress>
             </div>
-            <asp:Label ID="lblRes" runat="server" Visible="false"></asp:Label>
+            <asp:Label ID="lblRes" runat="server"></asp:Label>
             <!-- Breadcubs Area Start Here -->
             <div class="breadcrumbs-area">
                 <h3>All Sessions</h3>
@@ -75,7 +75,7 @@
                             <div class="form-group col-md-2 pl-0 pr-2">
                                 <label>Group</label>
                                 <asp:DropDownList runat="server" CssClass="form-control" ID="ddlGroups"
-                                    onchange="SelectGroup(this.value)">
+                                    AutoPostBack="true" OnSelectedIndexChanged="SelectGroup">
                                 </asp:DropDownList>
                             </div>
                             <div class="form-group col-md-2 px-2">
@@ -98,7 +98,7 @@
                                 <label>&nbsp;</label>
                                 <asp:LinkButton runat="server" CssClass="btn-fill-sm bg-danger text-white fw-btn-fill" ID="lbClear" OnClick="Clear">Clear<i class="fa fa-trash ml-3"></i></asp:LinkButton>
                             </div>
-                            <div class="form-group d-inline-flex flex-column px-2" id="divAdd" style="display: none !important;">
+                            <div class="form-group d-inline-flex flex-column px-2" runat="server" id="divAdd" visible="false">
                                 <label>&nbsp;</label>
                                 <a href="#" target="_blank" class="btn-fill-sm bg-success text-white fw-btn-fill" id="lbAdd">Add<i class="fa fa-plus ml-3"></i></a>
                                 <%--<asp:LinkButton runat="server" CssClass="btn-fill-sm bg-success text-white fw-btn-fill" ID="lbAdd" OnClick="Add">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>--%>
@@ -197,7 +197,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="footer-btn btn-success">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                        <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="footer-btn btn-success" CommandArgument='<%# Eval("Id") %>' OnClick="Delete">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
                                                         <asp:LinkButton ID="lbNoDelete" runat="server" CssClass="footer-btn btn-danger" data-dismiss="modal">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
                                                     </div>
                                                 </div>
