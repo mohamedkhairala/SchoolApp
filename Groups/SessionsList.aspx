@@ -100,8 +100,8 @@
                             </div>
                             <div class="form-group d-inline-flex flex-column px-2" runat="server" id="divAdd" visible="false">
                                 <label>&nbsp;</label>
-                                <a href="#" target="_blank" class="btn-fill-sm bg-success text-white fw-btn-fill" id="lbAdd">Add<i class="fa fa-plus ml-3"></i></a>
-                                <%--<asp:LinkButton runat="server" CssClass="btn-fill-sm bg-success text-white fw-btn-fill" ID="lbAdd" OnClick="Add">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>--%>
+                                <%--<a href="#" target="_blank" class="btn-fill-sm bg-success text-white fw-btn-fill" id="lbAdd">Add<i class="fa fa-plus ml-3"></i></a>--%>
+                                <asp:LinkButton runat="server" CssClass="btn-fill-sm bg-success text-white fw-btn-fill" ID="lbAdd" OnClick="Add">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
                             </div>
                         </div>
                     </div>

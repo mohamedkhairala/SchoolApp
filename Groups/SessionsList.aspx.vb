@@ -144,13 +144,11 @@ Partial Class SessionsList
     Private Sub ListView_DataBound(sender As Object, e As EventArgs) Handles lvMaster.DataBound
         Try
             Permissions.CheckPermisions(lvMaster, New LinkButton, txtSearch, lbSearch, Me.Page, UserID)
-
-            'D 'im dtLookupValues As DataTable = DBContext.Getdatatable("select Id,value from tblLookupValue where lookupId=(select top 1 ID from tbllookup where TYPE='SessionStatus') and (ISNULL(IsDeleted, 0) = 0)")
-
             For Each r In lvMaster.Items
                 Dim Status As String = Val(DirectCast(r.FindControl("lblSessionStatus"), Label).Text)
                 Dim ddlStatus As DropDownList = DirectCast(r.FindControl("ddlStatus"), DropDownList)
                 clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, False,,, , Status)
+                ddlStatus.Items.Remove(ddlStatus.Items.FindByText("Completed"))
                 ddlStatus.Enabled = Not PublicFunctions.BoolFormat(DirectCast(r.FindControl("lblHasAttendance"), Label).Text)
             Next
         Catch ex As Exception
