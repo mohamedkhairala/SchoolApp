@@ -24,6 +24,12 @@
                         </div>
                         <asp:Label Text="" ID="lblRes" runat="server" />
                     </div>
+                     <div class="col-md-12 px-0 text-right">
+                        <div class="d-inline-flex mb-3">
+                            <asp:LinkButton ID="lbAdd" runat="server" href="Message.aspx" CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></asp:LinkButton>
+                            <%--<a href="../Students/Student.aspx" class="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white fw-btn-fill">Add<i class="fa fa-plus ml-3"></i></a>--%>
+                        </div>
+                    </div>
                     <div class="input-group form-group">
                         <asp:TextBox runat="server" ID="txtSearch" CssClass="form-control" placeholder="Search By Message"></asp:TextBox>
                         <span class="input-group-append">
