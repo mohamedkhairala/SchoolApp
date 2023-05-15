@@ -39,7 +39,7 @@ Partial Class ChangePassword
             If dtUser.Rows.Count > 0 Then
                 If DBContext.ExcuteQuery("update tblusers set Password='" & PublicFunctions.Encrypt(txtNewPassword.Text) & "' where Userid='" & UserId & "'  ") = 1 Then
                     clsMessages.ShowMessage(lblRes, MessageTypesEnum.CUSTOMSuccess, Me, Nothing, "Passowrd updated successfully")
-                    Response.Redirect("~/Dashboard.aspx")
+                    'Response.Redirect("~/Dashboard.aspx")
                 End If
             Else
                 clsMessages.ShowMessage(lblRes, MessageTypesEnum.CUSTOMInfo, Me, Nothing, "Old password not correct")
