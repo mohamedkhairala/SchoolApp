@@ -41,7 +41,14 @@ Partial Class Course
     End Sub
 
     Private Function GetUserRole(userID As String) As String
-        Return "Student"
+        Try
+            Dim daUsers As New TblUsersFactory
+            Dim dtRoles = daUsers.GetAllBy(TblUsers.TblUsersFields.UserID, userID).FirstOrDefault
+            Return dtRoles.OwnerType
+        Catch ex As Exception
+            Return ""
+        End Try
+
     End Function
 
     Private Sub FillDDL()
@@ -108,11 +115,15 @@ Partial Class Course
         Try
             Dim dt As DataTable = DBContext.Getdatatable("Select * from TblAttachments where " & CollectConditions())
             Dim dv As New DataView(dt)
-            dv.RowFilter = "OwnerType='T' " 'and CreatedBy='" & UserID & "'"
+            dv.RowFilter = "OwnerType<>'S' " 'and CreatedBy='" & UserID & "'"
             gvTeacherFiles.DataSource = dv
             gvTeacherFiles.DataBind()
 
-            dv.RowFilter = "OwnerType='S' " 'and CreatedBy='" & UserID & "'"
+            If lblUserRole.Text = "S" Then
+                dv.RowFilter = "OwnerType='S' and CreatedBy='" & UserID & "'"
+            Else
+                dv.RowFilter = "OwnerType='S'"
+            End If
             gvStudentFiles.DataSource = dv
             gvStudentFiles.DataBind()
 
@@ -136,7 +147,7 @@ Partial Class Course
 #End Region
 #Region "Validation"
     Private Function isValidForm() As Boolean
-        If Not fuAttachments.HasFile Then
+        If gvStudentFiles.Rows.Count = 0 AndAlso gvTeacherFiles.Rows.Count = 0 Then
             ShowInfoMessgage(lblRes, "Please Upload Files", Me)
             Return False
         End If
@@ -161,6 +172,7 @@ Partial Class Course
             _sqlconn.Close()
             Clear()
             ShowMessage(lblRes, MessageTypesEnum.Insert, Me.Page)
+            lbSave.Enabled = False
         Catch ex As Exception
             Throw ex
         End Try
@@ -174,15 +186,21 @@ Partial Class Course
             Dim UserRole As String = lblUserRole.Text
             'Dim TeacherId As String = 0
             'Dim StudentId As String = 0
-            Dim qry As String = "Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "' and CreatedBy='" & UserID & "'"
-            Select Case UserRole
-                Case "Teacher"
-                    qry &= " and OwnerType='T'"
-                    gvFills = gvTeacherFiles
-                Case "Student"
-                    qry &= " and OwnerType='S'"
-                    gvFills = gvStudentFiles
-            End Select
+            Dim qry As String = "Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "' and CreatedBy='" & UserID & "'  and OwnerType='" & UserRole & "'"
+            If UserRole = "S" Then
+                gvFills = gvStudentFiles
+            Else
+                gvFills = gvTeacherFiles
+            End If
+
+            'Select Case UserRole
+            '    Case "Teacher"
+            '        'qry &= " and OwnerType='T'"
+            '        gvFills = gvTeacherFiles
+            '    Case "Student"
+            '        'qry &= " and OwnerType='S'"
+            '        gvFills = gvStudentFiles
+            'End Select
             ExecuteQuery.ExecuteAlCommands(_sqltrans, _sqlconn, New SqlCommand(qry))
 
 
@@ -311,32 +329,35 @@ Partial Class Course
         Try
             Dim Attachments As DataTable
             Dim gvFiles As GridView
-            Dim isTeacher As Boolean = lblUserRole.Text.StartsWith("T")
-            If isTeacher Then
-                Attachments = GetTeacherUploadedFilesDT()
-                gvFiles = gvTeacherFiles
-            Else
+            Dim isStudent As Boolean = lblUserRole.Text.StartsWith("S")
+            If isStudent Then
                 Attachments = GetStudentUploadedFilesDT()
                 gvFiles = gvStudentFiles
+            Else
+                Attachments = GetTeacherUploadedFilesDT()
+                gvFiles = gvTeacherFiles
             End If
 
-            If fuAttachments.HasFiles Then
-                Dim Path As String = Server.MapPath("~/Attachments/")
-                For Each f As HttpPostedFile In fuAttachments.PostedFiles
-
-                    Dim FName As String = DateTime.Now.ToString.Replace("/", "_").Replace(":", "_").Replace(" ", "_") & "_" & f.FileName
-                    Dim FileURl = System.IO.Path.Combine(Path, FName)
-                    fuAttachments.SaveAs(FileURl)
-
-                    Dim dr As DataRow = Attachments.NewRow
-                    dr("ID") = fuAttachments.PostedFiles.IndexOf(f) + 1
-                    dr("URL") = "~/Attachments/" + FName
-                    dr("FileName") = f.FileName.Split(".").First
-                    dr("Description") = ""
-                    Attachments.Rows.Add(dr)
-                Next
-
+            If Not fuAttachments.HasFiles Then
+                ShowInfoMessgage(lblRes, "Please Upload Files!", Me)
+                Exit Sub
             End If
+
+            Dim Path As String = Server.MapPath("~/Attachments/")
+            For Each f As HttpPostedFile In fuAttachments.PostedFiles
+
+                Dim FName As String = DateTime.Now.ToString.Replace("/", "_").Replace(":", "_").Replace(" ", "_") & "_" & f.FileName
+                Dim FileURl = System.IO.Path.Combine(Path, FName)
+                fuAttachments.SaveAs(FileURl)
+
+                Dim dr As DataRow = Attachments.NewRow
+                dr("ID") = fuAttachments.PostedFiles.IndexOf(f) + 1
+                dr("URL") = "~/Attachments/" + FName
+                dr("FileName") = f.FileName.Split(".").First
+                dr("Description") = ""
+                dr("CreatedBy") = UserID
+                Attachments.Rows.Add(dr)
+            Next
             gvFiles.DataSource = Attachments
             gvFiles.DataBind()
             ShowNewFileTypes(gvFiles)
@@ -345,6 +366,7 @@ Partial Class Course
 
             pnlTeacherFiles.Visible = True
             pnlStudentFiles.Visible = True
+            lbSave.Enabled = True
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -357,6 +379,7 @@ Partial Class Course
             dt.Columns.Add("Description", GetType(String))
             dt.Columns.Add("FileType", GetType(String))
             dt.Columns.Add("URL", GetType(String))
+            dt.Columns.Add("CreatedBy", GetType(String))
             Return dt
         Catch ex As Exception
             Return Nothing
@@ -376,6 +399,7 @@ Partial Class Course
                     dr("FileType") = CType(gvTeacherFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue
                 End If
                 dr("URL") = CType(gvTeacherFiles.Rows(i).FindControl("lblDocumentCopy"), Label).Text
+                dr("CreatedBy") = CType(gvTeacherFiles.Rows(i).FindControl("lblCreatedBy"), Label).Text
                 dt.Rows.Add(dr)
                 i += 1
             End While
@@ -385,7 +409,6 @@ Partial Class Course
         End Try
         Return dt
     End Function
-
     Protected Function GetStudentUploadedFilesDT() As DataTable
         Dim dt As New DataTable
         Try
@@ -400,6 +423,7 @@ Partial Class Course
                     dr("FileType") = CType(gvStudentFiles.Rows(i).FindControl("ddlFileType"), DropDownList).SelectedValue
                 End If
                 dr("URL") = CType(gvStudentFiles.Rows(i).FindControl("lblDocumentCopy"), Label).Text
+                dr("CreatedBy") = CType(gvTeacherFiles.Rows(i).FindControl("lblCreatedBy"), Label).Text
                 dt.Rows.Add(dr)
                 i += 1
             End While
@@ -411,7 +435,7 @@ Partial Class Course
     End Function
 
     Protected Sub DeleteMultiFiles(ByVal sender As Object, ByVal e As System.EventArgs)
-        Dim parent As GridViewRow = sender.parent.parent
+        Dim parent As GridViewRow = sender.parent.parent.parent
         Dim dt As New DataTable
         Try
             Dim gvFiles As GridView
@@ -469,9 +493,15 @@ Partial Class Course
             Dim FileType As String = CType(row.FindControl("lblFileType"), Label).Text
             Dim ddlTypes As DropDownList = CType(row.FindControl("ddlFileType"), DropDownList)
             clsBindDDL.BindCustomDDLs(dt, "Value", "Id", ddlTypes, True,,, FileType)
+            Dim Creator As String = CType(row.FindControl("lblCreatedBy"), Label).Text
+            gvTeacherFiles.Columns(6).Visible = Creator = UserID
+
+            'Enable FileName , File Description , File Cateogry in case or it is your own only
+            row.Cells(2).Enabled = Creator = UserID
+            row.Cells(3).Enabled = Creator = UserID
+            row.Cells(4).Enabled = Creator = UserID
         Next
 
-        gvTeacherFiles.Columns(6).Visible = lblUserRole.Text = "Teacher"
     End Sub
 
     Private Sub gvStudentFiles_ItemDataBound(sender As Object, e As EventArgs) Handles gvStudentFiles.DataBound
@@ -483,8 +513,10 @@ Partial Class Course
 
             Dim ddlTypes As DropDownList = CType(row.FindControl("ddlFileType"), DropDownList)
             clsBindDDL.BindCustomDDLs(dt, "Value", "Id", ddlTypes, True,,, FileType)
+
+            Dim Creator As String = CType(row.FindControl("lblCreatedBy"), Label).Text
+            gvTeacherFiles.Columns(6).Visible = Creator = UserID
         Next
-        gvStudentFiles.Columns(6).Visible = lblUserRole.Text = "Student"
     End Sub
 #End Region
 End Class

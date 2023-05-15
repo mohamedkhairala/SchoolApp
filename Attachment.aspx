@@ -100,7 +100,9 @@
                                                 <div class="file-upload-wrapper">
                                                     <asp:FileUpload runat="server" ID="fuAttachments" AllowMultiple="true" />
                                                 </div>
-                                                <asp:Button runat="server" ID="uploadedFile" CssClass="btn-file-upload" Text="Upload" OnClick="UploadFile" />
+                                                <asp:Button runat="server" ID="uploadedFile"
+                                                    ValidationGroup="vgAttachments"
+                                                    CssClass="btn-file-upload" Text="Upload" OnClick="UploadFile" />
                                             </div>
                                             <asp:Label ID="listofuploadedfiles" runat="server" />
                                         </div>
@@ -123,6 +125,8 @@
                                                                     <asp:TemplateField HeaderText="File ">
                                                                         <ItemTemplate>
                                                                             <asp:Label ID="lblID" runat="server" Text='<%# Eval("ID").ToString %>' Visible="false"></asp:Label>
+                                                                            <asp:Label ID="lblCreatedBy" runat="server" Text='<%# Eval("CreatedBy").ToString %>' Visible="false"></asp:Label>
+
                                                                             <asp:Panel ID="pnlImage" runat="server">
                                                                                 <asp:Image CssClass="displayNone" ID="file" runat="server" ImageUrl='<%# Eval("URL")%>' Height="70px" Width="70px" Visible="false" />
                                                                                 <asp:Label ID="lblURL" runat="server" Text='<%# Eval("URL").ToString %>' Visible="false"></asp:Label>
@@ -225,6 +229,7 @@
                                                                     <asp:TemplateField HeaderText="File ">
                                                                         <ItemTemplate>
                                                                             <asp:Label ID="lblID" runat="server" Text='<%# Eval("ID").ToString %>' Visible="false"></asp:Label>
+                                                                            <asp:Label ID="lblCreatedBy" runat="server" Text='<%# Eval("CreatedBy").ToString %>' Visible="false"></asp:Label>
                                                                             <asp:Panel ID="pnlImage" runat="server">
                                                                                 <asp:Image CssClass="displayNone" ID="file" runat="server" ImageUrl='<%# Eval("URL")%>' Height="70px" Width="70px" Visible="false" />
                                                                                 <asp:Label ID="lblURL" runat="server" Text='<%# Eval("URL").ToString %>' Visible="false"></asp:Label>
@@ -310,7 +315,7 @@
                                         </asp:Panel>
                                         <div class="col-12 form-group mg-t-8">
                                             <asp:Button ID="lbSave" runat="server" ValidationGroup="vgAttachments" UseSubmitBehavior="false"
-                                                CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
+                                                CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white" Enabled="false"
                                                 CommandArgument="Add" OnClick="Save" OnClientClick="SaveClick(this,'vgAttachments');" Text="Save" />
                                             <%--<asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>--%>
                                             <a href="#" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white"
@@ -351,6 +356,9 @@
             </div>
             <!-- Admit Form Area End Here -->
         </ContentTemplate>
+        <Triggers>
+            <asp:PostBackTrigger ControlID="uploadedFile" />
+        </Triggers>
     </asp:UpdatePanel>
 </asp:Content>
 <asp:Content ID="PageFooter" ContentPlaceHolderID="Footer" runat="Server">

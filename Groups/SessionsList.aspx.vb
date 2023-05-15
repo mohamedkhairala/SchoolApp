@@ -106,6 +106,7 @@ Partial Class SessionsList
 
     Protected Sub SelectGroup(sender As Object, e As EventArgs)
         divAdd.Visible = ddlGroups.SelectedValue <> 0
+        FillGrid(sender, e)
     End Sub
 #End Region
 
@@ -148,8 +149,13 @@ Partial Class SessionsList
                 Dim Status As String = Val(DirectCast(r.FindControl("lblSessionStatus"), Label).Text)
                 Dim ddlStatus As DropDownList = DirectCast(r.FindControl("ddlStatus"), DropDownList)
                 clsBindDDL.BindLookupDDLs("SessionStatus", ddlStatus, False,,, , Status)
-                ddlStatus.Items.Remove(ddlStatus.Items.FindByText("Completed"))
-                ddlStatus.Enabled = Not PublicFunctions.BoolFormat(DirectCast(r.FindControl("lblHasAttendance"), Label).Text)
+
+                Dim hasAttendance = PublicFunctions.BoolFormat(DirectCast(r.FindControl("lblHasAttendance"), Label).Text)
+                Dim isCompleted = ddlStatus.SelectedItem.Text = "Completed"
+                If hasAttendance Or isCompleted Then
+                    ddlStatus.Enabled = False
+                End If
+
             Next
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
