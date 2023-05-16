@@ -26,6 +26,9 @@
                     <li>
                         <a href="../Dashboard.aspx">Home</a>
                     </li>
+                    <li>
+                        <a href="../MessagesList.aspx">Messages List</a>
+                    </li>
                     <li>Messages</li>
                 </ul>
             </div>
