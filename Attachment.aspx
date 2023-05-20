@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Attachments" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Attachment.aspx.vb" Inherits="Course" %>
+<%@ Page Title="Up Skills | Files" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Attachment.aspx.vb" Inherits="Course" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -33,7 +33,7 @@
                     <li>
                         <a href="../Dashboard.aspx">Home</a>
                     </li>
-                    <li>Attachments</li>
+                    <li>Files</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -45,8 +45,8 @@
                             <h3>
                                 <asp:Label Text="" runat="server" ID="lblTitle" /></h3>
 
-
-                            <asp:Label Text="" ID="lblUserRole" Visible="false" runat="server" />
+                            <asp:HiddenField runat="server" ID="hfUserRole" />
+                            <%--<asp:Label Text="" ID="lblUserRole" Visible="false" runat="server" />--%>
                             <asp:Label Text="" ID="lblRes" runat="server" />
                         </div>
                         <asp:Panel CssClass="dropdown" runat="server" ID="divActions">
@@ -315,7 +315,7 @@
                                         </asp:Panel>
                                         <div class="col-12 form-group mg-t-8">
                                             <asp:Button ID="lbSave" runat="server" ValidationGroup="vgAttachments" UseSubmitBehavior="false"
-                                                CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white" Enabled="false"
+                                                CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white" 
                                                 CommandArgument="Add" OnClick="Save" OnClientClick="SaveClick(this,'vgAttachments');" Text="Save" />
                                             <%--<asp:LinkButton ID="lbCancel" runat="server" CssClass="btn-fill-lg bg-blue-dark btn-hover-yellow text-white" OnClick="Cancel">Cancel</asp:LinkButton>--%>
                                             <a href="#" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white"
