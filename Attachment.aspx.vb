@@ -12,7 +12,6 @@ Partial Class Course
 
     Dim UserID As String = "3"
     Dim School_Id As String = "1"
-    Dim FormQry As String = "Select * from vw_Courses "
     Dim _sqlconn As New SqlConnection(DBContext.GetConnectionString)
     Dim _sqltrans As SqlTransaction
 
@@ -29,7 +28,7 @@ Partial Class Course
             If Page.IsPostBack = False Then
                 Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 divActions.Visible = False
-                lblUserRole.Text = GetUserRole(UserID)
+                hfUserRole.Value = GetUserRole(UserID)
                 FillDDL()
                 View()
             Else
@@ -61,6 +60,7 @@ Partial Class Course
         End Try
     End Sub
 #End Region
+
 #Region "DDL Actions"
 
     Protected Sub SelectCourse(sender As Object, e As EventArgs)
@@ -119,7 +119,7 @@ Partial Class Course
             gvTeacherFiles.DataSource = dv
             gvTeacherFiles.DataBind()
 
-            If lblUserRole.Text = "S" Then
+            If hfUserRole.Value = "S" Then
                 dv.RowFilter = "OwnerType='S' and CreatedBy='" & UserID & "'"
             Else
                 dv.RowFilter = "OwnerType='S'"
@@ -145,6 +145,7 @@ Partial Class Course
         End Try
     End Function
 #End Region
+
 #Region "Validation"
     Private Function isValidForm() As Boolean
         If gvStudentFiles.Rows.Count = 0 AndAlso gvTeacherFiles.Rows.Count = 0 Then
@@ -154,12 +155,14 @@ Partial Class Course
         Return True
     End Function
 #End Region
+
 #Region "Save"
     Protected Sub Save()
         Try
             If Not isValidForm() Then
                 Exit Sub
             End If
+            hfUserRole.Value = GetUserRole(UserID)
             _sqlconn.Open()
             _sqltrans = _sqlconn.BeginTransaction()
             If Not SaveAttachmentDetails(_sqlconn, _sqltrans) Then
@@ -183,7 +186,7 @@ Partial Class Course
         Try
             Dim da As New TblAttachmentsFactory
             Dim gvFills As New GridView
-            Dim UserRole As String = lblUserRole.Text
+            Dim UserRole As String = hfUserRole.Value
             'Dim TeacherId As String = 0
             'Dim StudentId As String = 0
             Dim qry As String = "Delete From TblAttachments where CourseId='" & Val(ddlCourse.SelectedValue) & "' and GroupId='" & Val(ddlGroup.SelectedValue) & "' and SessionId='" & Val(ddlSession.SelectedValue) & "' and CreatedBy='" & UserID & "'  and OwnerType='" & UserRole & "'"
@@ -243,6 +246,7 @@ Partial Class Course
     End Function
 
 #End Region
+
 #Region "View"
     Protected Sub View()
         Try
@@ -252,7 +256,7 @@ Partial Class Course
             Dim CourseID As String = Request.QueryString("CourseID")
             Dim SessionID As String = Request.QueryString("SessionID")
 
-            lblTitle.Text = "Attachments"
+            lblTitle.Text = "Upskills Files"
 
             If IsNumeric(CourseID) Then
                 'Check is valid course Id 
@@ -261,7 +265,7 @@ Partial Class Course
                     ShowInfoMessgage(lblRes, "Course is not available", Me)
                     Exit Sub
                 End If
-                lblTitle.Text = dt.Rows(0).Item("Name").ToString & " Attachments"
+                lblTitle.Text = dt.Rows(0).Item("Name").ToString & " Files"
                 clsBindDDL.SetDDLValue(ddlCourse, CourseID)
                 SelectCourse(ddlCourse, Nothing)
             End If
@@ -273,7 +277,7 @@ Partial Class Course
                     ShowInfoMessgage(lblRes, "Group is not available", Me)
                     Exit Sub
                 End If
-                lblTitle.Text = dt.Rows(0).Item("Name").ToString & " Attachments"
+                lblTitle.Text = dt.Rows(0).Item("Name").ToString & " Files"
                 CourseID = dt.Rows(0).Item("CourseID").ToString
                 clsBindDDL.SetDDLValue(ddlCourse, CourseID)
                 SelectCourse(ddlCourse, Nothing)
@@ -287,7 +291,7 @@ Partial Class Course
                     ShowInfoMessgage(lblRes, "Session is not available", Me)
                     Exit Sub
                 End If
-                lblTitle.Text = dt.Rows(0).Item("Title").ToString & " Attachments"
+                lblTitle.Text = dt.Rows(0).Item("Title").ToString & " Files"
                 CourseID = dt.Rows(0).Item("CourseID").ToString
                 GroupID = dt.Rows(0).Item("GroupID").ToString
                 clsBindDDL.SetDDLValue(ddlCourse, CourseID)
@@ -329,7 +333,7 @@ Partial Class Course
         Try
             Dim Attachments As DataTable
             Dim gvFiles As GridView
-            Dim isStudent As Boolean = lblUserRole.Text.StartsWith("S")
+            Dim isStudent As Boolean = hfUserRole.Value.StartsWith("S")
             If isStudent Then
                 Attachments = GetStudentUploadedFilesDT()
                 gvFiles = gvStudentFiles
@@ -485,6 +489,9 @@ Partial Class Course
         End Try
     End Sub
 
+#End Region
+
+#Region "Files Databound"
     Private Sub gvTeacherFiles_ItemDataBound(sender As Object, e As EventArgs) Handles gvTeacherFiles.DataBound
 
         Dim Types As String = "Select tblLookupValue.Id,Value from tblLookupValue inner join tblLookup on tblLookup.ID = tblLookupValue.lookupid  where tblLookup.Type='FileType' and isnull(tblLookupValue.isDeleted,0)=0 and tblLookupValue.schoolId='" + School_Id + "'"
@@ -515,7 +522,7 @@ Partial Class Course
             clsBindDDL.BindCustomDDLs(dt, "Value", "Id", ddlTypes, True,,, FileType)
 
             Dim Creator As String = CType(row.FindControl("lblCreatedBy"), Label).Text
-            gvTeacherFiles.Columns(6).Visible = Creator = UserID
+            gvStudentFiles.Columns(6).Visible = Creator = UserID
         Next
     End Sub
 #End Region

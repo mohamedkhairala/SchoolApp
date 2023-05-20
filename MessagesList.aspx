@@ -103,7 +103,7 @@
                                                 </a>
                                                 <p><%# Eval("MessageBody") %></p>
                                             </h6>
-                                            <div class="entry-meta"><%# Eval("CreatedByUserName") %> / <span><%# clsNotifications.SetTimeAgo(Eval("CreatedDate"), Eval("time_ago")) %></span></div>
+                                            <div class="entry-meta"><%# Eval("CreatedByUserName") %> / <span><%# clsNotifications.SetTimeAgo(Eval("CreatedDate")) %></span></div>
                                         </div>
                                     </ItemTemplate>
                                     <EmptyDataTemplate>
