@@ -1,4 +1,4 @@
-<%@ Page Title="Up Skills | Add Teacher / Supervisor Payment" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Add_Teacher_Supervisor_Payments.aspx.vb" Inherits="Add_Teacher_Supervisor_Payments" %>
+<%@ Page Title="Up Skills | Add Other Payment" Language="VB" MasterPageFile="~/Master.master" AutoEventWireup="false" CodeFile="Other_Payments.aspx.vb" Inherits="Other_Payments" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -32,7 +32,7 @@
                     <li>
                         <a href="Dashboard.aspx">Home</a>
                     </li>
-                    <li>Add Payment</li>
+                    <li>Add Other Payment</li>
                 </ul>
             </div>
             <!-- Breadcubs Area End Here -->
@@ -117,8 +117,8 @@
                                 <label>Type</label>
                                 <div class="radio-list">
                                     <asp:RadioButtonList ID="rplTypes" runat="server" RepeatLayout="UnorderedList">
-                                        <asp:ListItem Value="Teacher" Selected="True">Teacher</asp:ListItem>
-                                        <asp:ListItem Value="Supervisor">Supervisor</asp:ListItem>
+                                        <asp:ListItem Value="Payment" Selected="True">Payment</asp:ListItem>
+                                        <asp:ListItem Value="Receipt">Receipt</asp:ListItem>
                                     </asp:RadioButtonList>
                                 </div>
                             </div>
@@ -143,35 +143,13 @@
                     </div>
                     <div class="new-added-form">
                         <div class="row">
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Course</label>
-                                <asp:DropDownList ID="ddlCourse" runat="server" CssClass="select2" AutoPostBack="true">
-                                    <asp:ListItem Value="">Please Select Course</asp:ListItem>
-                                </asp:DropDownList>
+                            <div class="col-xl-6 col-lg-6 col-12 form-group">
+                                <label>Item Name</label>
+                                <asp:TextBox ID="txtItemName" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                             </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Group</label>
-                                <asp:DropDownList ID="ddlGroup" runat="server" CssClass="select2" AutoPostBack="true">
-                                    <asp:ListItem Value="">Please Select Group</asp:ListItem>
-                                </asp:DropDownList>
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Session</label>
-                                <asp:DropDownList ID="ddlSession" runat="server" CssClass="select2" AutoPostBack="true">
-                                    <asp:ListItem Value="">Please Select Session</asp:ListItem>
-                                </asp:DropDownList>
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Hourly Rate</label>
-                                <asp:TextBox ID="txtHourlyRate" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Hours</label>
-                                <asp:TextBox ID="txtHours" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
-                            </div>
-                            <div class="col-xl-4 col-lg-6 col-12 form-group">
-                                <label>Total</label>
-                                <asp:TextBox ID="txtTotal" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
+                            <div class="col-xl-3 col-lg-6 col-12 form-group">
+                                <label>Amount</label>
+                                <asp:TextBox ID="txtAmount" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                             </div>
                             <div class="col-xl-12 col-lg-12 col-12 form-group">
                                 <label>Remarks</label>
@@ -221,12 +199,8 @@
                                             <thead>
                                                 <tr>
                                                     <th>No.</th>
-                                                    <th>Course</th>
-                                                    <th>Group</th>
-                                                    <th>Session</th>
-                                                    <th>Hourly Rate</th>
-                                                    <th>Hours</th>
-                                                    <th>Total</th>
+                                                    <th>Item Name</th>
+                                                    <th>Amount</th>
                                                     <th>Remarks</th>
                                                     <th>Edit</th>
                                                     <th>Delete</th>
@@ -244,22 +218,10 @@
                                                 <asp:Label ID="lblSerialNo" runat="server" Text='<%# Val(Container.DataItemIndex.ToString) + 1 %>'></asp:Label>
                                             </td>
                                             <td>
-                                                <asp:Label ID="lblCourse" runat="server" Text='<%# Eval("Course")%>'></asp:Label>
+                                                <asp:Label ID="lblItemName" runat="server" Text='<%# Eval("ItemName")%>'></asp:Label>
                                             </td>
                                             <td>
-                                                <asp:Label ID="lblGroup" runat="server" Text='<%# Eval("Group")%>'></asp:Label>
-                                            </td>
-                                            <td>
-                                                <asp:Label ID="lblSession" runat="server" Text='<%# Eval("Session")%>'></asp:Label>
-                                            </td>
-                                            <td>
-                                                <asp:Label ID="lblHourlyRate" runat="server" Text='<%# Eval("HourlyRate")%>'></asp:Label>
-                                            </td>
-                                            <td>
-                                                <asp:Label ID="lblHours" runat="server" Text='<%# Eval("Hours")%>'></asp:Label>
-                                            </td>
-                                            <td>
-                                                <asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total")%>'></asp:Label>
+                                                <asp:Label ID="lblAmount" runat="server" Text='<%# Eval("Amount")%>'></asp:Label>
                                             </td>
                                             <td>
                                                 <asp:Label ID="lblRemarks" runat="server" Text='<%# Eval("Remarks")%>'></asp:Label>
