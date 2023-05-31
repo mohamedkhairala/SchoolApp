@@ -5648,6 +5648,10 @@ ul {
     background-color: #f939a1;
 }
 
+.dodger-bg-blue:after {
+    background-color: #2196f3;
+}
+
 .header-inline {
     display: -webkit-box;
     display: -ms-flexbox;
