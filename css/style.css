@@ -2774,6 +2774,8 @@ ul {
 
 .sidebar-main {
     left: -27rem;
+    height: calc(100vh - 70px);
+    overflow-y: auto !important;
 }
 
 @media only screen and (min-width: 768px) {
@@ -4296,6 +4298,7 @@ ul {
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
+    height: calc(100vh - 70px);
 }
 
 .dashboard-content-one {
@@ -5643,6 +5646,10 @@ ul {
 
 .pseudo-bg-pink:after {
     background-color: #f939a1;
+}
+
+.dodger-bg-blue:after {
+    background-color: #2196f3;
 }
 
 .header-inline {

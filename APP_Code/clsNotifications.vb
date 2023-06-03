@@ -1,4 +1,5 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Runtime.InteropServices.ComTypes
 Imports BusinessLayer.BusinessLayer
 Imports Microsoft.VisualBasic
 
@@ -26,6 +27,35 @@ Public Class clsNotifications
         End Try
     End Function
 
+    Public Shared Function SetTimeAgo(ByVal CreatedDate As String) As String
+        Try
+            If Not IsDate(CreatedDate) Then
+                Return ""
+            End If
+            'if createddate not in today --> return the date , else (in today) calc it
+            If CDate(CreatedDate).Date <> DateTime.Now.Date Then
+                Return PublicFunctions.DateFormat(CreatedDate, "dd MMM yyyy HH:MM:ss")
+            End If
+
+            Dim timeDiff As TimeSpan = DateTime.Now.Subtract(Convert.ToDateTime(CreatedDate))
+            Dim hoursDiff As Integer = CInt(timeDiff.TotalHours)
+            Dim minuteDiff As Integer = CInt(timeDiff.TotalMinutes)
+            Dim secondsDiff As Integer = CInt(timeDiff.TotalSeconds)
+
+            If hoursDiff > 0 And hoursDiff < 24 Then
+                Return hoursDiff & " Hour Ago"
+            End If
+            If minuteDiff > 0 And minuteDiff < 60 Then
+                Return minuteDiff & " minute ago"
+            End If
+            If secondsDiff > 0 And secondsDiff < 60 Then
+                Return secondsDiff & " seconds ago"
+            End If
+
+        Catch ex As Exception
+            Return ""
+        End Try
+    End Function
     Public Shared Function SetRandomColor() As String
         Try
             Dim colorsList As New List(Of String) From {"bg-skyblue", "bg-yellow", "bg-pink"}
