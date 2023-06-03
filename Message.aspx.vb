@@ -17,6 +17,7 @@ Partial Class Message
     Dim _sqltrans As SqlTransaction
     Dim da As New TblMessagesFactory
 #End Region
+
 #Region "Page load"
     ''' <summary>
     ''' Handle page_load event
@@ -31,6 +32,8 @@ Partial Class Message
                 divActions.Visible = False
                 FillGroups()
                 'View()
+            Else
+                ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
@@ -45,6 +48,7 @@ Partial Class Message
         Return True
     End Function
 #End Region
+
 #Region "Save"
     Protected Sub Save()
         Try
@@ -187,7 +191,6 @@ Partial Class Message
     End Function
 #End Region
 
-
 #Region "Types"
     Protected Sub SelectType(sender As Object, e As EventArgs)
         Try
@@ -272,7 +275,6 @@ Partial Class Message
         End Try
     End Sub
 #End Region
-
 
 #Region "View"
     Protected Sub View()
