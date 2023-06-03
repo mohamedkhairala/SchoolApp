@@ -25,6 +25,8 @@ Public Class GenerateCode
                     query = "select ('ATD' + format(max(ID) + 1, '000000')) from TblAttendance"
                 Case PublicFunctions.Stackholders.Messages
                     query = "select max(ID) + 1 from TblMessages"
+                Case PublicFunctions.Stackholders.Transaction
+                    query = "select ('TRN' + format(max(ID) + 1, '000000')) from tblTransactions"
             End Select
             If String.IsNullOrEmpty(query) Then
                 Return String.Empty

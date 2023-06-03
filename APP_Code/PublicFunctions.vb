@@ -19,6 +19,7 @@ Public Class PublicFunctions
         Session
         Messages
         Attendance
+        Transaction
     End Enum
 
 #Region "Global Functions"
