@@ -1,7 +1,7 @@
 ﻿#Region "Import"
 Imports clsMessages
 #End Region
-Partial Class Add_Teacher_Supervisor_Payments
+Partial Class Teacher_Supervisor_Payments
     Inherits System.Web.UI.Page
 #Region "Page load"
     ''' <summary>
