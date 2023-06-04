@@ -303,6 +303,9 @@ Partial Class Other_Payments
     Protected Sub SubmitDetails(ByVal Sender As Object, ByVal e As EventArgs)
         Try
             Dim dtDetails As New TblTransactionDetails
+            If IsItemExist() Then
+                Exit Sub
+            End If
             lstDetails = GetDetailsDT()
             If hfDetailsIndex.Value <> String.Empty Then
                 If FillDetailsDT(dtDetails, "Update") Then
@@ -317,6 +320,22 @@ Partial Class Other_Payments
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
     End Sub
+
+    Function IsItemExist() As Boolean
+        Try
+            For Each item As ListViewItem In lvDetails.Items
+                Dim item_name As String = CType(item.FindControl("lblItemName"), Label).Text
+                If item_name = txtItemName.Text And hfDetailsIndex.Value = String.Empty Then
+                    ShowInfoMessgage(lblRes, "Item already exists in the list, Record No.(" & item.DataItemIndex + 1 & ")", Me)
+                    Return True
+                End If
+            Next
+            Return False
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+            Return False
+        End Try
+    End Function
 
     Private Function FillDetailsDT(ByRef dtDetails As TblTransactionDetails, Operation As String) As Boolean
         Try

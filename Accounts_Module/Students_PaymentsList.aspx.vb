@@ -7,7 +7,7 @@ Imports BusinessLayer.BusinessLayer
 
 #End Region
 
-Partial Class Other_PaymentsList
+Partial Class Students_PaymentsList
     Inherits Page
 
 #Region "Global Variable"
@@ -41,7 +41,7 @@ Partial Class Other_PaymentsList
     ' Fill gridview with data from tblCandidates.
     Sub FillGrid(sender As Object, e As EventArgs)
         Try
-            Dim dtTable As DataTable = DBContext.Getdatatable("select * from vw_Transactions where ForType = 'O' and " & CollectConditions() & "")
+            Dim dtTable As DataTable = DBContext.Getdatatable("select * from vw_Transactions where ForType = 'S' and " & CollectConditions() & "")
             If dtTable.Rows.Count > 0 Then
                 ' Initialize the sorting expression.
                 If SortExpression.Value = String.Empty Then
@@ -68,7 +68,7 @@ Partial Class Other_PaymentsList
     Public Function CollectConditions() As String
         Dim result As String = "1 = 1"
         Try
-            Dim Search As String = IIf(txtSearch.Text = "", "1 = 1", " (Code like '%" & txtSearch.Text & "%' or Description Like '%" & txtSearch.Text & "%')")
+            Dim Search As String = IIf(txtSearch.Text = "", "1 = 1", " (ForName like '%" & txtSearch.Text & "%' or Code like '%" & txtSearch.Text & "%' or Description Like '%" & txtSearch.Text & "%')")
             Return Search
         Catch ex As Exception
             Throw ex

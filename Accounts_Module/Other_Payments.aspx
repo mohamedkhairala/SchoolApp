@@ -121,6 +121,7 @@
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Total Amount</label>
                                     <asp:TextBox ID="txtTotalAmount" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
+                                    <asp:FilteredTextBoxExtender ID="fteTotalAmount" runat="server" TargetControlID="txtTotalAmount" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                                 </div>
                                 <div class="col-xl-12 col-lg-12 col-12 form-group mb-4">
                                     <label>Description</label>
@@ -146,6 +147,7 @@
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Amount</label>
                                     <asp:TextBox ID="txtAmount" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
+                                    <asp:FilteredTextBoxExtender ID="fteAmount" runat="server" TargetControlID="txtAmount" ValidChars=".0123456789" FilterMode="ValidChars"></asp:FilteredTextBoxExtender>
                                 </div>
                                 <div class="col-xl-12 col-lg-12 col-12 form-group">
                                     <label>Remarks</label>
