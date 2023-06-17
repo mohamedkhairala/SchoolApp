@@ -8,13 +8,13 @@
             border-bottom: 1px dashed #e1e1e1;
         }
 
-            .progress-bar-card .card-body .gradient-progress-bar .progress {
-                height: 15px !important;
-            }
+        .progress-bar-card .card-body .gradient-progress-bar .progress {
+            height: 15px !important;
+        }
 
-                .progress-bar-card .card-body .gradient-progress-bar .progress .progress-bar {
-                    font-size: 13px !important;
-                }
+            .progress-bar-card .card-body .gradient-progress-bar .progress .progress-bar {
+                font-size: 13px !important;
+            }
     </style>
 </asp:Content>
 <asp:Content ID="PageContent" ContentPlaceHolderID="Content" runat="Server">
@@ -29,57 +29,63 @@
     <!-- Dashboard summery Start Here -->
     <div class="row gutters-20">
         <asp:Label Text="" ID="lblRes" runat="server" />
-        <div class="col-xl-4 col-sm-6 col-12">
-            <div class="dashboard-summery-one mg-b-20">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="item-icon bg-light-blue">
-                            <i class="flaticon-mortarboard text-blue"></i>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="item-content">
-                            <div class="item-title">Courses</div>
-                            <div class="item-number"><span class="counter" data-num='5'>5</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 col-12">
-            <div class="dashboard-summery-one mg-b-20">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="item-icon bg-light-green">
-                            <i class="flaticon-shopping-list text-green"></i>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="item-content">
-                            <div class="item-title">Completed Courses</div>
-                            <div class="item-number"><span class="counter" data-num='2'>2</span></div>
+        <asp:Repeater runat="server" ID="rpCounters">
+            <ItemTemplate>
+
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <div class="dashboard-summery-one mg-b-20">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="item-icon bg-light-blue">
+                                    <i class="flaticon-mortarboard text-blue"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="item-content">
+                                    <div class="item-title">Courses</div>
+                                    <div class="item-number"><span class="counter" data-num='<%# Eval("StudentCoursesCount") %>'><%# Eval("StudentCoursesCount") %></span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-xl-4 col-sm-6 col-12">
-            <div class="dashboard-summery-one mg-b-20">
-                <div class="row align-items-center">
-                    <div class="col-6">
-                        <div class="item-icon bg-light-yellow">
-                            <i class="flaticon-checklist text-orange"></i>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="item-content">
-                            <div class="item-title">Pending Courses</div>
-                            <div class="item-number"><span class="counter" data-num='3'>3</span></div>
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <div class="dashboard-summery-one mg-b-20">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="item-icon bg-light-green">
+                                    <i class="flaticon-shopping-list text-green"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="item-content">
+                                    <div class="item-title">Paid</div>
+                                    <div class="item-number"><span class="counter" data-num='<%# Eval("StudentTotalPaid") %>'><%# PublicFunctions.DecimalFormat(Eval("StudentTotalPaid")) %></span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="col-xl-4 col-sm-6 col-12">
+                    <div class="dashboard-summery-one mg-b-20">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <div class="item-icon bg-light-yellow">
+                                    <i class="flaticon-checklist text-orange"></i>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="item-content">
+                                    <div class="item-title">Balance</div>
+                                    <div class="item-number"><span class="counter" data-num='<%# (CDec(Eval("TotalCost")) - CDec(Eval("StudentTotalPaid"))) %>'><%# PublicFunctions.DecimalFormat(CDec(Eval("TotalCost")) - CDec(Eval("StudentTotalPaid"))) %></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </ItemTemplate>
+        </asp:Repeater>
     </div>
     <!-- Dashboard summery End Here -->
     <!-- Dashboard Content Start Here -->
@@ -141,22 +147,34 @@
                             </table>
                         </div>
                     </div>
-                    <h6 class="traffic-title">Course Name 1</h6>
-                    <div class="gradient-progress-bar mb-4">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped font-bold bg-skyblue" role="progressbar" style="width: 100%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="10">10 Completed</div>
+                    <asp:Repeater runat="server" ID="rpStudentCourses">
+                        <ItemTemplate>
+                            <h6 class="traffic-title"><%# Eval("CourseName") %></h6>
+                            <div class="gradient-progress-bar mb-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped font-bold bg-skyblue"
+                                                role="progressbar" style="width: 100%;" aria-valuenow='<%# Eval("CompletedSessions") %>' aria-valuemin="0"
+                                                aria-valuemax='<%# Eval("NoOfSessions") %>'>
+                                                <%# Eval("CompletedSessions") %> Completed
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-striped font-bold bg-dodger-blue"
+                                                role="progressbar" style="width: 100%;" aria-valuenow="<%# Eval("CourseRestAmount") %>" aria-valuemin="0"
+                                                aria-valuemax="<%# Eval("CoursePrice") %>">
+                                                <%# Eval("CourseRestAmount") %> Balance
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="progress">
-                                    <div class="progress-bar progress-bar-striped font-bold bg-dodger-blue" role="progressbar" style="width: 100%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="10">10 Paid</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <h6 class="traffic-title">Course Name 2</h6>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                  <%--  <h6 class="traffic-title">Course Name 2</h6>
                     <div class="gradient-progress-bar mb-4">
                         <div class="row">
                             <div class="col-md-6">
@@ -215,7 +233,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
         </div>

@@ -941,7 +941,38 @@ Optional ByVal MinNumber As Integer = 0) As Integer
             Return "0"
         End Try
     End Function
-
+    Public Shared Function GetRelatedEntityId(ByVal page As Page) As String
+        Try
+            If HttpContext.Current.Request.Cookies.Get("UpSkillsSchool") IsNot Nothing Then
+                Dim OwnerId As String = Decrypt(HttpContext.Current.Request.Cookies("UpSkillsSchool")("OwnerId"))
+                Return OwnerId
+            Else
+                RemoveCookie()
+                page.Response.Redirect("~/Login.aspx", True)
+                Return "0"
+            End If
+        Catch ex As Exception
+            RemoveCookie()
+            page.Response.Redirect("~/Login.aspx", True)
+            Return "0"
+        End Try
+    End Function
+    Public Shared Function GetRelatedEntityType(ByVal page As Page) As String
+        Try
+            If HttpContext.Current.Request.Cookies.Get("UpSkillsSchool") IsNot Nothing Then
+                Dim OwnerType As String = Decrypt(HttpContext.Current.Request.Cookies("UpSkillsSchool")("OwnerType"))
+                Return OwnerType
+            Else
+                RemoveCookie()
+                page.Response.Redirect("~/Login.aspx", True)
+                Return "0"
+            End If
+        Catch ex As Exception
+            RemoveCookie()
+            page.Response.Redirect("~/Login.aspx", True)
+            Return "0"
+        End Try
+    End Function
     Public Shared Function RemoveCookie() As Boolean
         Try
             Dim UELPDCookies As New HttpCookie("UpSkillsSchool")
