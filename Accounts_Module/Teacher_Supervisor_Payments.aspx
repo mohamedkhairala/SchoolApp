@@ -46,7 +46,7 @@
                             </div>
                             <!-- Save & Cancel -->
                             <div class="">
-                                <asp:Button ID="lbSave" runat="server" ValidationGroup="vgAddPayment" UseSubmitBehavior="false"
+                                <asp:Button ID="lbSave" runat="server" ValidationGroup="vgAddPayment" UseSubmitBehavior="false" OnClick="Save"
                                     CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white mr-3"
                                     CommandArgument="Add" OnClientClick="SaveClick(this,'vgAddPayment');" Text="Save" />
                                 <a href="#" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white"
@@ -70,7 +70,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <asp:LinkButton ID="lbYesCancel" runat="server" CssClass="footer-btn btn-success">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                <asp:LinkButton ID="lbYesCancel" runat="server" CssClass="footer-btn btn-success" OnClick="Cancel">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
                                                 <asp:LinkButton ID="lbNoCancel" runat="server" CssClass="footer-btn btn-danger" OnClientClick="CloseConfirmPopup('mpConfirmCancel');return false;">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
                                             </div>
                                         </div>
@@ -98,10 +98,8 @@
                             <asp:ValidationSummary ID="vsAddPayment" ClientIDMode="Static" DisplayMode="BulletList" ValidationGroup="vgAddPayment" EnableClientScript="true" runat="server" CssClass="ValidationSummary" Visible="false" />
                             <div class="row">
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
-                                    <label>Code *</label>
-                                    <asp:TextBox ID="txtCode" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
-                                    <asp:RequiredFieldValidator CssClass="valid-inp" ID="reqCode" runat="server" ValidationGroup="vgAddPayment"
-                                        ControlToValidate="txtCode" Display="Dynamic" Text="Required Code"></asp:RequiredFieldValidator>
+                                    <label>Code</label>
+                                    <asp:TextBox ID="txtCode" Enabled="false" runat="server" CssClass="form-control" MaxLength="200"></asp:TextBox>
                                 </div>
                                 <div class="col-xl-3 col-lg-6 col-12 form-group">
                                     <label>Date *</label>
@@ -122,13 +120,13 @@
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group" id="divTeacher" runat="server" visible="false">
                                     <label>Teacher</label>
-                                    <asp:DropDownList ID="ddlTeacher" runat="server" CssClass="select2">
+                                    <asp:DropDownList ID="ddlTeacher" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectTeacher">
                                         <asp:ListItem Value="">Please Select Teacher</asp:ListItem>
                                     </asp:DropDownList>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group" id="divSupervisor" runat="server" visible="false">
                                     <label>Supervisor</label>
-                                    <asp:DropDownList ID="ddlSupervisor" runat="server" CssClass="select2">
+                                    <asp:DropDownList ID="ddlSupervisor" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectSupervisor">
                                         <asp:ListItem Value="">Please Select Supervisor</asp:ListItem>
                                     </asp:DropDownList>
                                 </div>
@@ -156,19 +154,16 @@
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Course</label>
                                     <asp:DropDownList ID="ddlCourse" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectCourse">
-                                        <asp:ListItem Value="">Please Select Course</asp:ListItem>
                                     </asp:DropDownList>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Group</label>
                                     <asp:DropDownList ID="ddlGroup" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectGroup">
-                                        <asp:ListItem Value="">Please Select Group</asp:ListItem>
                                     </asp:DropDownList>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
                                     <label>Session</label>
                                     <asp:DropDownList ID="ddlSession" runat="server" CssClass="select2" AutoPostBack="true" OnSelectedIndexChanged="SelectSession">
-                                        <asp:ListItem Value="">Please Select Session</asp:ListItem>
                                     </asp:DropDownList>
                                 </div>
                                 <div class="col-xl-4 col-lg-6 col-12 form-group">
@@ -181,7 +176,7 @@
                                 </div>
                                 <!-- Submit & Cancel -->
                                 <div class="col-12 form-group mg-t-8">
-                                    <asp:LinkButton ID="lbSubmitSession" runat="server" ValidationGroup="vsSessions"
+                                    <asp:LinkButton ID="lbSubmitSession" runat="server" ValidationGroup="vsSessions" OnClick="SubmitDetails"
                                         CssClass="btn-fill-lg btn-gradient-yellow btn-hover-bluedark text-white"
                                         CommandArgument="Add">Submit</asp:LinkButton>
                                     <a href="#" class="btn-fill-lg bg-blue-dark btn-hover-yellow text-white"
@@ -205,7 +200,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <asp:LinkButton ID="lbYesCancelSessions" runat="server" CssClass="footer-btn btn-success">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                    <asp:LinkButton ID="lbYesCancelSessions" runat="server" CssClass="footer-btn btn-success" OnClick="CancelDetails">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
                                                     <asp:LinkButton ID="lbNoCancelSessions" runat="server" CssClass="footer-btn btn-danger" OnClientClick="CloseConfirmPopup('mpConfirmCancelSessions');return false;">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
                                                 </div>
                                             </div>
@@ -262,7 +257,7 @@
                                                     <asp:Label ID="lblRemarks" runat="server" Text='<%# Eval("Remarks")%>'></asp:Label>
                                                 </td>
                                                 <td>
-                                                    <asp:LinkButton ID="lbEdit" runat="server" CssClass="btn btn-info text-white">
+                                                    <asp:LinkButton ID="lbEdit" runat="server" CssClass="btn btn-info text-white" OnClick="EditDetails">
                                                     <i class="fas fa-edit"></i>
                                                     </asp:LinkButton>
                                                 </td>
@@ -290,7 +285,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="footer-btn btn-success" CommandArgument='<%# Eval("ID") %>'>Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lbYesDelete" runat="server" CssClass="footer-btn btn-success" CommandArgument='<%# Eval("ID") %>' OnClick="DeleteDetails">Yes<i class="fa fa-check icon-modal ml-2"></i></asp:LinkButton>
                                                                     <asp:LinkButton ID="lbNoDelete" runat="server" CssClass="footer-btn btn-danger" data-dismiss="modal">No<i class="fa fa-times icon-modal ml-2"></i></asp:LinkButton>
                                                                 </div>
                                                             </div>

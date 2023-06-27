@@ -33,8 +33,8 @@ Partial Class Teacher_Supervisor_Payments
             If Page.IsPostBack = False Then
                 Permissions.CheckPermisions(New GridView, New LinkButton, New TextBox, New LinkButton, Me.Page, UserID)
                 FillDDL()
-                View()
                 SelectForType(rplTypes, New EventArgs)
+                View()
             Else
                 ScriptManager.RegisterClientScriptBlock(Me, Me.GetType(), "ScriptPostback", "ScriptPostback();", True)
             End If
@@ -47,7 +47,6 @@ Partial Class Teacher_Supervisor_Payments
         Try
             FillDropDownList(ddlTeacher, "select ID, (Code + ' - ' + Name) as Teacher from vw_Teachers where SchoolID = " & School_ID & ";", "ID", "Teacher", True)
             FillDropDownList(ddlSupervisor, "select ID, (Code + ' - ' + Name) as Supervisor from vw_Supervisors where SchoolID = " & School_ID & ";", "ID", "Supervisor", True)
-            FillDropDownList(ddlCourse, "select ID, (Code + ' - ' + Name) as Course from vw_Courses where SchoolID = " & School_ID & ";", "ID", "Course", True)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -73,8 +72,10 @@ Partial Class Teacher_Supervisor_Payments
                 SelectForType(rplTypes, New EventArgs)
                 If rplTypes.SelectedValue = "T" Then
                     SetDDLValue(ddlTeacher, dt.Rows(0).Item("ForId").ToString)
-                ElseIf rplTypes.SelectedValue = "T" Then
+                    SelectTeacher(ddlTeacher, New EventArgs)
+                ElseIf rplTypes.SelectedValue = "V" Then
                     SetDDLValue(ddlSupervisor, dt.Rows(0).Item("ForId").ToString)
+                    SelectSupervisor(ddlSupervisor, New EventArgs)
                 End If
                 txtTotalAmount.Text = DecimalFormat(dt.Rows(0).Item("Amount").ToString)
                 txtDescription.Text = dt.Rows(0).Item("Description").ToString
@@ -107,6 +108,10 @@ Partial Class Teacher_Supervisor_Payments
             ElseIf rplTypes.SelectedValue = "V" Then
                 divSupervisor.Visible = True
             End If
+            ddlCourse.Items.Clear()
+            CancelDetails(lbYesCancelSessions, New EventArgs)
+            lvDetails.DataSource = New DataTable
+            lvDetails.DataBind()
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -116,15 +121,56 @@ Partial Class Teacher_Supervisor_Payments
 
 #Region "DropDownLists"
 
+    Protected Sub SelectTeacher(sender As Object, e As EventArgs)
+        Try
+            Dim teacher_id As Integer = IntFormat(ddlTeacher.SelectedValue)
+            Dim query As String = "select ATT.CourseId, ATT.Course from vw_Attendance ATT where ATT.TeacherId = " & teacher_id & " and " &
+                "ATT.SchoolId = " & School_ID & " and ATT.SessionId not in (select TRN.SessionId from vw_TransactionDetails TRN " &
+                "where TRN.ForType = 'T' and TRN.ForId = " & teacher_id & " and TRN.SchoolId = " & School_ID & ");"
+            ddlCourse.Items.Add(New ListItem("Please Select Course", ""))
+            FillDropDownList(ddlCourse, query, "CourseId", "Course", True)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+
+    Protected Sub SelectSupervisor(sender As Object, e As EventArgs)
+        Try
+            Dim supervisor_id As Integer = IntFormat(ddlSupervisor.SelectedValue)
+            Dim query As String = "select ATT.CourseId, ATT.Course from vw_Attendance ATT where ATT.SupervisorId = " & supervisor_id & " and " &
+                "ATT.SchoolId = " & School_ID & " and ATT.SessionId not in (select TRN.SessionId from vw_TransactionDetails TRN " &
+                "where TRN.ForType = 'V' and TRN.ForId = " & supervisor_id & " and TRN.SchoolId = " & School_ID & ");"
+            ddlCourse.Items.Add(New ListItem("Please Select Course", ""))
+            FillDropDownList(ddlCourse, query, "CourseId", "Course", True)
+        Catch ex As Exception
+            ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
+        End Try
+    End Sub
+
     Protected Sub SelectCourse(sender As Object, e As EventArgs)
         Try
+            If IntFormat(ddlCourse.SelectedValue) = 0 Then
+                ddlGroup.Items.Clear()
+                ddlSession.Items.Clear()
+                txtAmount.Text = String.Empty
+                Exit Sub
+            End If
             Dim course_id As Integer = IntFormat(ddlCourse.SelectedValue), teacher_id As Integer = IntFormat(ddlTeacher.SelectedValue),
                 supervisor_id As Integer = IntFormat(ddlSupervisor.SelectedValue)
+            Dim query As String = String.Empty
             If rplTypes.SelectedValue = "T" Then
-                FillDropDownList(ddlGroup, "select Id, (Code + ' - ' + Name) as GroupData from vw_Groups where CourseId = " & course_id & " and TeacherId = " & teacher_id & " SchoolID = " & School_ID & ";", "Id", "GroupData", True)
+                query = "select ATT.GroupId, ATT.[Group] from vw_Attendance ATT where ATT.CourseId = " & course_id & " and " &
+                    "ATT.TeacherId = " & teacher_id & " and ATT.SchoolId = " & School_ID & " and " &
+                    "ATT.SessionId not in (select TRN.SessionId from vw_TransactionDetails TRN where TRN.ForType = 'T' and " &
+                    "TRN.ForId = " & teacher_id & " and TRN.SchoolId = " & School_ID & ");"
             ElseIf rplTypes.SelectedValue = "V" Then
-                FillDropDownList(ddlGroup, "select Id, (Code + ' - ' + Name) as GroupData from vw_Groups where CourseId = " & course_id & " and Supervisor = " & supervisor_id & " SchoolID = " & School_ID & ";", "Id", "GroupData", True)
+                query = "select ATT.GroupId, ATT.[Group] from vw_Attendance ATT where ATT.CourseId = " & course_id & " and " &
+                    "ATT.SupervisorId = " & supervisor_id & " and ATT.SchoolId = " & School_ID & " and " &
+                    "ATT.SessionId not in (select TRN.SessionId from vw_TransactionDetails TRN where TRN.ForType = 'V' and " &
+                    "TRN.ForId = " & supervisor_id & " and TRN.SchoolId = " & School_ID & ");"
             End If
+            ddlGroup.Items.Add(New ListItem("Please Select Group", ""))
+            FillDropDownList(ddlGroup, query, "GroupId", "Group", True)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -132,17 +178,28 @@ Partial Class Teacher_Supervisor_Payments
 
     Protected Sub SelectGroup(sender As Object, e As EventArgs)
         Try
+            If IntFormat(ddlGroup.SelectedValue) = 0 Then
+                ddlSession.DataSource = New DataTable
+                ddlSession.DataBind()
+                txtAmount.Text = String.Empty
+                Exit Sub
+            End If
             Dim course_id As Integer = IntFormat(ddlCourse.SelectedValue), group_id As Integer = IntFormat(ddlGroup.SelectedValue),
                 teacher_id As Integer = IntFormat(ddlTeacher.SelectedValue), supervisor_id As Integer = IntFormat(ddlSupervisor.SelectedValue)
-            Dim query As String = "select SES.Id as SessionId, (SES.Code + ' - ' + SES.Title) as SessionData from vw_Sessions SES " &
-                "where SES.GroupId = " & group_id & " and SES.SchoolId = 1 and " &
-                "SES.Id not in (select TRND.SessionId from vw_TransactionDetails TRND where TRND.SchoolId = 1 "
+            Dim query As String = String.Empty
             If rplTypes.SelectedValue = "T" Then
-                query += "and TRND.ForType = 'T' and ForId = " & teacher_id & "));"
+                query = "select ATT.SessionId, ATT.[Session] from vw_Attendance ATT where ATT.CourseId = " & course_id & " and " &
+                    "ATT.GroupId = " & group_id & " and ATT.TeacherId = " & teacher_id & " and ATT.SchoolId = " & School_ID & " and " &
+                    "ATT.SessionId not in (select TRN.SessionId from vw_TransactionDetails TRN where TRN.ForType = 'T' and " &
+                    "TRN.ForId = " & teacher_id & " and TRN.SchoolId = " & School_ID & ");"
             ElseIf rplTypes.SelectedValue = "V" Then
-                query += "and TRND.ForType = 'V' and ForId = " & supervisor_id & "));"
+                query = "select ATT.SessionId, ATT.[Session] from vw_Attendance ATT where ATT.CourseId = " & course_id & " and " &
+                    "ATT.GroupId = " & group_id & " and ATT.SupervisorId = " & supervisor_id & " and ATT.SchoolId = " & School_ID & " and " &
+                    "ATT.SessionId not in (select TRN.SessionId from vw_TransactionDetails TRN where TRN.ForType = 'V' and " &
+                    "TRN.ForId = " & supervisor_id & " and TRN.SchoolId = " & School_ID & ");"
             End If
-            FillDropDownList(ddlSession, query, "SessionId", "SessionData", True)
+            ddlSession.Items.Add(New ListItem("Please Select Session", ""))
+            FillDropDownList(ddlSession, query, "SessionId", "Session", True)
         Catch ex As Exception
             ShowMessage(lblRes, MessageTypesEnum.ERR, Page, ex)
         End Try
@@ -150,17 +207,21 @@ Partial Class Teacher_Supervisor_Payments
 
     Protected Sub SelectSession(sender As Object, e As EventArgs)
         Try
+            If IntFormat(ddlSession.SelectedValue) = 0 Then
+                txtAmount.Text = String.Empty
+                Exit Sub
+            End If
             Dim session_id As Integer = IntFormat(ddlSession.SelectedValue), group_id As Integer = IntFormat(ddlGroup.SelectedValue),
                 teacher_id As Integer = IntFormat(ddlTeacher.SelectedValue), supervisor_id As Integer = IntFormat(ddlSupervisor.SelectedValue)
             Dim query As String = String.Empty
             If rplTypes.SelectedValue = "T" Then
-                query = "select isnull((select isnull(Period, 0) from vw_Attendance where SchoolId = " & School_ID & " and " &
+                query = "select isnull((select isnull([Period], 0) from vw_Attendance where SchoolId = " & School_ID & " and " &
                     "SessionId = " & session_id & " and TeacherId = " & teacher_id & "), 0) * isnull((select isnull(TeacherRate, 0) " &
-                    "from vw_Groups where SchoolId = " & School_ID & " and Id = " & group_id & " and TeacherId = " & teacher_id & "), 0) as Amount "
+                    "from vw_Groups where SchoolId = " & School_ID & " and Id = " & group_id & "), 0) as Amount "
             ElseIf rplTypes.SelectedValue = "V" Then
-                query = "select isnull((select isnull(Period, 0) from vw_Attendance where SchoolId = " & School_ID & " and " &
-                    "SessionId = " & session_id & " and TeacherId = " & supervisor_id & "), 0) * isnull((select isnull(SupervisorRate, 0) " &
-                    "from vw_Groups where SchoolId = " & School_ID & " and Id = " & group_id & " and TeacherId = " & supervisor_id & "), 0) as Amount "
+                query = "select isnull((select isnull([Period], 0) from vw_Attendance where SchoolId = " & School_ID & " and " &
+                    "SessionId = " & session_id & " and SupervisorId = " & supervisor_id & "), 0) * isnull((select isnull(SupervisorRate, 0) " &
+                    "from vw_Groups where SchoolId = " & School_ID & " and Id = " & group_id & "), 0) as Amount "
             End If
             Dim dt As DataTable = DBContext.Getdatatable(query)
             If dt.Rows.Count = 0 Then
@@ -334,7 +395,7 @@ Partial Class Teacher_Supervisor_Payments
             End If
             dt.Code = txtCode.Text.Trim
             dt.TranDate = CDate(txtDate.Text)
-            dt.TranType = "R"
+            dt.TranType = "P"
             dt.ForType = rplTypes.SelectedValue
             If rplTypes.SelectedValue = "T" Then
                 dt.ForId = IntFormat(ddlTeacher.SelectedValue)
@@ -410,7 +471,7 @@ Partial Class Teacher_Supervisor_Payments
             While i < lvDetails.Items.Count
                 CType(lvDetails.Items(i).FindControl("lblCourse"), Label).Text = getValue("Name", "tblCourses", CType(lvDetails.Items(i).FindControl("lblCourseId"), Label).Text)
                 CType(lvDetails.Items(i).FindControl("lblGroup"), Label).Text = getValue("Name", "tblGroups", CType(lvDetails.Items(i).FindControl("lblGroupId"), Label).Text)
-                CType(lvDetails.Items(i).FindControl("lblSession"), Label).Text = getValue("Name", "tblSessions", CType(lvDetails.Items(i).FindControl("lblSessionId"), Label).Text)
+                CType(lvDetails.Items(i).FindControl("lblSession"), Label).Text = getValue("Title", "tblSessions", CType(lvDetails.Items(i).FindControl("lblSessionId"), Label).Text)
                 i += 1
             End While
         Catch ex As Exception
@@ -512,8 +573,8 @@ Partial Class Teacher_Supervisor_Payments
     Protected Sub CancelDetails(Sender As Object, e As EventArgs)
         Try
             ddlCourse.SelectedIndex = -1
-            SelectCourse(ddlCourse, New EventArgs)
-            SelectGroup(ddlGroup, New EventArgs)
+            ddlGroup.Items.Clear()
+            ddlSession.Items.Clear()
             txtAmount.Text = String.Empty
             txtRemarks.Text = String.Empty
             hfDetailsIndex.Value = String.Empty
@@ -539,6 +600,11 @@ Partial Class Teacher_Supervisor_Payments
         Try
             Dim parent As Object = Sender.parent
             hfDetailsIndex.Value = IntFormat(CType(parent.FindControl("lblSerialNo"), Label).Text) - 1
+            If rplTypes.SelectedValue = "T" Then
+                SelectTeacher(ddlTeacher, New EventArgs)
+            ElseIf rplTypes.SelectedValue = "V" Then
+                SelectSupervisor(ddlSupervisor, New EventArgs)
+            End If
             SetDDLValue(ddlCourse, IntFormat(CType(parent.FindControl("lblCourseId"), Label).Text))
             SelectCourse(ddlCourse, New EventArgs)
             SetDDLValue(ddlGroup, IntFormat(CType(parent.FindControl("lblGroupId"), Label).Text))

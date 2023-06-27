@@ -457,8 +457,7 @@ Partial Class Students_Payments
     ' to be fixed to get only non fully paid groups
     Protected Sub FillGroups(sender As Object, e As EventArgs)
         Try
-            ddlGroup.DataSource = New DataTable
-            ddlGroup.DataBind()
+            ddlGroup.Items.Clear()
             ddlGroup.Items.Add(New ListItem("Please Select Group", ""))
             Dim student_id As Integer = IntFormat(ddlStudent.SelectedValue),
                 course_id As Integer = IntFormat(ddlCourse.SelectedValue),
